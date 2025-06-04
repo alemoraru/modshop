@@ -21,7 +21,9 @@ export default function Navbar() {
                     />
                     {cartCount > 0 && (
                         <span
-                            className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
+                            className="absolute -top-3 -right-3 bg-blue-600 text-white text-xs rounded-full w-5 h-5
+                            flex items-center justify-center transition-transform duration-200 group-hover:scale-110"
+                        >
                             {cartCount}
                         </span>
                     )}
