@@ -15,8 +15,10 @@ export default function Navbar() {
             </Link>
 
             <div className="flex items-center space-x-4">
-                <Link href="/cart" className="relative cursor-pointer">
-                    <ShoppingCart className="w-6 h-6"/>
+                <Link href="/cart" className="relative cursor-pointer group">
+                    <ShoppingCart
+                        className="w-6 h-6 transition-transform duration-200 group-hover:scale-110 group-hover:text-blue-600"
+                    />
                     {cartCount > 0 && (
                         <span
                             className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-bounce">
@@ -24,8 +26,10 @@ export default function Navbar() {
                         </span>
                     )}
                 </Link>
-                <Link href="/profile" className="cursor-pointer">
-                    <User className="w-6 h-6"/>
+                <Link href="/profile" className="cursor-pointer group">
+                    <User
+                        className="w-6 h-6 transition-transform duration-200 group-hover:scale-110 group-hover:text-blue-600"
+                    />
                 </Link>
             </div>
         </nav>
