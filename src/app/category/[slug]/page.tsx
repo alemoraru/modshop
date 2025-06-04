@@ -5,6 +5,7 @@ import {Metadata} from "next";
 import {notFound} from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
 
 export const metadata: Metadata = {
     title: "ModShop | Category",
@@ -57,9 +58,12 @@ export default async function CategoryPage({params}: { params: { slug: string } 
                             href={`/product/${product.slug}`}
                             className="border rounded-xl p-4 transition-transform duration-200 hover:scale-105 hover:border-blue-500 hover:shadow-lg"
                         >
-                            <img
-                                src={product.image}
+                            <Image
+                                // Change this to actual product image path when available
+                                src={"/images/products/default-image.png"}
                                 alt={product.title}
+                                width={400}
+                                height={160}
                                 className="w-full h-40 object-cover rounded"
                             />
                             <div className="mt-2">
