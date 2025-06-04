@@ -32,7 +32,7 @@ export default function ProfilePage() {
                 <Navbar/>
                 <section className="py-12 px-6 max-w-md mx-auto">
                     <h1 className="text-3xl font-bold mb-6">Login</h1>
-                    <LoginForm onLogin={login}/>
+                    <LoginForm onLoginAction={login}/>
                 </section>
             </main>
         );
@@ -47,8 +47,11 @@ export default function ProfilePage() {
                         <h1 className="text-3xl font-bold">Profile</h1>
                         <p className="text-gray-600">{user.email}</p>
                     </div>
-                    <button onClick={logout}
-                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Logout
+                    <button
+                        onClick={logout}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                    >
+                        Logout
                     </button>
                 </div>
                 <h2 className="text-2xl font-semibold mb-4">Past Orders</h2>

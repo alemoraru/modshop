@@ -2,7 +2,7 @@ import {readFileSync, readdirSync} from "fs";
 import path from "path";
 import matter from "gray-matter";
 import {MDXRemote} from "next-mdx-remote/rsc";
-import ProductDetail from "./ProductDetail";
+import ProductDetail from "@/components/ProductDetail";
 
 interface ProductFrontmatter {
     title: string;
