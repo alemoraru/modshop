@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import {useCart} from "@/context/CartContext";
 import Link from "next/link";
 import {useEffect, useState} from "react";
+import Image from "next/image";
 
 export default function CartPage() {
     const {items, removeItem, updateQuantity, clearCart} = useCart();
@@ -32,9 +33,11 @@ export default function CartPage() {
                                 key={item.slug}
                                 className="flex items-center gap-4 border-b pb-4"
                             >
-                                <img
+                                <Image
                                     src={item.image}
                                     alt={item.title}
+                                    width={96}
+                                    height={96}
                                     className="w-24 h-24 object-cover rounded"
                                 />
                                 <div className="flex-1">

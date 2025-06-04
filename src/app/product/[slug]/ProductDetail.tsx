@@ -3,6 +3,7 @@
 import {useCart} from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import React, {useState} from "react";
+import Image from "next/image";
 
 interface ProductFrontmatter {
     title: string;
@@ -35,10 +36,13 @@ export default function ProductDetail({frontmatter, mdxContent}: {
             <Navbar/>
             <section className="py-12 px-6 max-w-4xl mx-auto">
                 <div className="grid md:grid-cols-2 gap-10">
-                    <img
+                    <Image
                         src={frontmatter.image}
                         alt={frontmatter.title}
+                        width={600}
+                        height={600}
                         className="w-full h-auto rounded"
+                        priority
                     />
                     <div>
                         <h1 className="text-3xl font-bold mb-2">{frontmatter.title}</h1>
