@@ -6,12 +6,14 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import {useAuth} from "@/context/AuthContext";
+import NotificationModal from "@/components/NotificationModal";
 
 export default function CartPage() {
     const {items, removeItem, updateQuantity, clearCart} = useCart();
     const {user} = useAuth();
     const [checkoutAnimating, setCheckoutAnimating] = useState(false);
-    const [showOrderPlaced, setShowOrderPlaced] = useState(false);
+    const [orderPlaced, setOrderPlaced] = useState(false);
+    const [orderPlacedKey, setOrderPlacedKey] = useState(0);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     useEffect(() => {
@@ -27,6 +29,7 @@ export default function CartPage() {
             return;
         }
         setCheckoutAnimating(true);
+        // Place order and clear cart immediately
         const order = {
             id: Date.now().toString(),
             items,
@@ -38,12 +41,13 @@ export default function CartPage() {
         const orders = stored ? JSON.parse(stored) : [];
         orders.push(order);
         localStorage.setItem("modshop_orders", JSON.stringify(orders));
-        setShowOrderPlaced(true);
+        clearCart();
+        setOrderPlacedKey(prev => prev + 1); // increment to force remount
+        setOrderPlaced(true);
+        setCheckoutAnimating(false);
         setTimeout(() => {
-            setShowOrderPlaced(false);
-            clearCart();
-            setCheckoutAnimating(false);
-        }, 1500);
+            setOrderPlaced(false);
+        }, 6000);
     };
 
     return (
@@ -101,17 +105,12 @@ export default function CartPage() {
                                 {checkoutAnimating ? "Order Placed!" : "Buy Now"}
                             </button>
                         </div>
-                        {showOrderPlaced && (
-                            <div className="fixed inset-0 flex items-center justify-center z-50">
-                                <div
-                                    className="bg-white border border-blue-200 shadow-xl rounded-xl px-8 py-6 flex flex-col items-center animate-fade-in">
-                                    <span className="text-4xl mb-2">🎉</span>
-                                    <h3 className="text-xl font-bold mb-1 text-blue-700">Thank you for your
-                                        purchase!</h3>
-                                    <p className="text-gray-700 mb-2">Your order has been placed.</p>
-                                </div>
-                            </div>
-                        )}
+                        <NotificationModal key={orderPlacedKey} open={orderPlaced}
+                                           onClose={() => setOrderPlaced(false)}>
+                            <span className="text-4xl mb-2">🎉</span>
+                            <h3 className="text-xl font-bold mb-1 text-blue-700">Thank you for your purchase!</h3>
+                            <p className="text-gray-700 mb-2">Your order has been placed.</p>
+                        </NotificationModal>
                     </div>
                 )}
             </section>
