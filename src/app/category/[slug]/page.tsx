@@ -55,7 +55,7 @@ export default async function CategoryPage({params}: { params: { slug: string } 
                         <Link
                             key={product.slug}
                             href={`/product/${product.slug}`}
-                            className="border rounded-xl p-4 transition-transform duration-200 hover:scale-105 hover:border-purple-500 hover:shadow-lg"
+                            className="border rounded-xl p-4 transition-transform duration-200 hover:scale-105 hover:border-blue-500 hover:shadow-lg"
                         >
                             <img
                                 src={product.image}

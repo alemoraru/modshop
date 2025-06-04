@@ -4,7 +4,7 @@ import {ShoppingCart, User} from "lucide-react";
 export default function Navbar() {
     return (
         <nav className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-purple-600">
+            <Link href="/" className="text-2xl font-bold text-blue-600">
                 ModShop
             </Link>
 
