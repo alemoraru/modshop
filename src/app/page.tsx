@@ -12,7 +12,7 @@ export default function HomePage() {
         {name: "Clothing", slug: "clothing"},
         {name: "Video Games", slug: "video-games"},
         {name: "Books", slug: "books"},
-        {name: "Household Items", slug: "household-items"},
+        {name: "Household Items", slug: "household"},
     ];
 
     return (
