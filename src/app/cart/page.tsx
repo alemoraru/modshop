@@ -5,9 +5,11 @@ import {useCart} from "@/context/CartContext";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 import Image from "next/image";
+import {useAuth} from "@/context/AuthContext";
 
 export default function CartPage() {
     const {items, removeItem, updateQuantity, clearCart} = useCart();
+    const {user} = useAuth();
     const [checkoutAnimating, setCheckoutAnimating] = useState(false);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -17,6 +19,29 @@ export default function CartPage() {
             return () => clearTimeout(timeout);
         }
     }, [checkoutAnimating]);
+
+    const handleCheckout = () => {
+        if (!user) {
+            alert("Please log in to complete your purchase.");
+            return;
+        }
+        setCheckoutAnimating(true);
+        const order = {
+            id: Date.now().toString(),
+            items,
+            total,
+            date: new Date().toISOString(),
+            userEmail: user.email,
+        };
+        const stored = localStorage.getItem("modshop_orders");
+        const orders = stored ? JSON.parse(stored) : [];
+        orders.push(order);
+        localStorage.setItem("modshop_orders", JSON.stringify(orders));
+        setTimeout(() => {
+            alert("Thanks for your purchase! This is a mock checkout.");
+            clearCart();
+        }, 500);
+    };
 
     return (
         <main className="min-h-screen bg-white text-gray-900">
@@ -69,13 +94,7 @@ export default function CartPage() {
                                 className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 ${
                                     checkoutAnimating ? "scale-105 animate-pulse" : ""
                                 }`}
-                                onClick={() => {
-                                    setCheckoutAnimating(true);
-                                    setTimeout(() => {
-                                        alert("Thanks for your purchase! This is a mock checkout.");
-                                        clearCart();
-                                    }, 500);
-                                }}
+                                onClick={handleCheckout}
                             >
                                 Buy Now
                             </button>
