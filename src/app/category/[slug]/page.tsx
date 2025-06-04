@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function CategoryPage({params}: { params: { slug: string } }) {
-    const {slug} = params;
+    const {slug} = await params;
     // Map slugs to actual folder names if needed
     const categoryMap: Record<string, string> = {
         "clothing": "clothing",
