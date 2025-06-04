@@ -37,7 +37,7 @@ export default async function ProductPage({params}: { params: { slug: string } }
             const mdxContent = <MDXRemote source={content}/>;
             return <ProductDetail frontmatter={frontmatter} mdxContent={mdxContent}/>;
         } catch (error) {
-            continue;
+            console.error(`Error reading product file: ${filePath}`, error);
         }
     }
     return <div className="p-12 text-center text-red-500">Product not found.</div>;

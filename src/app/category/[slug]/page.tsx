@@ -43,6 +43,7 @@ export default async function CategoryPage({params}: { params: { slug: string } 
                 };
             });
     } catch (e) {
+        console.error(`Error reading category files: ${dirPath}`, e);
         notFound();
     }
 
