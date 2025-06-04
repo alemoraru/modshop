@@ -10,12 +10,12 @@ export default function Navbar() {
 
     return (
         <nav className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between">
-            <Link href="/" className="text-2xl font-bold text-blue-600">
+            <Link href="/" className="text-2xl font-bold text-blue-600 cursor-pointer">
                 ModShop
             </Link>
 
             <div className="flex items-center space-x-4">
-                <Link href="/cart" className="relative">
+                <Link href="/cart" className="relative cursor-pointer">
                     <ShoppingCart className="w-6 h-6"/>
                     {cartCount > 0 && (
                         <span
@@ -24,7 +24,7 @@ export default function Navbar() {
                         </span>
                     )}
                 </Link>
-                <Link href="/profile">
+                <Link href="/profile" className="cursor-pointer">
                     <User className="w-6 h-6"/>
                 </Link>
             </div>

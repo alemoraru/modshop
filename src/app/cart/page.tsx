@@ -78,7 +78,7 @@ export default function CartPage() {
                                             className="w-16 border rounded px-2 py-1"
                                         />
                                         <button
-                                            className="text-sm text-red-500 hover:underline ml-4"
+                                            className="text-sm text-red-500 hover:underline ml-4 cursor-pointer"
                                             onClick={() => removeItem(item.slug)}
                                         >
                                             Remove
@@ -93,7 +93,7 @@ export default function CartPage() {
                             <button
                                 className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 ${
                                     checkoutAnimating ? "scale-105 animate-pulse" : ""
-                                }`}
+                                } cursor-pointer`}
                                 onClick={handleCheckout}
                             >
                                 Buy Now
