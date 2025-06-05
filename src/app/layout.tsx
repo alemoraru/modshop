@@ -4,6 +4,7 @@ import "./globals.css";
 import React from "react";
 import {CartProvider} from "@/context/CartContext";
 import {AuthProvider} from "@/context/AuthContext";
+import Footer from "@/components/Footer";
 
 const gabarito = Gabarito({
     variable: "--font-gabarito",
@@ -28,7 +29,14 @@ export default function RootLayout(
             className={`${gabarito.className} ${gabarito.variable} font-sans antialiased`}
         >
         <AuthProvider>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+                <div className="min-h-screen flex flex-col">
+                    <main className="flex-1 flex flex-col">
+                        {children}
+                    </main>
+                    <Footer />
+                </div>
+            </CartProvider>
         </AuthProvider>
         </body>
         </html>
