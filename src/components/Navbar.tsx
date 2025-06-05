@@ -5,7 +5,8 @@ import {ShoppingCart, User} from "lucide-react";
 import {useCart} from "@/context/CartContext";
 
 export default function Navbar() {
-    const {items} = useCart ? useCart() : {items: []};
+    const cart = useCart();
+    const items = cart?.items ?? [];
     const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
