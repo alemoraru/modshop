@@ -13,7 +13,6 @@ export default function CartPage() {
     const {user} = useAuth();
     const [checkoutAnimating, setCheckoutAnimating] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
-    const [orderPlacedKey, setOrderPlacedKey] = useState(0);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     useEffect(() => {
@@ -29,7 +28,7 @@ export default function CartPage() {
             return;
         }
         setCheckoutAnimating(true);
-        // Place order and clear cart immediately
+
         const order = {
             id: Date.now().toString(),
             items,
@@ -41,10 +40,12 @@ export default function CartPage() {
         const orders = stored ? JSON.parse(stored) : [];
         orders.push(order);
         localStorage.setItem("modshop_orders", JSON.stringify(orders));
+
         clearCart();
-        setOrderPlacedKey(prev => prev + 1); // increment to force remount
         setOrderPlaced(true);
+        window.scrollTo({top: 0, behavior: "smooth"});
         setCheckoutAnimating(false);
+
         setTimeout(() => {
             setOrderPlaced(false);
         }, 6000);
@@ -57,7 +58,12 @@ export default function CartPage() {
                 <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
                 {items.length === 0 ? (
-                    <p>Your cart is empty. <Link href="/" className="text-blue-600">Start shopping!</Link></p>
+                    <p>
+                        Your cart is empty.{" "}
+                        <Link href="/" className="text-blue-600">
+                            Start shopping!
+                        </Link>
+                    </p>
                 ) : (
                     <div className="space-y-6">
                         {items.map((item) => (
@@ -81,7 +87,9 @@ export default function CartPage() {
                                             type="number"
                                             min="1"
                                             value={item.quantity}
-                                            onChange={(e) => updateQuantity(item.slug, parseInt(e.target.value))}
+                                            onChange={(e) =>
+                                                updateQuantity(item.slug, parseInt(e.target.value))
+                                            }
                                             className="w-16 border rounded px-2 py-1"
                                         />
                                         <button
@@ -98,7 +106,9 @@ export default function CartPage() {
                         <div className="flex justify-between items-center mt-8">
                             <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
                             <button
-                                className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${checkoutAnimating ? "scale-110 bg-green-500" : ""}`}
+                                className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${
+                                    checkoutAnimating ? "scale-110 bg-green-500" : ""
+                                }`}
                                 onClick={handleCheckout}
                                 disabled={checkoutAnimating}
                             >
@@ -106,8 +116,7 @@ export default function CartPage() {
                             </button>
                         </div>
 
-                        <NotificationModal key={orderPlacedKey} open={orderPlaced}
-                                           onCloseAction={() => setOrderPlaced(false)}>
+                        <NotificationModal open={orderPlaced} onCloseAction={() => setOrderPlaced(false)}>
                             <span className="text-4xl mb-2">🎉</span>
                             <h3 className="text-xl font-bold mb-1 text-blue-700">Thank you for your purchase!</h3>
                             <p className="text-gray-700 mb-2">Your order has been placed.</p>
