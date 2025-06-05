@@ -9,15 +9,16 @@ const githubReleaseUrl = `/releases/tag/v${appVersion}`;
 export default function Footer() {
     return (
         <footer
-            className="w-full border-t bg-gray-50 text-gray-700 py-4 px-6 flex items-center justify-between text-sm">
+            className="w-full border-t bg-gray-50 text-gray-700 py-4 px-6 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:justify-between text-sm"
+        >
             {/* Left: Privacy Policy & About */}
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center justify-center order-1 sm:order-none">
                 <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
                 <Link href="/about" className="hover:underline">About</Link>
             </div>
 
             {/* Center: Socials */}
-            <div className="flex gap-6 items-center">
+            <div className="flex gap-6 items-center justify-center order-3 sm:order-none">
                 <Link href="https://twitter.com/" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                     <Twitter className="w-5 h-5 hover:text-blue-400"/>
                 </Link>
@@ -34,7 +35,7 @@ export default function Footer() {
             </div>
 
             {/* Right: Version & Info */}
-            <div className="flex items-center gap-2 relative">
+            <div className="flex items-center gap-2 relative justify-center order-2 sm:order-none">
                 <Link
                     href={`https://github.com/alemoraru/modshop-frontend${githubReleaseUrl}`}
                     target="_blank"
