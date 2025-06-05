@@ -10,6 +10,11 @@ interface CheaperAlternativeNudgeProps {
     isAlreadyCheapest?: boolean;
 }
 
+/**
+ * CheaperAlternativeNudge component displays a nudge to encourage users to consider a
+ * less expensive alternative product. It shows the current product, its price,
+ * and a suggested alternative with its price.
+ */
 export default function CheaperAlternativeNudge(
     {
         currentProduct,

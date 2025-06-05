@@ -7,6 +7,13 @@ interface PurchaseBlockNudgeProps {
     onCompleteAction: () => void;
 }
 
+/**
+ * PurchaseBlockNudge component displays a nudge to the user during a cool-down period
+ * after they attempt to make a purchase. It shows a countdown timer and blocks further actions
+ * until the timer expires, encouraging users to reconsider their purchase decision.
+ * @param duration - The duration of the cool-down period in seconds.
+ * @param onCompleteAction - Action to take when the cool-down period ends (e.g., allowing the purchase to proceed).
+ */
 export default function PurchaseBlockNudge({duration, onCompleteAction}: PurchaseBlockNudgeProps) {
     const [timeLeft, setTimeLeft] = useState(duration);
 

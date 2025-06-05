@@ -6,6 +6,14 @@ interface GentleNudgeProps {
     onRejectAction: () => void;
 }
 
+/**
+ * GentleNudge component prompts the user to reconsider an impulse purchase.
+ * It provides options to either proceed with the purchase or cancel it.
+ * @param productTitle - The title of the product being purchased.
+ * @param onAcceptAction - Action to take if the user decides to cancel the purchase.
+ * @param onRejectAction - Action to take if the user decides to proceed with the purchase.
+ * @constructor
+ */
 export default function GentleNudge({productTitle, onAcceptAction, onRejectAction}: GentleNudgeProps) {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
