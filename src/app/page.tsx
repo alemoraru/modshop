@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
     title: "ModShop | Home",
-    description: "Shop smart with ModShop — your personalized e-commerce experience.",
+    description: "Shop smart with ModShop: your personalized e-commerce experience.",
 };
 
 export default function HomePage() {
