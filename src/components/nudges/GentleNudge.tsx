@@ -20,13 +20,13 @@ export default function GentleNudge({productTitle, onAcceptAction, onRejectActio
                 <div className="flex gap-3">
                     <button
                         onClick={onRejectAction}
-                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition cursor-pointer"
                     >
                         Proceed Anyway
                     </button>
                     <button
                         onClick={onAcceptAction}
-                        className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition"
+                        className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition cursor-pointer"
                     >
                         Cancel Purchase
                     </button>

@@ -51,8 +51,9 @@ export default async function ProductPage(props: { params: pageParams }) {
                 />
             );
         } catch (error) {
-            if ((error as any).code !== 'ENOENT') {
-                console.error(`Error reading product file: ${filePath}`, error);
+            const err = error as NodeJS.ErrnoException;
+            if (err.code !== "ENOENT") {
+                console.error(`Error reading product file: ${filePath}`, err);
             }
         }
     }
