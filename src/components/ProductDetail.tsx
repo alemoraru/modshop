@@ -20,14 +20,14 @@ export default function ProductDetail({frontmatter, mdxContent}: {
     mdxContent: React.ReactNode
 }) {
     const {addItem} = useCart();
-    const [added, setAdded] = useState(false);
-    const handleAddToCart = () => {
+    const [added, setAdded] = useState(false);    const handleAddToCart = () => {
         addItem({
             slug: frontmatter.slug,
             title: frontmatter.title,
             price: frontmatter.price,
             quantity: 1,
             image: frontmatter.image,
+            category: frontmatter.category,
         });
         setAdded(true);
         setTimeout(() => setAdded(false), 1200);

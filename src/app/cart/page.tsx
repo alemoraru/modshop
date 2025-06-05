@@ -7,28 +7,47 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import {useAuth} from "@/context/AuthContext";
 import NotificationPopUp from "@/components/NotificationPopUp";
+import GentleNudge from "@/components/nudges/GentleNudge";
+import CheaperAlternativeNudge from "@/components/nudges/CheaperNudge";
+import PurchaseBlockNudge from "@/components/nudges/BlockNudge";
+import { nudgeService, NudgeResponse, NudgeType } from "@/services/NudgeService";
 
 export default function CartPage() {
-    const {items, removeItem, updateQuantity, clearCart} = useCart();
-    const {user} = useAuth();
-    const [checkoutAnimating, setCheckoutAnimating] = useState(false);
+    const {items, removeItem, updateQuantity, clearCart, addItem} = useCart();
+    const {user} = useAuth();    const [checkoutAnimating, setCheckoutAnimating] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
     const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
+    const [notificationMessage, setNotificationMessage] = useState("");
+    const [currentNudge, setCurrentNudge] = useState<NudgeResponse | null>(null);
+    const [canProceedWithCheckout, setCanProceedWithCheckout] = useState(false);
+    
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     useEffect(() => {
         if (checkoutAnimating) {
             const timeout = setTimeout(() => setCheckoutAnimating(false), 1000);
             return () => clearTimeout(timeout);
-        }
-    }, [checkoutAnimating]);
+        }    }, [checkoutAnimating]);
 
-    const handleCheckout = () => {
+    const handleCheckout = async () => {
         if (!user) {
             setNotificationType('warning');
+            setNotificationMessage("Please log in to complete your purchase.");
             setShowNotification(true);
             return;
         }
+
+        if (!canProceedWithCheckout) {
+            const nudgeResponse = await nudgeService.triggerNudge(items, total);
+            
+            if (nudgeResponse.type !== 'none') {
+                setCurrentNudge(nudgeResponse);
+                return;
+            }
+        }
+
+        processCheckout();
+    };const processCheckout = () => {
         setCheckoutAnimating(true);
 
         const order = {
@@ -36,8 +55,7 @@ export default function CartPage() {
             items,
             total,
             date: new Date().toISOString(),
-            userEmail: user.email,
-        };
+            userEmail: user?.email || '',        };
 
         const stored = localStorage.getItem("modshop_orders");
         const orders = stored ? JSON.parse(stored) : [];
@@ -46,8 +64,103 @@ export default function CartPage() {
 
         clearCart();
         setNotificationType('success');
+        setNotificationMessage("🎉 Thank you! Your order has been placed.");
         setShowNotification(true);
         setCheckoutAnimating(false);
+        setCanProceedWithCheckout(false);
+        setCurrentNudge(null);
+    };    const handleNudgeAccept = (nudgeType: string) => {
+        nudgeService.recordNudgeInteraction(nudgeType as NudgeType, true);
+        
+        if (nudgeType === 'alternative' && currentNudge?.data) {
+            const originalItem = items[0];
+            const alternativeData = currentNudge.data;
+            
+            if (alternativeData.isAlreadyCheapest) {
+                if (originalItem) {
+                    const savedAmount = originalItem.price * originalItem.quantity;
+                    removeItem(originalItem.slug);
+                    setNotificationType('success');
+                    setNotificationMessage(`💰 Great thinking! You saved €${savedAmount.toFixed(2)} by removing "${originalItem.title}" from your cart.`);
+                    setShowNotification(true);
+                }
+                setCurrentNudge(null);
+                return;
+            }
+            
+            if (originalItem && alternativeData.alternativeProduct && alternativeData.alternativePrice) {
+                removeItem(originalItem.slug);
+                
+                addItem({
+                    slug: alternativeData.alternativeSlug || `alternative-${Date.now()}`,
+                    title: alternativeData.alternativeProduct,
+                    price: alternativeData.alternativePrice,
+                    quantity: originalItem.quantity,
+                    image: alternativeData.alternativeImage || '/images/products/placeholder.jpg',
+                    category: alternativeData.alternativeCategory || originalItem.category || 'general'
+                });
+                
+                setNotificationType('success');
+                setNotificationMessage(`✅ Switched to ${alternativeData.alternativeProduct}! You saved €${(alternativeData.currentPrice! - alternativeData.alternativePrice).toFixed(2)}.`);
+                setShowNotification(true);
+                
+                setCurrentNudge(null);
+                return;
+            }
+        }
+        
+        setCurrentNudge(null);
+    };
+
+    const handleNudgeReject = (nudgeType: string) => {
+        nudgeService.recordNudgeInteraction(nudgeType as NudgeType, false);
+        setCurrentNudge(null);
+        
+        if (nudgeType === 'gentle' || nudgeType === 'block') {
+            setCanProceedWithCheckout(true);
+            processCheckout();
+        }
+    };    const handleBlockComplete = () => {
+        nudgeService.recordNudgeInteraction('block', true);
+        setCurrentNudge(null);
+        setCanProceedWithCheckout(true);
+    };
+
+    const triggerGentleNudge = () => {
+        setCurrentNudge({
+            type: 'gentle',
+            data: {
+                productTitle: items[0]?.title || 'this item'
+            }
+        });
+    };
+
+    const triggerAlternativeNudge = async () => {
+        if (items.length > 0) {
+            const alternative = await nudgeService.getCheaperAlternative(items[0]);
+            setCurrentNudge({
+                type: 'alternative',
+                data: {
+                    currentProduct: items[0].title,
+                    currentPrice: items[0].price,
+                    alternativeProduct: alternative.name,
+                    alternativePrice: alternative.price,
+                    alternativeSlug: alternative.slug,
+                    alternativeImage: alternative.image,
+                    alternativeCategory: alternative.category,
+                    isAlreadyCheapest: alternative.isAlreadyCheapest
+                }
+            });
+        }
+    };
+
+    const triggerBlockNudge = () => {
+        setCurrentNudge({
+            type: 'block',
+            data: {
+                duration: 15
+            }
+        });
     };
 
     return (
@@ -73,9 +186,7 @@ export default function CartPage() {
                                 View Previous Orders
                             </Link>
                         </div>
-                    </div>
-                ) : (
-                    <div className="space-y-6">
+                    </div>                ) : (                    <div className="space-y-6">
                         {items.map((item) => (
                             <div
                                 key={item.slug}
@@ -108,26 +219,74 @@ export default function CartPage() {
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            </div>                        ))}
 
                         <div className="flex justify-between items-center mt-8">
                             <p className="text-xl font-bold">Total: €{total.toFixed(2)}</p>
-                            <button
-                                className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${checkoutAnimating ? "scale-110 bg-green-500" : ""}`}
-                                onClick={handleCheckout}
-                                disabled={checkoutAnimating}
-                            >
-                                {checkoutAnimating ? "Processing..." : "Buy Now"}
-                            </button>
+
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={triggerGentleNudge}
+                                    className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition text-sm"
+                                    disabled={items.length === 0}
+                                >
+                                    Test Gentle
+                                </button>
+                                <button
+                                    onClick={triggerAlternativeNudge}
+                                    className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition text-sm"
+                                    disabled={items.length === 0}
+                                >
+                                    Test Alternative
+                                </button>
+                                <button
+                                    onClick={triggerBlockNudge}
+                                    className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition text-sm"
+                                    disabled={items.length === 0}
+                                >
+                                    Test Block
+                                </button>
+                                <button
+                                    className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${checkoutAnimating ? "scale-110 bg-green-500" : ""}`}
+                                    onClick={handleCheckout}
+                                    disabled={checkoutAnimating}
+                                >
+                                    {checkoutAnimating ? "Processing..." : "Buy Now"}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    </div>                )}
             </section>
+
+            {currentNudge?.type === 'gentle' && (
+                <GentleNudge
+                    productTitle={currentNudge.data?.productTitle || 'this item'}
+                    onAccept={() => handleNudgeAccept('gentle')}
+                    onReject={() => handleNudgeReject('gentle')}
+                />
+            )}
+
+            {currentNudge?.type === 'alternative' && (
+                <CheaperAlternativeNudge
+                    currentProduct={currentNudge.data?.currentProduct || 'Current item'}
+                    currentPrice={currentNudge.data?.currentPrice || 0}
+                    alternativeProduct={currentNudge.data?.alternativeProduct || 'Basic Alternative'}
+                    alternativePrice={currentNudge.data?.alternativePrice || 0}
+                    isAlreadyCheapest={currentNudge.data?.isAlreadyCheapest || false}
+                    onAccept={() => handleNudgeAccept('alternative')}
+                    onReject={() => handleNudgeReject('alternative')}
+                />
+            )}
+
+            {currentNudge?.type === 'block' && (
+                <PurchaseBlockNudge
+                    duration={currentNudge.data?.duration || 60}
+                    onComplete={handleBlockComplete}
+                />            )}
 
             <NotificationPopUp
                 open={showNotification}
-                message={user ? "🎉 Thank you! Your order has been placed." : "Please log in to complete your purchase."}
+                message={notificationMessage}
                 type={notificationType}
                 onCloseAction={() => setShowNotification(false)}
             />

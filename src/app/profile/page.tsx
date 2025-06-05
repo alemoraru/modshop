@@ -15,10 +15,13 @@ interface Order {
     date: string;
 }
 
+type ShopperType = 'frugal' | 'adaptive' | 'impulsive' | null;
+
 export default function ProfilePage() {
     const {user, login, logout} = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
     const [sortDescending, setSortDescending] = useState(true);
+    const [shopperType, setShopperType] = useState<ShopperType>(null);
 
     useEffect(() => {
         if (user) {
@@ -30,11 +33,35 @@ export default function ProfilePage() {
                     sortDescending
                         ? new Date(b.date).getTime() - new Date(a.date).getTime()
                         : new Date(a.date).getTime() - new Date(b.date).getTime()
-                );
-                setOrders(sortedOrders);
+                );                setOrders(sortedOrders);
+            }
+
+            const storedShopperType = localStorage.getItem(`modshop_shopper_type_${user.email}`);
+            if (storedShopperType) {
+                setShopperType(storedShopperType as ShopperType);
             }
         }
     }, [user, sortDescending]);
+
+    const handleShopperTypeSelection = (type: ShopperType) => {
+        if (user && type) {
+            setShopperType(type);
+            localStorage.setItem(`modshop_shopper_type_${user.email}`, type);
+        }
+    };
+
+    const getShopperTypeDescription = (type: ShopperType) => {
+        switch (type) {
+            case 'frugal':
+                return "You prefer to save money and make careful purchasing decisions.";
+            case 'adaptive':
+                return "You balance between saving and spending based on the situation.";
+            case 'impulsive':
+                return "You enjoy spontaneous purchases and trying new products.";
+            default:
+                return null;
+        }
+    };
 
     if (!user) {
         return (
@@ -62,7 +89,68 @@ export default function ProfilePage() {
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
                     >
                         Logout
-                    </button>
+                    </button>                </div>
+
+                <div className="bg-gray-50 p-6 rounded-lg mb-8">
+                    <h2 className="text-xl font-semibold mb-4">Shopping Behavior Profile</h2>
+                    <p className="text-gray-600 mb-4">
+                        Help us personalize your experience by selecting your shopping style:
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <button
+                            onClick={() => handleShopperTypeSelection('frugal')}
+                            className={`p-4 rounded-lg border-2 transition-all ${
+                                shopperType === 'frugal'
+                                    ? 'border-green-500 bg-green-50 text-green-700'
+                                    : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
+                            }`}
+                        >
+                            <div className="text-2xl mb-2">💰</div>
+                            <h3 className="font-semibold">Frugal Shopper</h3>
+                            <p className="text-sm text-gray-600 mt-1">
+                                Budget-conscious and careful with purchases
+                            </p>
+                        </button>
+
+                        <button
+                            onClick={() => handleShopperTypeSelection('adaptive')}
+                            className={`p-4 rounded-lg border-2 transition-all ${
+                                shopperType === 'adaptive'
+                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                    : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
+                            }`}
+                        >
+                            <div className="text-2xl mb-2">⚖️</div>
+                            <h3 className="font-semibold">Adaptive Shopper</h3>
+                            <p className="text-sm text-gray-600 mt-1">
+                                Flexible spending based on needs and situation
+                            </p>
+                        </button>
+
+                        <button
+                            onClick={() => handleShopperTypeSelection('impulsive')}
+                            className={`p-4 rounded-lg border-2 transition-all ${
+                                shopperType === 'impulsive'
+                                    ? 'border-red-500 bg-red-50 text-red-700'
+                                    : 'border-gray-200 bg-white hover:border-red-300 hover:bg-red-50'
+                            }`}
+                        >
+                            <div className="text-2xl mb-2">⚡</div>
+                            <h3 className="font-semibold">Impulsive Shopper</h3>
+                            <p className="text-sm text-gray-600 mt-1">
+                                Enjoys spontaneous purchases and new products
+                            </p>
+                        </button>
+                    </div>
+
+                    {shopperType && (
+                        <div className="mt-4 p-3 bg-white rounded border border-gray-200">
+                            <p className="text-sm text-gray-700">
+                                <strong>Your Profile:</strong> {getShopperTypeDescription(shopperType)}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex justify-between items-center mb-4">

@@ -36,13 +36,12 @@ export default function AboutPage() {
 
                 <p className="mb-4">
                     The frontend includes:
-                </p>
-
-                <ul className="list-disc list-inside mb-4">
+                </p>                <ul className="list-disc list-inside mb-4">
                     <li>Category browsing and product detail pages (via .mdx files)</li>
                     <li>User profile with sign-up/login and shopping behavior settings</li>
                     <li>Shopping cart and mock checkout functionality</li>
                     <li>Past order history view</li>
+                    <li>Intelligent nudging system with multi-armed bandit learning</li>
                 </ul>
 
                 <p className="mb-4">
