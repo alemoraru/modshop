@@ -105,8 +105,9 @@ export default function CartPage() {
                                 {checkoutAnimating ? "Order Placed!" : "Buy Now"}
                             </button>
                         </div>
+
                         <NotificationModal key={orderPlacedKey} open={orderPlaced}
-                                           onClose={() => setOrderPlaced(false)}>
+                                           onCloseAction={() => setOrderPlaced(false)}>
                             <span className="text-4xl mb-2">🎉</span>
                             <h3 className="text-xl font-bold mb-1 text-blue-700">Thank you for your purchase!</h3>
                             <p className="text-gray-700 mb-2">Your order has been placed.</p>
