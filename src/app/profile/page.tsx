@@ -38,7 +38,7 @@ export default function ProfilePage() {
 
     if (!user) {
         return (
-            <main className="min-h-screen bg-white text-gray-900">
+            <main className="bg-white text-gray-900">
                 <Navbar/>
                 <section className="py-12 px-6 max-w-md mx-auto">
                     <h1 className="text-3xl font-bold mb-6">Login</h1>
@@ -49,7 +49,7 @@ export default function ProfilePage() {
     }
 
     return (
-        <main className="min-h-screen bg-white text-gray-900">
+        <main className="bg-white text-gray-900">
             <Navbar/>
             <section className="py-12 px-6 max-w-2xl mx-auto">
                 <div className="flex justify-between items-center mb-8">

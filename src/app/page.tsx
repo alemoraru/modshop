@@ -16,7 +16,7 @@ export default function HomePage() {
     ];
 
     return (
-        <main className="min-h-screen bg-white text-gray-900">
+        <main className="bg-white text-gray-900">
             <Navbar/>
             <section className="py-12 px-6 text-center">
                 <h1 className="text-4xl font-bold mb-4">Welcome to ModShop</h1>

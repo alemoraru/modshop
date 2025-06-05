@@ -48,7 +48,7 @@ export default function CartPage() {
     };
 
     return (
-        <main className="min-h-screen bg-white text-gray-900">
+        <main className="bg-white text-gray-900">
             <Navbar/>
             <section className="p-6 max-w-5xl mx-auto">
                 <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
