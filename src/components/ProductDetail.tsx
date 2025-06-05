@@ -60,12 +60,11 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                                 "Add to Cart"
                             )}
                         </button>
-                        <article className="mt-12 prose prose-lg">
-                            {mdxContent}
-                        </article>
+                        {mdxContent}
                     </div>
                 </div>
             </section>
         </main>
     );
 }
+
