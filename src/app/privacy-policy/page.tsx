@@ -4,13 +4,13 @@ import Navbar from "@/components/Navbar";
 
 export default function PrivacyPage() {
     return (
-        <main className="min-h-screen bg-white text-gray-900">
+        <main className="bg-white text-gray-900">
             <Navbar/>
             <section className="max-w-3xl mx-auto px-6 py-12">
                 <h1 className="text-4xl font-bold mb-6">Privacy Policy</h1>
 
                 <p className="mb-4">
-                    ModShop is an educational prototype created for research and learning purposes within a Master's
+                    ModShop is an educational prototype created for research and learning purposes within a Master&#39;s
                     level course on Designing Human-Centered AI Systems.
                 </p>
 
