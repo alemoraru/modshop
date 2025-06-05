@@ -111,7 +111,7 @@ export default function ProfilePage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <button
                             onClick={() => handleShopperTypeSelection('frugal')}
-                            className={`p-4 rounded-lg border-2 transition-all ${
+                            className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                                 shopperType === 'frugal'
                                     ? 'border-green-500 bg-green-50 text-green-700'
                                     : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
@@ -126,7 +126,7 @@ export default function ProfilePage() {
 
                         <button
                             onClick={() => handleShopperTypeSelection('adaptive')}
-                            className={`p-4 rounded-lg border-2 transition-all ${
+                            className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                                 shopperType === 'adaptive'
                                     ? 'border-blue-500 bg-blue-50 text-blue-700'
                                     : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
@@ -141,7 +141,7 @@ export default function ProfilePage() {
 
                         <button
                             onClick={() => handleShopperTypeSelection('impulsive')}
-                            className={`p-4 rounded-lg border-2 transition-all ${
+                            className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                                 shopperType === 'impulsive'
                                     ? 'border-red-500 bg-red-50 text-red-700'
                                     : 'border-gray-200 bg-white hover:border-red-300 hover:bg-red-50'
