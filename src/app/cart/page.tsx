@@ -73,7 +73,7 @@ export default function CartPage() {
                                 />
                                 <div className="flex-1">
                                     <h2 className="font-semibold text-lg">{item.title}</h2>
-                                    <p className="text-gray-600">${item.price}</p>
+                                    <p className="text-gray-600">€{item.price}</p>
                                     <div className="flex items-center gap-2 mt-2">
                                         <label htmlFor="qty">Qty:</label>
                                         <input
@@ -95,7 +95,7 @@ export default function CartPage() {
                         ))}
 
                         <div className="flex justify-between items-center mt-8">
-                            <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
+                            <p className="text-xl font-bold">Total: €{total.toFixed(2)}</p>
                             <button
                                 className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${checkoutAnimating ? "scale-110 bg-green-500" : ""}`}
                                 onClick={handleCheckout}

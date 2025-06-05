@@ -69,7 +69,7 @@ export default async function CategoryPage({params}: { params: { slug: string } 
                             />
                             <div className="mt-2">
                                 <h2 className="font-semibold">{product.title}</h2>
-                                <p className="text-sm text-gray-600">${product.price}</p>
+                                <p className="text-sm text-gray-600">€{product.price}</p>
                             </div>
                         </Link>
                     ))}

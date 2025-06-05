@@ -15,6 +15,11 @@ const gabarito = Gabarito({
 export const metadata: Metadata = {
     title: "ModShop",
     description: "Shop smart with ModShop: your personalized e-commerce experience.",
+    icons: {
+        icon: '/modshop-icon.png',
+        shortcut: '/modshop-icon.png',
+        apple: '/modshop-icon.png'
+    },
 };
 
 export default function RootLayout(

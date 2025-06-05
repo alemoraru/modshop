@@ -34,7 +34,7 @@ export default function OrderCard({order}: OrderCardProps) {
                     </div>
                 ))}
             </div>
-            <div className="mt-2 text-right font-bold">Total: ${order.total.toFixed(2)}</div>
+            <div className="mt-2 text-right font-bold">Total: €{order.total.toFixed(2)}</div>
         </div>
     );
 }

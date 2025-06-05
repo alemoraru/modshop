@@ -48,7 +48,7 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                     <div>
                         <h1 className="text-3xl font-bold mb-2">{frontmatter.title}</h1>
                         <p className="text-lg text-gray-600 mb-4">{frontmatter.description}</p>
-                        <p className="text-xl font-semibold text-blue-700 mb-6">${frontmatter.price}</p>
+                        <p className="text-xl font-semibold text-blue-700 mb-6">€{frontmatter.price}</p>
                         <button
                             className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? 'scale-105 bg-green-500' : ''} cursor-pointer`}
                             onClick={handleAddToCart}
