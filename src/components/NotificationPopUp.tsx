@@ -23,7 +23,7 @@ export default function NotificationPopUp({open, message, onCloseAction, duratio
     if (!open) return null;
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 opacity-0 animate-[appear_0.4s_ease-out_forwards]">
+        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 opacity-0 animate-[appear_0.4s_ease-out_forwards]">
             <div className="bg-blue-600 text-white px-4 py-3 rounded shadow-lg flex items-center gap-3">
                 <span className="text-xl">✅</span>
                 <p>{message}</p>

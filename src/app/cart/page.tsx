@@ -24,7 +24,7 @@ export default function CartPage() {
 
     const handleCheckout = () => {
         if (!user) {
-            alert("Please log in to complete your purchase.");
+            setShowNotification(true);
             return;
         }
         setCheckoutAnimating(true);
@@ -110,7 +110,7 @@ export default function CartPage() {
 
             <NotificationPopUp
                 open={showNotification}
-                message="🎉 Thank you! Your order has been placed."
+                message={user ? "🎉 Thank you! Your order has been placed." : "⚠️ Please log in to complete your purchase."}
                 onCloseAction={() => setShowNotification(false)}
             />
         </main>
