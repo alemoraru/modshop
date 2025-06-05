@@ -34,8 +34,16 @@ export default async function ProductPage({params}: { params: { slug: string } }
             const file = readFileSync(filePath, "utf-8");
             const {content, data} = matter(file);
             const frontmatter = data as ProductFrontmatter;
-            const mdxContent = <MDXRemote source={content}/>;
-            return <ProductDetail frontmatter={frontmatter} mdxContent={mdxContent}/>;
+            return (
+                <ProductDetail
+                    frontmatter={frontmatter}
+                    mdxContent={
+                        <article className="prose prose-blue max-w-none mt-12">
+                            <MDXRemote source={content}/>
+                        </article>
+                    }
+                />
+            );
         } catch (error) {
             console.error(`Error reading product file: ${filePath}`, error);
         }

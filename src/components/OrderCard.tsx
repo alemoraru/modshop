@@ -20,8 +20,13 @@ export default function OrderCard({order}: OrderCardProps) {
             <div className="space-y-2">
                 {order.items.map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                        <Image src={item.image} alt={item.title} width={48} height={48}
-                               className="w-12 h-12 object-cover rounded"/>
+                        <Image
+                            src={item.image}
+                            alt={item.title}
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 object-cover rounded"
+                        />
                         <div className="flex-1">
                             <div className="font-medium">{item.title}</div>
                             <div className="text-sm text-gray-600">${item.price} x {item.quantity}</div>
@@ -29,7 +34,7 @@ export default function OrderCard({order}: OrderCardProps) {
                     </div>
                 ))}
             </div>
-            <div className="mt-2 text-right font-bold">Total: ${order.total.toFixed(2)}</div>
+            <div className="mt-2 text-right font-bold">Total: €{order.total.toFixed(2)}</div>
         </div>
     );
 }

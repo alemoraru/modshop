@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
     title: "ModShop | Home",
-    description: "Shop smart with ModShop — your personalized e-commerce experience.",
+    description: "Shop smart with ModShop: your personalized e-commerce experience.",
 };
 
 export default function HomePage() {
@@ -16,7 +16,7 @@ export default function HomePage() {
     ];
 
     return (
-        <main className="min-h-screen bg-white text-gray-900">
+        <main className="bg-white text-gray-900">
             <Navbar/>
             <section className="py-12 px-6 text-center">
                 <h1 className="text-4xl font-bold mb-4">Welcome to ModShop</h1>
@@ -27,7 +27,9 @@ export default function HomePage() {
                         <Link
                             key={category.slug}
                             href={`/category/${category.slug}`}
-                            className="border border-gray-200 rounded-2xl shadow p-6 transition-all duration-200 hover:scale-105 hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                            className="border border-gray-200 rounded-2xl shadow p-6 transition-all duration-200
+                            hover:scale-105 hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-2
+                            focus:ring-blue-400 cursor-pointer hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100"
                         >
                             <h2 className="text-xl font-semibold">{category.name}</h2>
                             <p className="text-sm mt-2 text-gray-600">Explore
