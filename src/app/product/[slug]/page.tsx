@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import {MDXRemote} from "next-mdx-remote/rsc";
 import ProductDetail from "@/components/ProductDetail";
+import {pageParams} from "@/lib/types";
 
 interface ProductFrontmatter {
     title: string;
@@ -25,10 +26,10 @@ export async function generateStaticParams() {
     return slugs;
 }
 
-export default async function ProductPage({params}: { params: { slug: string } }) {
+export default async function ProductPage(props: { params: pageParams }) {
     const categories = readdirSync(path.join(process.cwd(), "products"));
     for (const category of categories) {
-        const {slug} = await params;
+        const {slug} = await props.params;
         const filePath = path.join(process.cwd(), "products", category, `${slug}.mdx`);
         try {
             const file = readFileSync(filePath, "utf-8");
@@ -50,4 +51,3 @@ export default async function ProductPage({params}: { params: { slug: string } }
     }
     return <div className="p-12 text-center text-red-500">Product not found.</div>;
 }
-

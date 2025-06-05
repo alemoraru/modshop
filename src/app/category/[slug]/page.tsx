@@ -6,14 +6,17 @@ import {notFound} from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
+import {pageParams} from "@/lib/types";
 
 export const metadata: Metadata = {
     title: "ModShop | Category",
     description: "Browse products by category",
 };
 
-export default async function CategoryPage({params}: { params: { slug: string } }) {
-    const {slug} = await params;
+
+export default async function CategoryPage(props: { params: pageParams }) {
+    const {slug} = await props.params;
+
     // Map slugs to actual folder names if needed
     const categoryMap: Record<string, string> = {
         "clothing": "clothing",
