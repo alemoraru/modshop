@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
-import {ChevronDown} from "lucide-react";
+import {ChevronDown, LogOut} from "lucide-react";
 
 interface Order {
     id: string;
@@ -96,8 +96,9 @@ export default function ProfilePage() {
                     </div>
                     <button
                         onClick={logout}
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"
                     >
+                        <LogOut className="w-4 h-4"/>
                         Logout
                     </button>
                 </div>

@@ -11,6 +11,7 @@ import GentleNudge from "@/components/nudges/GentleNudge";
 import CheaperAlternativeNudge from "@/components/nudges/CheaperNudge";
 import PurchaseBlockNudge from "@/components/nudges/BlockNudge";
 import {nudgeService, NudgeResponse, NudgeType} from "@/services/NudgeService";
+import {History, ShoppingBasket} from "lucide-react";
 
 /**
  * This renders the Cart page of the ModShop application.
@@ -201,13 +202,13 @@ export default function CartPage() {
                                 href="/"
                                 className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
                             >
-                                Start Shopping
+                                <ShoppingBasket className="inline-block mr-2"/> Start Shopping
                             </Link>
                             <Link
                                 href="/profile"
                                 className="bg-gray-200 text-gray-800 px-5 py-2 rounded hover:bg-gray-300 transition"
                             >
-                                View Previous Orders
+                                <History className="inline-block mr-2"/> View Previous Orders
                             </Link>
                         </div>
                     </div>) : (<div className="space-y-6">

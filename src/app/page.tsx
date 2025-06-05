@@ -7,6 +7,9 @@ export const metadata: Metadata = {
     description: "Shop smart with ModShop: your personalized e-commerce experience.",
 };
 
+/**
+ * HomePage component that serves as the landing page for the ModShop application.
+ */
 export default function HomePage() {
     const categories = [
         {name: "Clothing", slug: "clothing"},
