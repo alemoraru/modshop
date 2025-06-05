@@ -26,10 +26,14 @@ export async function generateStaticParams() {
     return slugs;
 }
 
+/**
+ * This component renders a product detail page based on the product slug.
+ * @param props - Contains the product slug from the URL parameters.
+ */
 export default async function ProductPage(props: { params: pageParams }) {
     const categories = readdirSync(path.join(process.cwd(), "products"));
     const {slug} = await props.params;
-    
+
     for (const category of categories) {
         const filePath = path.join(process.cwd(), "products", category, `${slug}.mdx`);
         try {
@@ -47,8 +51,9 @@ export default async function ProductPage(props: { params: pageParams }) {
                 />
             );
         } catch (error) {
-            if ((error as any).code !== 'ENOENT') {
-                console.error(`Error reading product file: ${filePath}`, error);
+            const err = error as NodeJS.ErrnoException;
+            if (err.code !== "ENOENT") {
+                console.error(`Error reading product file: ${filePath}`, err);
             }
         }
     }

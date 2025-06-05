@@ -2,6 +2,9 @@
 
 import {createContext, useContext, useState, ReactNode, useEffect} from "react";
 
+/**
+ * CartItem interface represents an item in the shopping cart.
+ */
 export interface CartItem {
     slug: string;
     title: string;

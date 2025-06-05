@@ -11,13 +11,19 @@ interface NotificationPopUpProps {
     type?: 'success' | 'warning';
 }
 
-export default function NotificationPopUp({
-                                              open,
-                                              message,
-                                              onCloseAction,
-                                              duration = 5000,
-                                              type = 'success'
-                                          }: NotificationPopUpProps) {
+/**
+ * NotificationPopUp component displays a notification message that can be optionally closed by the user.
+ * It automatically closes after a specified duration.
+ */
+export default function NotificationPopUp(
+    {
+        open,
+        message,
+        onCloseAction,
+        duration = 5000,
+        type = 'success'
+    }: NotificationPopUpProps) {
+
     useEffect(() => {
         if (open) {
             const timer = setTimeout(() => {

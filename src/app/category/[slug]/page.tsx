@@ -13,7 +13,10 @@ export const metadata: Metadata = {
     description: "Browse products by category",
 };
 
-
+/**
+ * This component renders a category page, displaying all products in a specific category.
+ * @param props - Contains the category slug from the URL parameters.
+ */
 export default async function CategoryPage(props: { params: pageParams }) {
     const {slug} = await props.params;
 

@@ -1,13 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 
 interface PurchaseBlockNudgeProps {
     duration: number; // seconds
-    onComplete: () => void;
+    onCompleteAction: () => void;
 }
 
-export default function PurchaseBlockNudge({ duration, onComplete }: PurchaseBlockNudgeProps) {
+/**
+ * PurchaseBlockNudge component displays a nudge to the user during a cool-down period
+ * after they attempt to make a purchase. It shows a countdown timer and blocks further actions
+ * until the timer expires, encouraging users to reconsider their purchase decision.
+ * @param duration - The duration of the cool-down period in seconds.
+ * @param onCompleteAction - Action to take when the cool-down period ends (e.g., allowing the purchase to proceed).
+ */
+export default function PurchaseBlockNudge({duration, onCompleteAction}: PurchaseBlockNudgeProps) {
     const [timeLeft, setTimeLeft] = useState(duration);
 
     useEffect(() => {
@@ -15,7 +22,7 @@ export default function PurchaseBlockNudge({ duration, onComplete }: PurchaseBlo
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timer);
-                    onComplete();
+                    onCompleteAction();
                     return 0;
                 }
                 return prev - 1;
@@ -23,7 +30,7 @@ export default function PurchaseBlockNudge({ duration, onComplete }: PurchaseBlo
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [onComplete]);
+    }, [onCompleteAction]);
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -32,7 +39,7 @@ export default function PurchaseBlockNudge({ duration, onComplete }: PurchaseBlo
                     ⏳ Cool Down Period
                 </h3>
                 <p className="mb-4 text-gray-700">
-                    Please take a moment to reconsider your purchase. 
+                    Please take a moment to reconsider your purchase.
                     The checkout will be available in:
                 </p>
                 <div className="text-3xl font-bold text-red-600 mb-4">

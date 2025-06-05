@@ -4,7 +4,7 @@ import {useCart} from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import React, {useState} from "react";
 import Image from "next/image";
-import {Check} from "lucide-react";
+import {Check, ShoppingCart} from "lucide-react";
 
 interface ProductFrontmatter {
     title: string;
@@ -15,12 +15,18 @@ interface ProductFrontmatter {
     description: string;
 }
 
+/**
+ * This component renders the product detail page, displaying product information.
+ * @param frontmatter - Contains product metadata such as title, slug, category, price, image, and description.
+ * @param mdxContent - The actual content of the product description in MDX format.
+ */
 export default function ProductDetail({frontmatter, mdxContent}: {
     frontmatter: ProductFrontmatter,
     mdxContent: React.ReactNode
 }) {
     const {addItem} = useCart();
-    const [added, setAdded] = useState(false);    const handleAddToCart = () => {
+    const [added, setAdded] = useState(false);
+    const handleAddToCart = () => {
         addItem({
             slug: frontmatter.slug,
             title: frontmatter.title,
@@ -32,6 +38,7 @@ export default function ProductDetail({frontmatter, mdxContent}: {
         setAdded(true);
         setTimeout(() => setAdded(false), 1200);
     };
+
     return (
         <main className="bg-white text-gray-900">
             <Navbar/>
@@ -50,14 +57,18 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                         <p className="text-lg text-gray-600 mb-4">{frontmatter.description}</p>
                         <p className="text-xl font-semibold text-blue-700 mb-6">€{frontmatter.price}</p>
                         <button
-                            className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? 'scale-105 bg-green-500' : ''} cursor-pointer`}
+                            className={`bg-blue-600 text-white px-5 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? 'scale-105 bg-green-500' : ''} cursor-pointer`}
                             onClick={handleAddToCart}
                             disabled={added}
                         >
                             {added ? (
-                                <span className="flex items-center gap-1"><Check/> Added</span>
+                                <span className="flex items-center gap-1">
+                                    <Check/> Added
+                                </span>
                             ) : (
-                                "Add to Cart"
+                                <span className="flex items-center gap-1">
+                                    <ShoppingCart className="p-1"/> Add to Cart
+                                </span>
                             )}
                         </button>
                         {mdxContent}
@@ -67,4 +78,3 @@ export default function ProductDetail({frontmatter, mdxContent}: {
         </main>
     );
 }
-

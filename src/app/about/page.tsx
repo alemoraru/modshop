@@ -2,6 +2,9 @@
 
 import Navbar from "@/components/Navbar";
 
+/**
+ * This renders the About page of the ModShop application.
+ */
 export default function AboutPage() {
     return (
         <main className="bg-white text-gray-900">
@@ -36,7 +39,8 @@ export default function AboutPage() {
 
                 <p className="mb-4">
                     The frontend includes:
-                </p>                <ul className="list-disc list-inside mb-4">
+                </p>
+                <ul className="list-disc list-inside mb-4">
                     <li>Category browsing and product detail pages (via .mdx files)</li>
                     <li>User profile with sign-up/login and shopping behavior settings</li>
                     <li>Shopping cart and mock checkout functionality</li>

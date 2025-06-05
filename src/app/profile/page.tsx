@@ -5,18 +5,27 @@ import Navbar from "@/components/Navbar";
 import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
-import {ChevronDown} from "lucide-react";
+import {ChevronDown, LogOut} from "lucide-react";
 
 interface Order {
     id: string;
     userEmail: string;
-    items: { title: string; price: number; quantity: number; image: string }[];
+    items: {
+        title: string;
+        price: number;
+        quantity: number;
+        image: string
+    }[];
     total: number;
     date: string;
 }
 
 type ShopperType = 'frugal' | 'adaptive' | 'impulsive' | null;
 
+/**
+ * This component renders the user profile page, allowing users to view their past orders,
+ * select their shopping behavior profile, and manage their account (i.e., logging out).
+ */
 export default function ProfilePage() {
     const {user, login, logout} = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
@@ -33,7 +42,8 @@ export default function ProfilePage() {
                     sortDescending
                         ? new Date(b.date).getTime() - new Date(a.date).getTime()
                         : new Date(a.date).getTime() - new Date(b.date).getTime()
-                );                setOrders(sortedOrders);
+                );
+                setOrders(sortedOrders);
             }
 
             const storedShopperType = localStorage.getItem(`modshop_shopper_type_${user.email}`);
@@ -86,21 +96,23 @@ export default function ProfilePage() {
                     </div>
                     <button
                         onClick={logout}
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
+                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"
                     >
+                        <LogOut className="w-4 h-4"/>
                         Logout
-                    </button>                </div>
+                    </button>
+                </div>
 
                 <div className="bg-gray-50 p-6 rounded-lg mb-8">
                     <h2 className="text-xl font-semibold mb-4">Shopping Behavior Profile</h2>
                     <p className="text-gray-600 mb-4">
                         Help us personalize your experience by selecting your shopping style:
                     </p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <button
                             onClick={() => handleShopperTypeSelection('frugal')}
-                            className={`p-4 rounded-lg border-2 transition-all ${
+                            className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                                 shopperType === 'frugal'
                                     ? 'border-green-500 bg-green-50 text-green-700'
                                     : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
@@ -115,7 +127,7 @@ export default function ProfilePage() {
 
                         <button
                             onClick={() => handleShopperTypeSelection('adaptive')}
-                            className={`p-4 rounded-lg border-2 transition-all ${
+                            className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                                 shopperType === 'adaptive'
                                     ? 'border-blue-500 bg-blue-50 text-blue-700'
                                     : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
@@ -130,7 +142,7 @@ export default function ProfilePage() {
 
                         <button
                             onClick={() => handleShopperTypeSelection('impulsive')}
-                            className={`p-4 rounded-lg border-2 transition-all ${
+                            className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
                                 shopperType === 'impulsive'
                                     ? 'border-red-500 bg-red-50 text-red-700'
                                     : 'border-gray-200 bg-white hover:border-red-300 hover:bg-red-50'
