@@ -28,8 +28,9 @@ export async function generateStaticParams() {
 
 export default async function ProductPage(props: { params: pageParams }) {
     const categories = readdirSync(path.join(process.cwd(), "products"));
+    const {slug} = await props.params;
+    
     for (const category of categories) {
-        const {slug} = await props.params;
         const filePath = path.join(process.cwd(), "products", category, `${slug}.mdx`);
         try {
             const file = readFileSync(filePath, "utf-8");
@@ -46,7 +47,9 @@ export default async function ProductPage(props: { params: pageParams }) {
                 />
             );
         } catch (error) {
-            console.error(`Error reading product file: ${filePath}`, error);
+            if ((error as any).code !== 'ENOENT') {
+                console.error(`Error reading product file: ${filePath}`, error);
+            }
         }
     }
     return <div className="p-12 text-center text-red-500">Product not found.</div>;
