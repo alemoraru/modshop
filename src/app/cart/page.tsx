@@ -13,6 +13,7 @@ export default function CartPage() {
     const {user} = useAuth();
     const [checkoutAnimating, setCheckoutAnimating] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
+    const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     useEffect(() => {
@@ -24,6 +25,7 @@ export default function CartPage() {
 
     const handleCheckout = () => {
         if (!user) {
+            setNotificationType('warning');
             setShowNotification(true);
             return;
         }
@@ -43,6 +45,7 @@ export default function CartPage() {
         localStorage.setItem("modshop_orders", JSON.stringify(orders));
 
         clearCart();
+        setNotificationType('success');
         setShowNotification(true);
         setCheckoutAnimating(false);
     };
@@ -110,7 +113,8 @@ export default function CartPage() {
 
             <NotificationPopUp
                 open={showNotification}
-                message={user ? "🎉 Thank you! Your order has been placed." : "⚠️ Please log in to complete your purchase."}
+                message={user ? "🎉 Thank you! Your order has been placed." : "Please log in to complete your purchase."}
+                type={notificationType}
                 onCloseAction={() => setShowNotification(false)}
             />
         </main>
