@@ -47,13 +47,15 @@ export default function CheaperAlternativeNudge(
                     <div className="flex gap-3">
                         <button
                             onClick={onAcceptAction}
-                            className="flex-1 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 transition"
+                            className="flex-1 bg-orange-600 text-white px-4 py-2 rounded
+                            hover:bg-orange-700 transition cursor-pointer"
                         >
                             Remove & Save €{currentPrice.toFixed(2)}
                         </button>
                         <button
                             onClick={onRejectAction}
-                            className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition"
+                            className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded
+                            hover:bg-gray-400 transition cursor-pointer"
                         >
                             Keep in Cart
                         </button>

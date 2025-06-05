@@ -125,7 +125,7 @@ export default function CartPage() {
                 });
 
                 setNotificationType('success');
-                setNotificationMessage(`✅ Switched to ${alternativeData.alternativeProduct}! You saved €${(alternativeData.currentPrice! - alternativeData.alternativePrice).toFixed(2)}.`);
+                setNotificationMessage(`Switched to ${alternativeData.alternativeProduct}! You saved €${(alternativeData.currentPrice! - alternativeData.alternativePrice).toFixed(2)}.`);
                 setShowNotification(true);
 
                 setCurrentNudge(null);
