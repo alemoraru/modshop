@@ -32,7 +32,7 @@ export default function RootLayout(
         <html lang="en" className={`${gabarito.className} ${gabarito.variable}`}>
         <body
             className={`${gabarito.className} ${gabarito.variable} font-sans antialiased`}
-        >        <AuthProvider>
+        ><AuthProvider>
             <CartProvider>
                 <div className="min-h-screen flex flex-col">
                     <main className="flex-1 flex flex-col">

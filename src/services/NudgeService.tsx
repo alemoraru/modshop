@@ -26,21 +26,23 @@ class NudgeService {
     private getUserStats(): UserNudgeStats {
         const stored = localStorage.getItem("modshop_nudge_stats");
         return stored ? JSON.parse(stored) : {
-            gentle: { shown: 0, accepted: 0 },
-            alternative: { shown: 0, accepted: 0 },
-            block: { shown: 0, completed: 0 }
+            gentle: {shown: 0, accepted: 0},
+            alternative: {shown: 0, accepted: 0},
+            block: {shown: 0, completed: 0}
         };
     }
 
     private saveUserStats(stats: UserNudgeStats) {
         localStorage.setItem("modshop_nudge_stats", JSON.stringify(stats));
-    }    private selectNudge(cartTotal: number, itemCount: number): NudgeType {
+    }
+
+    private selectNudge(cartTotal: number, itemCount: number): NudgeType {
         const stats = this.getUserStats();
-        
+
         const gentleSuccess = stats.gentle.shown > 0 ? stats.gentle.accepted / stats.gentle.shown : 0.5;
         const altSuccess = stats.alternative.shown > 0 ? stats.alternative.accepted / stats.alternative.shown : 0.5;
         const blockSuccess = stats.block.shown > 0 ? stats.block.completed / stats.block.shown : 0.8;
-        
+
         if (cartTotal > 100 || itemCount > 5) {
             return blockSuccess > gentleSuccess ? 'block' : 'gentle';
         } else if (cartTotal > 50) {
@@ -50,9 +52,16 @@ class NudgeService {
         }
     }
 
-    async getCheaperAlternative(item: { title: string; price: number; quantity: number; slug?: string; category?: string }) {        try {
+    async getCheaperAlternative(item: {
+        title: string;
+        price: number;
+        quantity: number;
+        slug?: string;
+        category?: string
+    }) {
+        try {
             let category = item.category;
-            
+
             if (!category) {
                 const title = item.title.toLowerCase();
                 if (title.includes('shirt') || title.includes('tshirt') || title.includes('polo') || title.includes('jeans') || title.includes('pants') || title.includes('chino') || title.includes('hoodie') || title.includes('jacket') || title.includes('fleece')) {
@@ -65,7 +74,7 @@ class NudgeService {
                     category = 'household';
                 }
             }
-            
+
             if (category) {
                 const response = await fetch(`/api/products?category=${category}&exclude=${item.slug || ''}`);
                 if (response.ok) {
@@ -88,8 +97,9 @@ class NudgeService {
                             category: category
                         };
                     }
-                }            }
-            
+                }
+            }
+
             return {
                 name: 'Budget-Friendly Alternative',
                 price: Math.max(5, item.price * 0.7)
@@ -103,17 +113,24 @@ class NudgeService {
         }
     }
 
-    async triggerNudge(cartItems: { title: string; price: number; quantity: number; slug?: string; category?: string }[], cartTotal: number): Promise<NudgeResponse> {
+    async triggerNudge(cartItems: {
+        title: string;
+        price: number;
+        quantity: number;
+        slug?: string;
+        category?: string
+    }[], cartTotal: number): Promise<NudgeResponse> {
         const nudgeType = this.selectNudge(cartTotal, cartItems.length);
-        
+
         switch (nudgeType) {
-            case 'gentle':                return {
+            case 'gentle':
+                return {
                     type: 'gentle',
                     data: {
                         productTitle: cartItems[0]?.title || 'this item'
                     }
                 };
-            
+
             case 'alternative':
                 const alternative = await this.getCheaperAlternative(cartItems[0]);
                 return {
@@ -129,7 +146,7 @@ class NudgeService {
                         isAlreadyCheapest: alternative.isAlreadyCheapest
                     }
                 };
-            
+
             case 'block':
                 return {
                     type: 'block',
@@ -137,15 +154,15 @@ class NudgeService {
                         duration: Math.random() > 0.5 ? 15 : 20
                     }
                 };
-            
+
             default:
-                return { type: 'none' };
+                return {type: 'none'};
         }
     }
 
     recordNudgeInteraction(type: NudgeType, accepted: boolean) {
         const stats = this.getUserStats();
-        
+
         switch (type) {
             case 'gentle':
                 stats.gentle.shown++;
@@ -154,12 +171,13 @@ class NudgeService {
             case 'alternative':
                 stats.alternative.shown++;
                 if (accepted) stats.alternative.accepted++;
-                break;            case 'block':
+                break;
+            case 'block':
                 stats.block.shown++;
                 stats.block.completed++;
                 break;
         }
-        
+
         this.saveUserStats(stats);
     }
 }

@@ -20,7 +20,8 @@ export default function ProductDetail({frontmatter, mdxContent}: {
     mdxContent: React.ReactNode
 }) {
     const {addItem} = useCart();
-    const [added, setAdded] = useState(false);    const handleAddToCart = () => {
+    const [added, setAdded] = useState(false);
+    const handleAddToCart = () => {
         addItem({
             slug: frontmatter.slug,
             title: frontmatter.title,

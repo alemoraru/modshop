@@ -1,6 +1,12 @@
 "use client";
+
 import {useState} from "react";
 
+/**
+ * This component renders a simple login form that allows users to enter their email
+ * and submit it to trigger a login action.
+ * @param onLoginAction - A callback function that is called with the entered email when the form is submitted.
+ */
 export default function LoginForm({onLoginAction}: { onLoginAction: (email: string) => void }) {
     const [emailInput, setEmailInput] = useState("");
     return (

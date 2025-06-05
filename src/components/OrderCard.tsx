@@ -10,6 +10,10 @@ interface OrderCardProps {
     };
 }
 
+/**
+ * OrderCard component displays a summary of an order including its ID, items, and total price.
+ * @param order - The order object containing details like ID, items, total price, and date.
+ */
 export default function OrderCard({order}: OrderCardProps) {
     return (
         <div className="border rounded p-4">

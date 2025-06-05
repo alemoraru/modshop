@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import {Github, Info, Twitter, Facebook, Instagram} from "lucide-react";
-import {appVersion} from "@/lib/contstants";
+import {appVersion} from "@/lib/constants";
 
 const githubReleaseUrl = `/releases/tag/v${appVersion}`;
 
+/**
+ * Footer component that displays links to privacy policy, about page, social media icons
+ * and the current app version with a link to the GitHub release.
+ */
 export default function Footer() {
     return (
         <footer

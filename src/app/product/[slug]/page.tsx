@@ -26,10 +26,14 @@ export async function generateStaticParams() {
     return slugs;
 }
 
+/**
+ * This component renders a product detail page based on the product slug.
+ * @param props - Contains the product slug from the URL parameters.
+ */
 export default async function ProductPage(props: { params: pageParams }) {
     const categories = readdirSync(path.join(process.cwd(), "products"));
     const {slug} = await props.params;
-    
+
     for (const category of categories) {
         const filePath = path.join(process.cwd(), "products", category, `${slug}.mdx`);
         try {

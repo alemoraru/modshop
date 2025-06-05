@@ -4,6 +4,10 @@ import Link from "next/link";
 import {ShoppingCart, User} from "lucide-react";
 import {useCart} from "@/context/CartContext";
 
+/**
+ * Navbar component that displays the site logo, a shopping cart icon with item count,
+ * and a user profile icon. It uses the CartContext to get the current cart state.
+ */
 export default function Navbar() {
     const cart = useCart();
     const items = cart?.items ?? [];

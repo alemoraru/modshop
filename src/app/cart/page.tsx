@@ -285,8 +285,8 @@ export default function CartPage() {
             {currentNudge?.type === 'gentle' && (
                 <GentleNudge
                     productTitle={currentNudge.data?.productTitle || 'this item'}
-                    onAccept={() => handleNudgeAccept('gentle')}
-                    onReject={() => handleNudgeReject('gentle')}
+                    onAcceptAction={() => handleNudgeAccept('gentle')}
+                    onRejectAction={() => handleNudgeReject('gentle')}
                 />
             )}
 
@@ -297,15 +297,15 @@ export default function CartPage() {
                     alternativeProduct={currentNudge.data?.alternativeProduct || 'Basic Alternative'}
                     alternativePrice={currentNudge.data?.alternativePrice || 0}
                     isAlreadyCheapest={currentNudge.data?.isAlreadyCheapest || false}
-                    onAccept={() => handleNudgeAccept('alternative')}
-                    onReject={() => handleNudgeReject('alternative')}
+                    onAcceptAction={() => handleNudgeAccept('alternative')}
+                    onRejectAction={() => handleNudgeReject('alternative')}
                 />
             )}
 
             {currentNudge?.type === 'block' && (
                 <PurchaseBlockNudge
                     duration={currentNudge.data?.duration || 60}
-                    onComplete={handleBlockComplete}
+                    onCompleteAction={handleBlockComplete}
                 />)}
 
             <NotificationPopUp
