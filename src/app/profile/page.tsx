@@ -10,13 +10,22 @@ import {ChevronDown} from "lucide-react";
 interface Order {
     id: string;
     userEmail: string;
-    items: { title: string; price: number; quantity: number; image: string }[];
+    items: {
+        title: string;
+        price: number;
+        quantity: number;
+        image: string
+    }[];
     total: number;
     date: string;
 }
 
 type ShopperType = 'frugal' | 'adaptive' | 'impulsive' | null;
 
+/**
+ * This component renders the user profile page, allowing users to view their past orders,
+ * select their shopping behavior profile, and manage their account (i.e., logging out).
+ */
 export default function ProfilePage() {
     const {user, login, logout} = useAuth();
     const [orders, setOrders] = useState<Order[]>([]);
@@ -33,7 +42,8 @@ export default function ProfilePage() {
                     sortDescending
                         ? new Date(b.date).getTime() - new Date(a.date).getTime()
                         : new Date(a.date).getTime() - new Date(b.date).getTime()
-                );                setOrders(sortedOrders);
+                );
+                setOrders(sortedOrders);
             }
 
             const storedShopperType = localStorage.getItem(`modshop_shopper_type_${user.email}`);
@@ -89,14 +99,15 @@ export default function ProfilePage() {
                         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
                     >
                         Logout
-                    </button>                </div>
+                    </button>
+                </div>
 
                 <div className="bg-gray-50 p-6 rounded-lg mb-8">
                     <h2 className="text-xl font-semibold mb-4">Shopping Behavior Profile</h2>
                     <p className="text-gray-600 mb-4">
                         Help us personalize your experience by selecting your shopping style:
                     </p>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <button
                             onClick={() => handleShopperTypeSelection('frugal')}
