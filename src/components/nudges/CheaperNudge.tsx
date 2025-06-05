@@ -80,13 +80,15 @@ export default function CheaperAlternativeNudge(
                 <div className="flex gap-3">
                     <button
                         onClick={onAcceptAction}
-                        className="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                        className="flex-1 bg-green-600 text-white px-4 py-2 rounded
+                        hover:bg-green-700 transition cursor-pointer"
                     >
                         Switch to Alternative
                     </button>
                     <button
                         onClick={onRejectAction}
-                        className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition"
+                        className="flex-1 bg-gray-300 text-gray-700 px-4 py-2 rounded
+                        hover:bg-gray-400 transition cursor-pointer"
                     >
                         Keep Original
                     </button>
