@@ -6,13 +6,13 @@ import Link from "next/link";
 import {useEffect, useState} from "react";
 import Image from "next/image";
 import {useAuth} from "@/context/AuthContext";
-import NotificationModal from "@/components/NotificationModal";
+import NotificationPopUp from "@/components/NotificationPopUp";
 
 export default function CartPage() {
     const {items, removeItem, updateQuantity, clearCart} = useCart();
     const {user} = useAuth();
     const [checkoutAnimating, setCheckoutAnimating] = useState(false);
-    const [orderPlaced, setOrderPlaced] = useState(false);
+    const [showNotification, setShowNotification] = useState(false);
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     useEffect(() => {
@@ -36,19 +36,15 @@ export default function CartPage() {
             date: new Date().toISOString(),
             userEmail: user.email,
         };
+
         const stored = localStorage.getItem("modshop_orders");
         const orders = stored ? JSON.parse(stored) : [];
         orders.push(order);
         localStorage.setItem("modshop_orders", JSON.stringify(orders));
 
         clearCart();
-        setOrderPlaced(true);
-        window.scrollTo({top: 0, behavior: "smooth"});
+        setShowNotification(true);
         setCheckoutAnimating(false);
-
-        setTimeout(() => {
-            setOrderPlaced(false);
-        }, 6000);
     };
 
     return (
@@ -59,10 +55,7 @@ export default function CartPage() {
 
                 {items.length === 0 ? (
                     <p>
-                        Your cart is empty.{" "}
-                        <Link href="/" className="text-blue-600">
-                            Start shopping!
-                        </Link>
+                        Your cart is empty. <Link href="/" className="text-blue-600">Start shopping!</Link>
                     </p>
                 ) : (
                     <div className="space-y-6">
@@ -87,9 +80,7 @@ export default function CartPage() {
                                             type="number"
                                             min="1"
                                             value={item.quantity}
-                                            onChange={(e) =>
-                                                updateQuantity(item.slug, parseInt(e.target.value))
-                                            }
+                                            onChange={(e) => updateQuantity(item.slug, parseInt(e.target.value))}
                                             className="w-16 border rounded px-2 py-1"
                                         />
                                         <button
@@ -106,24 +97,22 @@ export default function CartPage() {
                         <div className="flex justify-between items-center mt-8">
                             <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
                             <button
-                                className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${
-                                    checkoutAnimating ? "scale-110 bg-green-500" : ""
-                                }`}
+                                className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${checkoutAnimating ? "scale-110 bg-green-500" : ""}`}
                                 onClick={handleCheckout}
                                 disabled={checkoutAnimating}
                             >
-                                {checkoutAnimating ? "Order Placed!" : "Buy Now"}
+                                {checkoutAnimating ? "Processing..." : "Buy Now"}
                             </button>
                         </div>
-
-                        <NotificationModal open={orderPlaced} onCloseAction={() => setOrderPlaced(false)}>
-                            <span className="text-4xl mb-2">🎉</span>
-                            <h3 className="text-xl font-bold mb-1 text-blue-700">Thank you for your purchase!</h3>
-                            <p className="text-gray-700 mb-2">Your order has been placed.</p>
-                        </NotificationModal>
                     </div>
                 )}
             </section>
+
+            <NotificationPopUp
+                open={showNotification}
+                message="🎉 Thank you! Your order has been placed."
+                onCloseAction={() => setShowNotification(false)}
+            />
         </main>
     );
 }
