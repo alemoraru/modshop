@@ -4,6 +4,7 @@ import {useCart} from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import React, {useState} from "react";
 import Image from "next/image";
+import {Check} from "lucide-react";
 
 interface ProductFrontmatter {
     title: string;
@@ -39,8 +40,8 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                     <Image
                         src={frontmatter.image}
                         alt={frontmatter.title}
-                        width={600}
-                        height={600}
+                        width={400}
+                        height={400}
                         className="w-full h-auto rounded"
                         priority
                     />
@@ -54,16 +55,16 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                             disabled={added}
                         >
                             {added ? (
-                                <span className="flex items-center gap-1">✔ Added</span>
+                                <span className="flex items-center gap-1"><Check/> Added</span>
                             ) : (
                                 "Add to Cart"
                             )}
                         </button>
+                        <article className="mt-12 prose prose-lg">
+                            {mdxContent}
+                        </article>
                     </div>
                 </div>
-                <article className="mt-12 prose prose-lg">
-                    {mdxContent}
-                </article>
             </section>
         </main>
     );
