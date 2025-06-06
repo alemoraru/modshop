@@ -26,9 +26,10 @@ export default async function SearchPage({searchParams}: { searchParams: { query
             .map(product => {
                 const titleScore = stringSimilarity(product.title, query);
                 const categoryScore = stringSimilarity(product.category, query);
+                const descriptionScore = stringSimilarity(product.description || '', query);
                 return {
                     product,
-                    score: Math.max(titleScore, categoryScore)
+                    score: Math.max(titleScore, categoryScore, descriptionScore)
                 };
             })
             .filter(({score}) => score > 0.2)
@@ -54,6 +55,7 @@ export default async function SearchPage({searchParams}: { searchParams: { query
                                 price={product.price}
                                 image={product.image}
                                 description={product.description}
+                                category={product.category}
                             />
                         ))}
                     </div>
