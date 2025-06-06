@@ -30,25 +30,37 @@ export default async function SearchPage({searchParams}: { searchParams: { query
         : [];
 
     return (
-        <main className="max-w-5xl mx-auto p-6">
-            <h1 className="text-2xl font-bold mb-4">Search Results for "{query}"</h1>
-            {query === "" ? (
-                <p>Enter a search term above.</p>
-            ) : filtered.length === 0 ? (
-                <p>No products found.</p>
-            ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {filtered.map(product => (
-                        <Link key={product.slug} href={`/product/${product.slug}`}
-                              className="block border rounded p-4 hover:shadow-lg transition">
-                            <Image src={product.image} alt={product.title} width={200} height={200}
-                                   className="w-full h-40 object-cover rounded mb-2"/>
-                            <h2 className="font-semibold text-lg">{product.title}</h2>
-                            <p className="text-blue-700 font-bold">€{product.price}</p>
-                        </Link>
-                    ))}
-                </div>
-            )}
+        <main className="bg-white text-gray-900">
+            <section className="py-12 px-6 max-w-5xl mx-auto">
+                <h1 className="text-3xl font-bold mb-8">Search Results for "{query}"</h1>
+                {query === "" ? (
+                    <p>Enter a search term above.</p>
+                ) : filtered.length === 0 ? (
+                    <p>No products found.</p>
+                ) : (
+                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+                        {filtered.map(product => (
+                            <Link
+                                key={product.slug}
+                                href={`/product/${product.slug}`}
+                                className="border rounded-xl p-4 transition-transform duration-200 hover:scale-105 hover:border-blue-500 hover:shadow-lg cursor-pointer"
+                            >
+                                <Image
+                                    src={product.image}
+                                    alt={product.title}
+                                    width={400}
+                                    height={160}
+                                    className="w-full h-40 object-cover rounded"
+                                />
+                                <div className="mt-2">
+                                    <h2 className="font-semibold">{product.title}</h2>
+                                    <p className="text-sm text-gray-600">€{product.price}</p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </section>
         </main>
     );
 }
