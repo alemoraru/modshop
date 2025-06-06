@@ -5,6 +5,7 @@ import React from "react";
 import {CartProvider} from "@/context/CartContext";
 import {AuthProvider} from "@/context/AuthContext";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 
 const gabarito = Gabarito({
     variable: "--font-gabarito",
@@ -35,6 +36,7 @@ export default function RootLayout(
         ><AuthProvider>
             <CartProvider>
                 <div className="min-h-screen flex flex-col">
+                    <Navbar/>
                     <main className="flex-1 flex flex-col">
                         {children}
                     </main>

@@ -1,7 +1,6 @@
 "use client";
 
 import {useCart} from "@/context/CartContext";
-import Navbar from "@/components/Navbar";
 import React, {useState} from "react";
 import Image from "next/image";
 import {Check, ShoppingCart} from "lucide-react";
@@ -41,7 +40,6 @@ export default function ProductDetail({frontmatter, mdxContent}: {
 
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="py-12 px-6 max-w-4xl mx-auto">
                 <div className="grid md:grid-cols-2 gap-10">
                     <Image

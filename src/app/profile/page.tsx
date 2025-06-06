@@ -1,11 +1,10 @@
 "use client";
 
 import {useAuth} from "@/context/AuthContext";
-import Navbar from "@/components/Navbar";
 import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
-import {ChevronDown, LogOut} from "lucide-react";
+import {ChevronDown, DownloadIcon, LogOut} from "lucide-react";
 
 interface Order {
     id: string;
@@ -73,10 +72,38 @@ export default function ProfilePage() {
         }
     };
 
+    const handleDownload = () => {
+        const statsRaw = localStorage.getItem("modshop_nudge_stats");
+        if (!statsRaw) {
+            alert("No stats found in localStorage.");
+            return;
+        }
+
+        const stats = JSON.parse(statsRaw);
+
+        const rows = [
+            ["Nudge Type", "Shown", "Accepted/Completed"]
+        ];
+
+        rows.push(["gentle", stats.gentle.shown, stats.gentle.accepted]);
+        rows.push(["alternative", stats.alternative.shown, stats.alternative.accepted]);
+        rows.push(["block", stats.block.shown, stats.block.completed]);
+
+        const csvContent = rows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8;"});
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "nudge_stats.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (!user) {
         return (
             <main className="bg-white text-gray-900">
-                <Navbar/>
                 <section className="py-12 px-6 max-w-md mx-auto">
                     <h1 className="text-3xl font-bold mb-6">Login</h1>
                     <LoginForm onLoginAction={login}/>
@@ -87,20 +114,34 @@ export default function ProfilePage() {
 
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="py-12 px-6 max-w-2xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
                     <div>
                         <h1 className="text-3xl font-bold">Profile</h1>
                         <p className="text-gray-600">{user.email}</p>
                     </div>
-                    <button
-                        onClick={logout}
-                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"
-                    >
-                        <LogOut className="w-4 h-4"/>
-                        Logout
-                    </button>
+
+                    <div className="flex flex-wrap gap-3">
+                        <button
+                            onClick={handleDownload}
+                            className="flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600
+                            text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-base
+                            shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                        >
+                            <DownloadIcon className="w-5 h-5"/>
+                            <span>Download Stats</span>
+                        </button>
+
+                        <button
+                            onClick={logout}
+                            className="flex items-center gap-2 px-4 py-2 rounded-md border border-red-600
+                            text-red-700 bg-white hover:bg-red-50 transition-colors font-medium
+                            text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer"
+                        >
+                            <LogOut className="w-5 h-5"/>
+                            <span>Log Out</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="bg-gray-50 p-6 rounded-lg mb-8">

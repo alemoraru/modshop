@@ -32,7 +32,7 @@ export default function Footer() {
                 <Link href="https://instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                     <Instagram className="w-5 h-5 hover:text-pink-500"/>
                 </Link>
-                <Link href="https://github.com/alemoraru/modshop-frontend" target="_blank" rel="noopener noreferrer"
+                <Link href="https://github.com/alemoraru/modshop" target="_blank" rel="noopener noreferrer"
                       aria-label="GitHub">
                     <Github className="w-5 h-5 hover:text-gray-900"/>
                 </Link>
@@ -41,7 +41,7 @@ export default function Footer() {
             {/* Right: Version & Info */}
             <div className="flex items-center gap-2 relative justify-center order-2 sm:order-none">
                 <Link
-                    href={`https://github.com/alemoraru/modshop-frontend${githubReleaseUrl}`}
+                    href={`https://github.com/alemoraru/modshop${githubReleaseUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group hover:underline font-mono flex items-center gap-1"

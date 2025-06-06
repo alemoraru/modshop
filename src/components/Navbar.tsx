@@ -14,13 +14,13 @@ export default function Navbar() {
     const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
     return (
-        <nav className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between">
+        <nav className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between z-0">
             <Link href="/" className="text-2xl font-bold text-blue-600 cursor-pointer">
                 ModShop
             </Link>
 
             <div className="flex items-center space-x-4">
-                <Link href="/cart" className="relative cursor-pointer group">
+                <Link href="/cart" className="relative cursor-pointer group text-black">
                     <ShoppingCart
                         className="w-6 h-6 transition-transform duration-200 group-hover:scale-110 group-hover:text-blue-600"
                     />
@@ -33,7 +33,7 @@ export default function Navbar() {
                         </span>
                     )}
                 </Link>
-                <Link href="/profile" className="cursor-pointer group">
+                <Link href="/profile" className="cursor-pointer group text-black">
                     <User
                         className="w-6 h-6 transition-transform duration-200 group-hover:scale-110 group-hover:text-blue-600"
                     />
