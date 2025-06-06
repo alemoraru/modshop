@@ -33,7 +33,7 @@ export default function PurchaseBlockNudge({duration, onCompleteAction}: Purchas
     }, [onCompleteAction]);
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-md mx-4 text-center">
                 <h3 className="text-lg font-semibold mb-4 text-red-600">
                     ⏳ Cool Down Period

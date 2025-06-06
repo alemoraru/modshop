@@ -10,7 +10,7 @@ import GentleNudge from "@/components/nudges/GentleNudge";
 import CheaperAlternativeNudge from "@/components/nudges/CheaperNudge";
 import PurchaseBlockNudge from "@/components/nudges/BlockNudge";
 import {nudgeService, NudgeResponse, NudgeType} from "@/services/NudgeService";
-import {Handshake, Lightbulb, ShieldAlert, ShoppingCart, History, ShoppingBasket, ShoppingBag} from "lucide-react";
+import {Handshake, Lightbulb, ShieldAlert, History, ShoppingBasket, ShoppingBag} from "lucide-react";
 
 /**
  * This renders the Cart page of the ModShop application.
