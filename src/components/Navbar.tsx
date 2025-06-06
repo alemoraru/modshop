@@ -3,7 +3,7 @@
 import Link from "next/link";
 import {ShoppingCart, User, Home, Search} from "lucide-react";
 import {useCart} from "@/context/CartContext";
-import {usePathname, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import React, {useState} from "react";
 
 /**
@@ -14,7 +14,6 @@ export default function Navbar() {
     const cart = useCart();
     const items = cart?.items ?? [];
     const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
-    const pathname = usePathname();
     const router = useRouter();
     const [search, setSearch] = useState("");
 
@@ -23,10 +22,6 @@ export default function Navbar() {
             router.push(`/search?query=${encodeURIComponent(search.trim())}`);
         }
     };
-
-    const segments = pathname.split("/").filter(Boolean);
-    const last = segments[segments.length - 1];
-    const isHome = segments.length === 0;
 
     return (
         <nav className="w-full bg-white shadow-md px-4 py-3 flex items-center justify-between flex-wrap gap-2 z-0">
@@ -39,21 +34,11 @@ export default function Navbar() {
                     <Home className="w-5 h-5"/>
                     ModShop
                 </Link>
-
-                {/* Breadcrumbs only visible on md and up */}
-                {!isHome && last && (
-                    <div className="hidden md:flex items-center gap-1 text-sm text-gray-600 ml-2">
-                        <span>/</span>
-                        <span className="capitalize font-semibold text-gray-900 truncate max-w-[10rem] sm:max-w-none">
-                            {decodeURIComponent(last.replaceAll("-", " "))}
-                        </span>
-                    </div>
-                )}
             </div>
 
             {/* Center: Search bar */}
             <div className="flex-1 flex justify-center px-2">
-                <div className="relative w-full max-w-xs">
+                <div className="relative w-full max-w-md">
                     <input
                         type="text"
                         value={search}

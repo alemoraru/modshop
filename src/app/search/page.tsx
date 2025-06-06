@@ -35,7 +35,7 @@ export default async function SearchPage({searchParams}: { searchParams: { query
     return (
         <main className="bg-white text-gray-900">
             <section className="py-12 px-6 max-w-5xl mx-auto">
-                <h1 className="text-3xl font-bold mb-8">Search Results for "{query}"</h1>
+                <h1 className="text-3xl font-bold mb-8">Search Results for &#34;{query}&#34;:</h1>
                 {query === "" ? (
                     <p>Enter a search term above.</p>
                 ) : filtered.length === 0 ? (
