@@ -1,7 +1,6 @@
 "use client";
 
 import {useAuth} from "@/context/AuthContext";
-import Navbar from "@/components/Navbar";
 import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
@@ -76,7 +75,6 @@ export default function ProfilePage() {
     if (!user) {
         return (
             <main className="bg-white text-gray-900">
-                <Navbar/>
                 <section className="py-12 px-6 max-w-md mx-auto">
                     <h1 className="text-3xl font-bold mb-6">Login</h1>
                     <LoginForm onLoginAction={login}/>
@@ -87,7 +85,6 @@ export default function ProfilePage() {
 
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="py-12 px-6 max-w-2xl mx-auto">
                 <div className="flex justify-between items-center mb-8">
                     <div>

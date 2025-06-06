@@ -4,7 +4,6 @@ import matter from "gray-matter";
 import {Metadata} from "next";
 import {notFound} from "next/navigation";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import {pageParams} from "@/lib/types";
 
@@ -55,7 +54,6 @@ export default async function CategoryPage(props: { params: pageParams }) {
 
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="py-12 px-6">
                 <h1 className="text-3xl font-bold mb-8 capitalize">{slug.replace("-", " ")} Collection</h1>
                 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">

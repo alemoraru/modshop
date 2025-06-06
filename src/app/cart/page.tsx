@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
 import {useCart} from "@/context/CartContext";
 import Link from "next/link";
 import {useEffect, useState} from "react";
@@ -190,7 +189,6 @@ export default function CartPage() {
 
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="p-6 max-w-5xl mx-auto">
                 <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 

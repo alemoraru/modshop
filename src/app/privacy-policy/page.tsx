@@ -1,14 +1,11 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-
 /**
  * Renders the Privacy Policy page for the ModShop application.
  */
 export default function PrivacyPage() {
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="max-w-3xl mx-auto px-6 py-12">
                 <h1 className="text-4xl font-bold mb-6">Privacy Policy</h1>
 

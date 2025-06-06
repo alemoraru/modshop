@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {Metadata} from "next";
-import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
     title: "ModShop | Home",
@@ -20,7 +19,6 @@ export default function HomePage() {
 
     return (
         <main className="bg-white text-gray-900">
-            <Navbar/>
             <section className="py-12 px-6 text-center">
                 <h1 className="text-4xl font-bold mb-4">Welcome to ModShop</h1>
                 <p className="text-lg mb-8">Your behavior-aware shopping experience.</p>
