@@ -17,18 +17,18 @@ export interface NudgeResponse {
 }
 
 export interface UserNudgeStats {
-    gentle: { shown: number; accepted: number };
-    alternative: { shown: number; accepted: number };
-    block: { shown: number; completed: number };
+    gentle: { shown: number; accepted: number; savings: number };
+    alternative: { shown: number; accepted: number; savings: number };
+    block: { shown: number; completed: number; savings: number };
 }
 
 class NudgeService {
     private getUserStats(): UserNudgeStats {
         const stored = localStorage.getItem("modshop_nudge_stats");
         return stored ? JSON.parse(stored) : {
-            gentle: {shown: 0, accepted: 0},
-            alternative: {shown: 0, accepted: 0},
-            block: {shown: 0, completed: 0}
+            gentle: {shown: 0, accepted: 0, savings: 0},
+            alternative: {shown: 0, accepted: 0, savings: 0},
+            block: {shown: 0, completed: 0, savings: 0}
         };
     }
 
@@ -167,14 +167,17 @@ class NudgeService {
             case 'gentle':
                 stats.gentle.shown++;
                 if (accepted) stats.gentle.accepted++;
+                if (accepted) stats.gentle.savings += item.price;
                 break;
             case 'alternative':
                 stats.alternative.shown++;
                 if (accepted) stats.alternative.accepted++;
+                if (accepted) stats.alternative.savings += item.price - alternative.price;
                 break;
             case 'block':
                 stats.block.shown++;
                 stats.block.completed++;
+                stats.block.savings += item.price
                 break;
         }
 
