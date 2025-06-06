@@ -1,6 +1,5 @@
 import {getAllProducts} from "@/lib/getAllProducts";
-import Link from "next/link";
-import Image from "next/image";
+import ProductCard from "@/components/ProductCard";
 
 function stringSimilarity(a: string, b: string): number {
     a = a.toLowerCase();
@@ -14,6 +13,10 @@ function stringSimilarity(a: string, b: string): number {
     return matches / Math.max(a.length, b.length);
 }
 
+/**
+ * SearchPage component to display search results based on the query parameter.
+ * @param searchParams - The search parameters from the URL, specifically the `query` parameter.
+ */
 export default async function SearchPage({searchParams}: { searchParams: { query?: string } }) {
     const searchParameters = await searchParams;
     const query = searchParameters.query || "";
@@ -40,23 +43,14 @@ export default async function SearchPage({searchParams}: { searchParams: { query
                 ) : (
                     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                         {filtered.map(product => (
-                            <Link
+                            <ProductCard
                                 key={product.slug}
-                                href={`/product/${product.slug}`}
-                                className="border rounded-xl p-4 transition-transform duration-200 hover:scale-105 hover:border-blue-500 hover:shadow-lg cursor-pointer"
-                            >
-                                <Image
-                                    src={product.image}
-                                    alt={product.title}
-                                    width={400}
-                                    height={160}
-                                    className="w-full h-40 object-cover rounded"
-                                />
-                                <div className="mt-2">
-                                    <h2 className="font-semibold">{product.title}</h2>
-                                    <p className="text-sm text-gray-600">€{product.price}</p>
-                                </div>
-                            </Link>
+                                slug={product.slug}
+                                title={product.title}
+                                price={product.price}
+                                image={product.image}
+                                description={product.description}
+                            />
                         ))}
                     </div>
                 )}
