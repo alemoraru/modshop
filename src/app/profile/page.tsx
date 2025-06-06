@@ -120,20 +120,26 @@ export default function ProfilePage() {
                         <h1 className="text-3xl font-bold">Profile</h1>
                         <p className="text-gray-600">{user.email}</p>
                     </div>
-                    <button
-                        onClick={handleDownload}
-                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"
-                    >
-                        <span className="text-sm">Download Stats</span>
-                        <DownloadIcon className="w-4 h-4"/>
-                    </button>
-                    <button
-                        onClick={logout}
-                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"
-                    >
-                        <LogOut className="w-4 h-4"/>
-                        Logout
-                    </button>
+                    <div className="flex items-center gap-3 ml-auto">
+                        <button
+                            onClick={handleDownload}
+                            className="flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600
+                            text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-base
+                            shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                        >
+                            <DownloadIcon className="w-5 h-5"/>
+                            <span>Download Stats</span>
+                        </button>
+                        <button
+                            onClick={logout}
+                            className="flex items-center gap-2 px-4 py-2 rounded-md border border-red-600
+                            text-red-700 bg-white hover:bg-red-50 transition-colors font-medium
+                            text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer"
+                        >
+                            <LogOut className="w-5 h-5"/>
+                            <span>Log Out</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div className="bg-gray-50 p-6 rounded-lg mb-8">
