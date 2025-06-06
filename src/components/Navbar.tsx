@@ -74,6 +74,36 @@ export default function Navbar() {
                 </div>
             </nav>
 
+            {/* Desktop sub-navbar for categories */}
+            <div className="hidden sm:flex w-full bg-blue-50 border-b border-blue-200 px-4 py-2 z-10">
+                <div className="flex gap-6 mx-auto">
+                    <Link href="/category/books"
+                          className="text-blue-700 font-medium transition-colors duration-200 hover:text-white
+                          hover:bg-blue-600 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        Books
+                    </Link>
+                    <Link href="/category/clothing"
+                          className="text-blue-700 font-medium transition-colors duration-200 hover:text-white
+                          hover:bg-blue-600 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        Clothing
+                    </Link>
+                    <Link href="/category/household"
+                          className="text-blue-700 font-medium transition-colors duration-200 hover:text-white
+                          hover:bg-blue-600 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        Household
+                    </Link>
+                    <Link href="/category/video-games"
+                          className="text-blue-700 font-medium transition-colors duration-200 hover:text-white
+                          hover:bg-blue-600 px-3 py-1 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    >
+                        Video Games
+                    </Link>
+                </div>
+            </div>
+
             {/* Mobile search sub-navbar */}
             <div className="sm:hidden w-full bg-blue-600 shadow px-4 py-2 flex items-center z-10">
                 <div className="relative w-full">
