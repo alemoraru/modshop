@@ -115,12 +115,13 @@ export default function ProfilePage() {
     return (
         <main className="bg-white text-gray-900">
             <section className="py-12 px-6 max-w-2xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
                     <div>
                         <h1 className="text-3xl font-bold">Profile</h1>
                         <p className="text-gray-600">{user.email}</p>
                     </div>
-                    <div className="flex items-center gap-3 ml-auto">
+
+                    <div className="flex flex-wrap gap-3">
                         <button
                             onClick={handleDownload}
                             className="flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600
@@ -130,6 +131,7 @@ export default function ProfilePage() {
                             <DownloadIcon className="w-5 h-5"/>
                             <span>Download Stats</span>
                         </button>
+
                         <button
                             onClick={logout}
                             className="flex items-center gap-2 px-4 py-2 rounded-md border border-red-600
