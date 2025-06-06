@@ -1,6 +1,11 @@
 import {getAllProducts} from "@/lib/getAllProducts";
 import ProductCard from "@/components/ProductCard";
 
+/**
+ * Calculates the similarity score between two strings.
+ * @param a the first string to compare
+ * @param b the second string to compare
+ */
 function stringSimilarity(a: string, b: string): number {
     a = a.toLowerCase();
     b = b.toLowerCase();
@@ -15,10 +20,10 @@ function stringSimilarity(a: string, b: string): number {
 
 /**
  * SearchPage component to display search results based on the query parameter.
- * @param searchParams - The search parameters from the URL, specifically the `query` parameter.
+ * @param props - Contains search parameters with an optional query string.
  */
-export default async function SearchPage({searchParams}: { searchParams: { query?: string } }) {
-    const searchParameters = await searchParams;
+export default async function SearchPage(props: { searchParams: Promise<{ query?: string }> }) {
+    const searchParameters = await props.searchParams;
     const query = searchParameters.query || "";
     const allProducts = getAllProducts();
     const filtered = query ?
