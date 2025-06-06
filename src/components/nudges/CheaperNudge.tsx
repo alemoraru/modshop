@@ -29,7 +29,7 @@ export default function CheaperAlternativeNudge(
 
     if (isAlreadyCheapest) {
         return (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
                 <div className="bg-white p-6 rounded-lg max-w-md mx-4">
                     <h3 className="text-lg font-semibold mb-4 text-orange-600">
                         💡 Think It Over
@@ -65,7 +65,7 @@ export default function CheaperAlternativeNudge(
     }
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-md mx-4">
                 <h3 className="text-lg font-semibold mb-4 text-green-600">
                     💰 Save Money with This Alternative

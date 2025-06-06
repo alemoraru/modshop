@@ -10,7 +10,7 @@ import GentleNudge from "@/components/nudges/GentleNudge";
 import CheaperAlternativeNudge from "@/components/nudges/CheaperNudge";
 import PurchaseBlockNudge from "@/components/nudges/BlockNudge";
 import {nudgeService, NudgeResponse, NudgeType} from "@/services/NudgeService";
-import {History, ShoppingBasket} from "lucide-react";
+import {Handshake, Lightbulb, ShieldAlert, History, ShoppingBasket, ShoppingBag} from "lucide-react";
 
 /**
  * This renders the Cart page of the ModShop application.
@@ -210,75 +210,93 @@ export default function CartPage() {
                             </Link>
                         </div>
                     </div>) : (<div className="space-y-6">
-                    {items.map((item) => (
-                        <div
-                            key={item.slug}
-                            className="flex items-center gap-4 border-b pb-4"
-                        >
-                            <Image
-                                src={item.image}
-                                alt={item.title}
-                                width={96}
-                                height={96}
-                                className="w-24 h-24 object-cover rounded"
-                            />
-                            <div className="flex-1">
-                                <h2 className="font-semibold text-lg">{item.title}</h2>
-                                <p className="text-gray-600">€{item.price}</p>
-                                <div className="flex items-center gap-2 mt-2">
-                                    <label htmlFor="qty">Qty:</label>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        value={item.quantity}
-                                        onChange={(e) => updateQuantity(item.slug, parseInt(e.target.value))}
-                                        className="w-16 border rounded px-2 py-1"
-                                    />
-                                    <button
-                                        className="text-sm text-red-500 hover:underline ml-4 cursor-pointer"
-                                        onClick={() => removeItem(item.slug)}
-                                    >
-                                        Remove
-                                    </button>
+                        {items.map((item) => (
+                            <div
+                                key={item.slug}
+                                className="flex items-center gap-4 border-b pb-4"
+                            >
+                                <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    width={96}
+                                    height={96}
+                                    className="w-24 h-24 object-cover rounded"
+                                />
+                                <div className="flex-1">
+                                    <h2 className="font-semibold text-lg">{item.title}</h2>
+                                    <p className="text-gray-600">€{item.price}</p>
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <label htmlFor="qty">Qty:</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value={item.quantity}
+                                            onChange={(e) => updateQuantity(item.slug, parseInt(e.target.value))}
+                                            className="w-16 border rounded px-2 py-1"
+                                        />
+                                        <button
+                                            className="text-sm text-red-500 hover:underline ml-4 cursor-pointer"
+                                            onClick={() => removeItem(item.slug)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
                                 </div>
+                            </div>))}
+
+                        <div className="mt-8 space-y-4">
+                            <div
+                                className="text-xl font-bold text-gray-800 flex justify-between items-center flex-wrap gap-4">
+                                <span>Total: €{total.toFixed(2)}</span>
                             </div>
-                        </div>))}
 
-                    <div className="flex justify-between items-center mt-8">
-                        <p className="text-xl font-bold">Total: €{total.toFixed(2)}</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                                <button
+                                    onClick={triggerGentleNudge}
+                                    disabled={items.length === 0}
+                                    className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:opacity-50 transition-all cursor-pointer"
+                                >
+                                    <Lightbulb className="w-4 h-4"/>
+                                    Gentle Nudge
+                                </button>
 
-                        <div className="flex gap-2">
-                            <button
-                                onClick={triggerGentleNudge}
-                                className="bg-yellow-500 text-white px-3 py-2 rounded hover:bg-yellow-600 transition text-sm cursor-pointer"
-                                disabled={items.length === 0}
-                            >
-                                Test Gentle
-                            </button>
-                            <button
-                                onClick={triggerAlternativeNudge}
-                                className="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition text-sm cursor-pointer"
-                                disabled={items.length === 0}
-                            >
-                                Test Alternative
-                            </button>
-                            <button
-                                onClick={triggerBlockNudge}
-                                className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 transition text-sm cursor-pointer"
-                                disabled={items.length === 0}
-                            >
-                                Test Block
-                            </button>
-                            <button
-                                className={`bg-blue-600 text-white px-6 py-2 rounded transition-all duration-300 hover:bg-blue-700 cursor-pointer ${checkoutAnimating ? "scale-110 bg-green-500" : ""}`}
-                                onClick={handleCheckout}
-                                disabled={checkoutAnimating}
-                            >
-                                {checkoutAnimating ? "Processing..." : "Buy Now"}
-                            </button>
+                                <button
+                                    onClick={triggerAlternativeNudge}
+                                    disabled={items.length === 0}
+                                    className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-green-500
+                                    text-white rounded hover:bg-green-600 disabled:opacity-50 transition-all cursor-pointer"
+                                >
+                                    <Handshake className="w-4 h-4"/>
+                                    Alternative Nudge
+                                </button>
+
+                                <button
+                                    onClick={triggerBlockNudge}
+                                    disabled={items.length === 0}
+                                    className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-red-500
+                                    text-white rounded hover:bg-red-600 disabled:opacity-50 transition-all cursor-pointer"
+                                >
+                                    <ShieldAlert className="w-4 h-4"/>
+                                    Block Nudge
+                                </button>
+
+                                <button
+                                    onClick={handleCheckout}
+                                    disabled={checkoutAnimating}
+                                    className={`flex items-center justify-center gap-2 px-4 py-2 text-sm rounded 
+                                    transition-all duration-300 cursor-pointer ${
+                                        checkoutAnimating
+                                            ? "bg-green-500 text-white scale-105"
+                                            : "bg-blue-600 text-white hover:bg-blue-700"
+                                    }`}
+                                >
+                                    <ShoppingBag className="w-4 h-4"/>
+                                    {checkoutAnimating ? "Processing..." : "Buy Now"}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>)}
+                )}
             </section>
 
             {currentNudge?.type === 'gentle' && (
