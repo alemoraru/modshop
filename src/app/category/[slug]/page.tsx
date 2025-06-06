@@ -3,9 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import {Metadata} from "next";
 import {notFound} from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
 import {pageParams} from "@/lib/types";
+import ProductCard from "@/components/ProductCard";
 
 export const metadata: Metadata = {
     title: "ModShop | Category",
@@ -58,24 +57,14 @@ export default async function CategoryPage(props: { params: pageParams }) {
                 <h1 className="text-3xl font-bold mb-8 capitalize">{slug.replace("-", " ")} Collection</h1>
                 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                     {products.map((product) => (
-                        <Link
+                        <ProductCard
                             key={product.slug}
-                            href={`/product/${product.slug}`}
-                            className="border rounded-xl p-4 transition-transform duration-200 hover:scale-105
-                            hover:border-blue-500 hover:shadow-lg cursor-pointer"
-                        >
-                            <Image
-                                src={product.image}
-                                alt={product.title}
-                                width={400}
-                                height={160}
-                                className="w-full h-40 object-cover rounded"
-                            />
-                            <div className="mt-2">
-                                <h2 className="font-semibold">{product.title}</h2>
-                                <p className="text-sm text-gray-600">€{product.price}</p>
-                            </div>
-                        </Link>
+                            slug={product.slug}
+                            title={product.title}
+                            price={product.price}
+                            image={product.image}
+                            description={product.description}
+                        />
                     ))}
                 </div>
             </section>
