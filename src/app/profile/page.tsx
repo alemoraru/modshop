@@ -4,7 +4,7 @@ import {useAuth} from "@/context/AuthContext";
 import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
-import {ChevronDown, LogOut} from "lucide-react";
+import {ChevronDown, DownloadIcon, LogOut} from "lucide-react";
 
 interface Order {
     id: string;
@@ -72,6 +72,35 @@ export default function ProfilePage() {
         }
     };
 
+    const handleDownload = () => {
+        const statsRaw = localStorage.getItem("modshop_nudge_stats");
+        if (!statsRaw) {
+            alert("No stats found in localStorage.");
+            return;
+        }
+
+        const stats = JSON.parse(statsRaw);
+
+        const rows = [
+            ["Nudge Type", "Shown", "Accepted/Completed"]
+        ];
+
+        rows.push(["gentle", stats.gentle.shown, stats.gentle.accepted]);
+        rows.push(["alternative", stats.alternative.shown, stats.alternative.accepted]);
+        rows.push(["block", stats.block.shown, stats.block.completed]);
+
+        const csvContent = rows.map(row => row.join(",")).join("\n");
+        const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8;"});
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "nudge_stats.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (!user) {
         return (
             <main className="bg-white text-gray-900">
@@ -91,6 +120,13 @@ export default function ProfilePage() {
                         <h1 className="text-3xl font-bold">Profile</h1>
                         <p className="text-gray-600">{user.email}</p>
                     </div>
+                    <button
+                        onClick={handleDownload}
+                        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"
+                    >
+                        <span className="text-sm">Download Stats</span>
+                        <DownloadIcon className="w-4 h-4"/>
+                    </button>
                     <button
                         onClick={logout}
                         className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 cursor-pointer flex items-center gap-2"

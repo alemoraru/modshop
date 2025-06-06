@@ -167,17 +167,17 @@ class NudgeService {
             case 'gentle':
                 stats.gentle.shown++;
                 if (accepted) stats.gentle.accepted++;
-                if (accepted) stats.gentle.savings += item.price;
+                // if (accepted) stats.gentle.savings += item.price;
                 break;
             case 'alternative':
                 stats.alternative.shown++;
                 if (accepted) stats.alternative.accepted++;
-                if (accepted) stats.alternative.savings += item.price - alternative.price;
+                // if (accepted) stats.alternative.savings += item.price - alternative.price;
                 break;
             case 'block':
                 stats.block.shown++;
                 stats.block.completed++;
-                stats.block.savings += item.price
+                // stats.block.savings += item.price
                 break;
         }
 
