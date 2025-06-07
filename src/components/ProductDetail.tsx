@@ -135,6 +135,7 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                                 </span>
                             )}
                         </button>
+                        <h3 className="text-lg font-semibold mt-6">Product Description</h3>
                         <article className="prose prose-blue max-w-none mt-8">
                             {mdxContent}
                         </article>
@@ -143,6 +144,7 @@ export default function ProductDetail({frontmatter, mdxContent}: {
 
                 {/* Mobile-only MDX content */}
                 <div className="block md:hidden mt-8">
+                    <h3 className="text-lg font-semibold mb-0">Product Description</h3>
                     <article className="prose prose-blue max-w-none">
                         {mdxContent}
                     </article>

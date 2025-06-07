@@ -44,7 +44,7 @@ export default async function ProductPage(props: { params: pageParams }) {
                 <ProductDetail
                     frontmatter={frontmatter}
                     mdxContent={
-                        <article className="prose prose-blue max-w-none mt-12">
+                        <article className="prose prose-blue max-w-none">
                             <MDXRemote source={content}/>
                         </article>
                     }
