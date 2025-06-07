@@ -67,8 +67,12 @@ export default function Navbar() {
                 {/* Right: Cart and Profile */}
                 <div className="flex items-center space-x-4 shrink-0">
                     <Link href="/cart" className="relative cursor-pointer group text-white">
-                        <ShoppingCart
-                            className="w-6 h-6 transition-transform duration-200 group-hover:scale-110 group-hover:text-blue-200"/>
+                        <span className="relative flex items-center">
+                          <ShoppingCart
+                              className="w-6 h-6 transition-all duration-200 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]"/>
+                          <span
+                              className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-80 group-hover:bg-white/20 transition-all duration-200 z-[-1]"/>
+                        </span>
                         {cartCount > 0 && (
                             <span
                                 className="absolute -top-3 -right-3 bg-white text-blue-600 text-xs rounded-full w-5 h-5 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
@@ -77,8 +81,12 @@ export default function Navbar() {
                         )}
                     </Link>
                     <Link href="/profile" className="cursor-pointer group text-white">
-                        <User
-                            className="w-6 h-6 transition-transform duration-200 group-hover:scale-110 group-hover:text-blue-200"/>
+                        <span className="relative flex items-center">
+                          <User
+                              className="w-6 h-6 transition-all duration-200 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]"/>
+                          <span
+                              className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-80 group-hover:bg-white/20 transition-all duration-200 z-[-1]"/>
+                        </span>
                     </Link>
                 </div>
             </nav>
