@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {ShoppingCart, User, Home, Search, Menu} from "lucide-react";
+import {ShoppingCart, User, Home, Search} from "lucide-react";
 import {useCart} from "@/context/CartContext";
 import {useRouter} from "next/navigation";
 import React, {useState} from "react";
@@ -31,11 +31,20 @@ export default function Navbar() {
                 <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap min-w-0">
                     {/* Hamburger menu (mobile only) */}
                     <button
-                        className="mr-2 p-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white sm:hidden"
+                        className={`mr-2 p-2 rounded-md focus:outline-none transition-colors duration-200 sm:hidden border-none shadow-none`}
                         onClick={() => setMenuOpen(v => !v)}
                         aria-label="Open categories menu"
+                        tabIndex={0}
+                        type="button"
                     >
-                        <Menu className="w-6 h-6 text-white"/>
+                        <span className="relative w-7 h-7 flex flex-col items-center justify-center">
+                          <span
+                              className={`block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out ${menuOpen ? 'rotate-45 top-3.5' : 'top-2'}`}></span>
+                          <span
+                              className={`block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out ${menuOpen ? 'opacity-0' : 'top-3.5'}`}></span>
+                          <span
+                              className={`block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out ${menuOpen ? '-rotate-45 top-3.5' : 'top-5'}`}></span>
+                        </span>
                     </button>
                     <Link
                         href="/"
@@ -94,21 +103,28 @@ export default function Navbar() {
             {/* Hamburger dropdown menu */}
             {menuOpen && (
                 <div
-                    className="absolute left-4 top-16 bg-white border border-blue-200 rounded shadow-lg z-50 min-w-[180px] animate-fade-in">
-                    <div className="flex flex-col py-2">
-                        <Link href="/category/books"
-                              className="px-4 py-2 text-blue-700 hover:bg-blue-50 hover:text-blue-900 rounded transition-colors"
-                              onClick={() => setMenuOpen(false)}>Books</Link>
-                        <Link href="/category/clothing"
-                              className="px-4 py-2 text-blue-700 hover:bg-blue-50 hover:text-blue-900 rounded transition-colors"
-                              onClick={() => setMenuOpen(false)}>Clothing</Link>
-                        <Link href="/category/household"
-                              className="px-4 py-2 text-blue-700 hover:bg-blue-50 hover:text-blue-900 rounded transition-colors"
-                              onClick={() => setMenuOpen(false)}>Household</Link>
-                        <Link href="/category/video-games"
-                              className="px-4 py-2 text-blue-700 hover:bg-blue-50 hover:text-blue-900 rounded transition-colors"
-                              onClick={() => setMenuOpen(false)}>Video Games</Link>
-                    </div>
+                    className="absolute left-2 right-2 top-16 mx-auto max-w-xs bg-white/90 backdrop-blur border border-blue-200 rounded-2xl shadow-2xl z-50 min-w-[180px] animate-slide-fade-in flex flex-col py-4 px-2 gap-1 transition-all duration-300"
+                >
+                    <Link href="/category/books"
+                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
+                          onClick={() => setMenuOpen(false)}>
+                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Books
+                    </Link>
+                    <Link href="/category/clothing"
+                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
+                          onClick={() => setMenuOpen(false)}>
+                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Clothing
+                    </Link>
+                    <Link href="/category/household"
+                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
+                          onClick={() => setMenuOpen(false)}>
+                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Household
+                    </Link>
+                    <Link href="/category/video-games"
+                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
+                          onClick={() => setMenuOpen(false)}>
+                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Video Games
+                    </Link>
                 </div>
             )}
 
