@@ -36,21 +36,32 @@ class NudgeService {
         localStorage.setItem("modshop_nudge_stats", JSON.stringify(stats));
     }
 
-    private selectNudge(cartTotal: number, itemCount: number): NudgeType {
+    private selectNudge(cartItems: { price: number }[]): NudgeType {
         const stats = this.getUserStats();
-
-        const gentleSuccess = stats.gentle.shown > 0 ? stats.gentle.accepted / stats.gentle.shown : 0.5;
-        const altSuccess = stats.alternative.shown > 0 ? stats.alternative.accepted / stats.alternative.shown : 0.5;
-        const blockSuccess = stats.block.shown > 0 ? stats.block.completed / stats.block.shown : 0.8;
-
-        if (cartTotal > 100 || itemCount > 5) {
-            return blockSuccess > gentleSuccess ? 'block' : 'gentle';
-        } else if (cartTotal > 50) {
-            return altSuccess > gentleSuccess ? 'alternative' : 'gentle';
-        } else {
-            return Math.random() > 0.7 ? 'gentle' : 'none';
+        const totalShown = stats.gentle.shown + stats.alternative.shown + stats.block.shown;
+    
+        // If not enough data, explore randomly
+        if (totalShown < 5) {
+            return ['gentle', 'alternative', 'block'][Math.floor(Math.random() * 3)] as NudgeType;
         }
-    }
+    
+        // Calculate UCB1 values (mean reward + exploration bonus)
+        const ucb = (savings: number, shown: number) => {
+            if (shown === 0) return Infinity;
+            return (savings / shown) + Math.sqrt(2 * Math.log(totalShown) / shown);
+        };
+    
+        const gentleUCB = ucb(stats.gentle.savings, stats.gentle.shown);
+        const altUCB = ucb(stats.alternative.savings, stats.alternative.shown);
+        const blockUCB = ucb(stats.block.savings, stats.block.shown);
+    
+        const max = Math.max(gentleUCB, altUCB, blockUCB);
+    
+        if (max === blockUCB) return 'block';
+        if (max === altUCB) return 'alternative';
+        return 'gentle';
+}
+
 
     async getCheaperAlternative(item: {
         title: string;
@@ -120,7 +131,7 @@ class NudgeService {
         slug?: string;
         category?: string
     }[], cartTotal: number): Promise<NudgeResponse> {
-        const nudgeType = this.selectNudge(cartTotal, cartItems.length);
+        const nudgeType = this.selectNudge(cartItems);
 
         switch (nudgeType) {
             case 'gentle':
@@ -160,29 +171,38 @@ class NudgeService {
         }
     }
 
-    recordNudgeInteraction(type: NudgeType, accepted: boolean) {
-        const stats = this.getUserStats();
-
-        switch (type) {
-            case 'gentle':
-                stats.gentle.shown++;
-                if (accepted) stats.gentle.accepted++;
-                // if (accepted) stats.gentle.savings += item.price;
-                break;
-            case 'alternative':
-                stats.alternative.shown++;
-                if (accepted) stats.alternative.accepted++;
-                // if (accepted) stats.alternative.savings += item.price - alternative.price;
-                break;
-            case 'block':
-                stats.block.shown++;
-                stats.block.completed++;
-                // stats.block.savings += item.price
-                break;
+    recordNudgeInteraction(type: NudgeType, accepted: boolean, options?: {
+            currentItemPrice?: number;
+            alternativePrice?: number;
+            cartTotal?: number;
+        }) {
+            const stats = this.getUserStats();
+        
+            switch (type) {
+                case 'gentle':
+                    stats.gentle.shown++;
+                    if (accepted) {
+                        stats.gentle.accepted++;
+                        stats.gentle.savings += options?.currentItemPrice || 0;
+                    }
+                    break;
+                case 'alternative':
+                    stats.alternative.shown++;
+                    if (accepted && options?.currentItemPrice && options?.alternativePrice != null) {
+                        stats.alternative.accepted++;
+                        stats.alternative.savings += Math.max(0, options.currentItemPrice - options.alternativePrice);
+                    }
+                    break;
+                case 'block':
+                    stats.block.shown++;
+                    stats.block.completed++;
+                    stats.block.savings += options?.cartTotal || 0;
+                    break;
+            }
+        
+            this.saveUserStats(stats);
         }
 
-        this.saveUserStats(stats);
-    }
 }
 
 export const nudgeService = new NudgeService();
