@@ -34,6 +34,7 @@ export default function ProfilePage() {
     const [showNotification, setShowNotification] = useState(false);
     const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
     const [notificationMessage, setNotificationMessage] = useState("");
+    const [developerMode, setDeveloperMode] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -53,6 +54,10 @@ export default function ProfilePage() {
             if (storedShopperType) {
                 setShopperType(storedShopperType as ShopperType);
             }
+
+            // Load developer mode from localStorage
+            const devMode = localStorage.getItem('modshop_developer_mode');
+            setDeveloperMode(devMode === 'true');
         }
     }, [user, sortDescending]);
 
@@ -116,6 +121,11 @@ export default function ProfilePage() {
         document.body.removeChild(link);
     };
 
+    const handleToggleDeveloperMode = () => {
+        const newValue = !developerMode;
+        setDeveloperMode(newValue);
+        localStorage.setItem('modshop_developer_mode', newValue.toString());
+    };
 
     if (!user) {
         return (
@@ -156,6 +166,14 @@ export default function ProfilePage() {
                         >
                             <LogOut className="w-5 h-5"/>
                             <span>Log Out</span>
+                        </button>
+
+                        <button
+                            onClick={handleToggleDeveloperMode}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-md border ${developerMode ? 'border-green-600 text-green-700' : 'border-gray-400 text-gray-700'}
+                            bg-white hover:bg-green-50 transition-colors font-medium text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
+                        >
+                            <span>{developerMode ? 'Developer Mode: ON' : 'Developer Mode: OFF'}</span>
                         </button>
                     </div>
                 </div>
