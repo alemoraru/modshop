@@ -4,6 +4,7 @@ import {useAuth} from "@/context/AuthContext";
 import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
+import NotificationPopUp from "@/components/NotificationPopUp";
 import {ChevronDown, DownloadIcon, LogOut} from "lucide-react";
 
 interface Order {
@@ -30,6 +31,9 @@ export default function ProfilePage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sortDescending, setSortDescending] = useState(true);
     const [shopperType, setShopperType] = useState<ShopperType>(null);
+    const [showNotification, setShowNotification] = useState(false);
+    const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
+    const [notificationMessage, setNotificationMessage] = useState("");
 
     useEffect(() => {
         if (user) {
@@ -76,8 +80,13 @@ export default function ProfilePage() {
         const statsRaw = localStorage.getItem("modshop_nudge_stats");
         const savingsRaw = localStorage.getItem("modshop_nudge_savings"); // optional savings per type
 
+        // Check if stats and user are available
+        // If not, show a warning notification
         if (!statsRaw || !user) {
-            alert("No stats found or user not logged in.");
+            setNotificationType('warning');
+            setNotificationMessage("No stats found or user not logged in.");
+            setShowNotification(true);
+            console.warn("No stats found or user not logged in.");
             return;
         }
 
@@ -237,6 +246,13 @@ export default function ProfilePage() {
                     </div>
                 )}
             </section>
+
+            <NotificationPopUp
+                open={showNotification}
+                message={notificationMessage}
+                type={notificationType}
+                onCloseAction={() => setShowNotification(false)}
+            />
         </main>
     );
 }
