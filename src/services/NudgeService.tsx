@@ -181,17 +181,25 @@ class NudgeService {
                 };
 
             case 'block':
-                const blockDuration = Math.min(60, Math.max(10, Math.round(cartTotal / 10) * 5));
-                return {
-                    type: 'block',
-                    data: {
-                        duration: blockDuration
-                    }
-                };
+                return this.getBlockNudge(cartTotal);
 
             default:
                 return {type: 'none'};
         }
+    }
+
+    /**
+     * Determines the duration for a block nudge based on the total price of the cart.
+     * The idea is to provide a block duration that is proportional to the cart total,
+     * while clamping it between 10 and 60 seconds.
+     * @param cartTotal - The total price of the cart, used to determine the duration of a block nudge.
+     */
+    public getBlockNudge(cartTotal: number): NudgeResponse {
+        const duration = Math.min(60, Math.max(10, Math.round(cartTotal / 10) * 5));
+        return {
+            type: 'block',
+            data: {duration}
+        };
     }
 
     /**

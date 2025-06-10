@@ -178,13 +178,12 @@ export default function CartPage() {
         }
     };
 
+    /**
+     * Forcefully triggers the block nudge based on the total price of the cart.
+     */
     const triggerBlockNudge = () => {
-        setCurrentNudge({
-            type: 'block',
-            data: {
-                duration: 15
-            }
-        });
+        const nudge = nudgeService.getBlockNudge(total);
+        setCurrentNudge(nudge);
     };
 
     return (
