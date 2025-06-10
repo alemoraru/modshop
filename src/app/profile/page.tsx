@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
 import NotificationPopUp from "@/components/NotificationPopUp";
-import {ChevronDown, DownloadIcon, LogOut} from "lucide-react";
+import {ChevronDown, DownloadIcon, LogOut, Code2, Settings as SettingsIcon, X as CloseIcon} from "lucide-react";
 
 interface Order {
     id: string;
@@ -35,6 +35,7 @@ export default function ProfilePage() {
     const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
     const [notificationMessage, setNotificationMessage] = useState("");
     const [developerMode, setDeveloperMode] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -127,6 +128,8 @@ export default function ProfilePage() {
         localStorage.setItem('modshop_developer_mode', newValue.toString());
     };
 
+    const handleToggleSettings = () => setSettingsOpen((prev) => !prev);
+
     if (!user) {
         return (
             <main className="bg-white text-gray-900">
@@ -147,17 +150,45 @@ export default function ProfilePage() {
                         <p className="text-gray-600">{user.email}</p>
                     </div>
 
-                    <div className="flex flex-wrap gap-3">
-                        <button
-                            onClick={handleDownload}
-                            className="flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600
-                            text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-base
-                            shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
-                        >
-                            <DownloadIcon className="w-5 h-5"/>
-                            <span>Download Stats</span>
-                        </button>
-
+                    <div className="flex flex-wrap gap-3 items-center">
+                        <div className="relative">
+                            <button
+                                onClick={handleToggleSettings}
+                                className="flex items-center gap-2 px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-colors font-medium text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
+                                title="Settings"
+                            >
+                                <SettingsIcon className="w-5 h-5"/>
+                                <span>Settings</span>
+                            </button>
+                            {settingsOpen && (
+                                <div
+                                    className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded shadow-lg z-10 p-4 flex flex-col gap-2">
+                                    <button
+                                        onClick={handleDownload}
+                                        className="flex items-center gap-2 px-2 py-2 rounded border border-blue-600 text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                                    >
+                                        <DownloadIcon className="w-4 h-4"/>
+                                        <span>Download Stats</span>
+                                    </button>
+                                    <button
+                                        onClick={handleToggleDeveloperMode}
+                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${developerMode ? 'border-green-600 text-green-700 bg-green-50' : 'border-gray-300 text-gray-600 bg-white'} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
+                                        title="Toggle Developer Mode"
+                                    >
+                                        <Code2 className="w-4 h-4"/>
+                                        {developerMode ? 'Dev ON' : 'Dev OFF'}
+                                    </button>
+                                    <button
+                                        onClick={handleToggleSettings}
+                                        className="flex items-center gap-2 px-2 py-1 rounded text-gray-500 hover:text-gray-700 text-xs mt-2 self-end cursor-pointer transition-transform duration-200 hover:scale-110"
+                                        title="Close Settings"
+                                    >
+                                        <CloseIcon className="w-3 h-3"/>
+                                        Close
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                         <button
                             onClick={logout}
                             className="flex items-center gap-2 px-4 py-2 rounded-md border border-red-600
@@ -166,14 +197,6 @@ export default function ProfilePage() {
                         >
                             <LogOut className="w-5 h-5"/>
                             <span>Log Out</span>
-                        </button>
-
-                        <button
-                            onClick={handleToggleDeveloperMode}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md border ${developerMode ? 'border-green-600 text-green-700' : 'border-gray-400 text-gray-700'}
-                            bg-white hover:bg-green-50 transition-colors font-medium text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
-                        >
-                            <span>{developerMode ? 'Developer Mode: ON' : 'Developer Mode: OFF'}</span>
                         </button>
                     </div>
                 </div>
