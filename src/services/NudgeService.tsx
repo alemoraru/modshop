@@ -22,6 +22,9 @@ export interface UserNudgeStats {
     block: { shown: number; completed: number; savings: number };
 }
 
+/**
+ * Service to manage nudges for users based on their cart interactions.
+ */
 class NudgeService {
     private getUserStats(): UserNudgeStats {
         const stored = localStorage.getItem("modshop_nudge_stats");
@@ -36,6 +39,12 @@ class NudgeService {
         localStorage.setItem("modshop_nudge_stats", JSON.stringify(stats));
     }
 
+    /**
+     * Selects a nudge type based on the user's interaction history and current cart items.
+     * Uses UCB1 algorithm to balance exploration and exploitation.
+     * @param cartItems - Array of items in the cart, each with a price.
+     * @return A NudgeType indicating which nudge to show.
+     */
     private selectNudge(cartItems: { price: number }[]): NudgeType {
         if (cartItems.length === 0) return 'none';
 
@@ -65,6 +74,11 @@ class NudgeService {
     }
 
 
+    /**
+     * Fetches a less expensive alternative for the given item in its respective category
+     * if it exists and is indeed less expensive than the current item.
+     * @param item
+     */
     async getCheaperAlternative(item: {
         title: string;
         price: number;
@@ -126,6 +140,12 @@ class NudgeService {
         }
     }
 
+    /**
+     * Triggers a nudge based on the current cart items and total.
+     * @param cartItems - Array of items in the cart, each with title, price, quantity, and optional slug and category.
+     * @param cartTotal - Total price of the cart (i.e., sum of all item prices).
+     * @return A promise that resolves to a NudgeResponse object containing the type of nudge and relevant data.
+     */
     async triggerNudge(cartItems: {
         title: string;
         price: number;
@@ -161,10 +181,11 @@ class NudgeService {
                 };
 
             case 'block':
+                const blockDuration = Math.min(60, Math.max(10, Math.round(cartTotal / 10) * 5));
                 return {
                     type: 'block',
                     data: {
-                        duration: Math.random() > 0.5 ? 15 : 20
+                        duration: blockDuration
                     }
                 };
 
@@ -173,11 +194,21 @@ class NudgeService {
         }
     }
 
-    recordNudgeInteraction(type: NudgeType, accepted: boolean, options?: {
-        currentItemPrice?: number;
-        alternativePrice?: number;
-        cartTotal?: number;
-    }) {
+    /**
+     * Records a user's interaction with a nudge, updating their stats accordingly.
+     * @param type - The type of nudge interaction (gentle, alternative, block).
+     * @param accepted - Whether the user accepted the nudge or not.
+     * @param options - Additional options for the nudge interaction, such as current item price, alternative price, and cart total.
+     */
+    recordNudgeInteraction(
+        type: NudgeType,
+        accepted: boolean,
+        options?: {
+            currentItemPrice?: number;
+            alternativePrice?: number;
+            cartTotal?: number;
+        }) {
+
         const stats = this.getUserStats();
 
         switch (type) {
@@ -207,4 +238,7 @@ class NudgeService {
 
 }
 
+/**
+ * Singleton instance of NudgeService to be used throughout the application.
+ */
 export const nudgeService = new NudgeService();
