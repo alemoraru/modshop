@@ -37,30 +37,32 @@ class NudgeService {
     }
 
     private selectNudge(cartItems: { price: number }[]): NudgeType {
+        if (cartItems.length === 0) return 'none';
+
         const stats = this.getUserStats();
         const totalShown = stats.gentle.shown + stats.alternative.shown + stats.block.shown;
-    
+
         // If not enough data, explore randomly
         if (totalShown < 5) {
             return ['gentle', 'alternative', 'block'][Math.floor(Math.random() * 3)] as NudgeType;
         }
-    
+
         // Calculate UCB1 values (mean reward + exploration bonus)
         const ucb = (savings: number, shown: number) => {
             if (shown === 0) return Infinity;
             return (savings / shown) + Math.sqrt(2 * Math.log(totalShown) / shown);
         };
-    
+
         const gentleUCB = ucb(stats.gentle.savings, stats.gentle.shown);
         const altUCB = ucb(stats.alternative.savings, stats.alternative.shown);
         const blockUCB = ucb(stats.block.savings, stats.block.shown);
-    
+
         const max = Math.max(gentleUCB, altUCB, blockUCB);
-    
+
         if (max === blockUCB) return 'block';
         if (max === altUCB) return 'alternative';
         return 'gentle';
-}
+    }
 
 
     async getCheaperAlternative(item: {
@@ -172,36 +174,36 @@ class NudgeService {
     }
 
     recordNudgeInteraction(type: NudgeType, accepted: boolean, options?: {
-            currentItemPrice?: number;
-            alternativePrice?: number;
-            cartTotal?: number;
-        }) {
-            const stats = this.getUserStats();
-        
-            switch (type) {
-                case 'gentle':
-                    stats.gentle.shown++;
-                    if (accepted) {
-                        stats.gentle.accepted++;
-                        stats.gentle.savings += options?.currentItemPrice || 0;
-                    }
-                    break;
-                case 'alternative':
-                    stats.alternative.shown++;
-                    if (accepted && options?.currentItemPrice && options?.alternativePrice != null) {
-                        stats.alternative.accepted++;
-                        stats.alternative.savings += Math.max(0, options.currentItemPrice - options.alternativePrice);
-                    }
-                    break;
-                case 'block':
-                    stats.block.shown++;
-                    stats.block.completed++;
-                    stats.block.savings += options?.cartTotal || 0;
-                    break;
-            }
-        
-            this.saveUserStats(stats);
+        currentItemPrice?: number;
+        alternativePrice?: number;
+        cartTotal?: number;
+    }) {
+        const stats = this.getUserStats();
+
+        switch (type) {
+            case 'gentle':
+                stats.gentle.shown++;
+                if (accepted) {
+                    stats.gentle.accepted++;
+                    stats.gentle.savings += options?.currentItemPrice || 0;
+                }
+                break;
+            case 'alternative':
+                stats.alternative.shown++;
+                if (accepted && options?.currentItemPrice && options?.alternativePrice != null) {
+                    stats.alternative.accepted++;
+                    stats.alternative.savings += Math.max(0, options.currentItemPrice - options.alternativePrice);
+                }
+                break;
+            case 'block':
+                stats.block.shown++;
+                stats.block.completed++;
+                stats.block.savings += options?.cartTotal || 0;
+                break;
         }
+
+        this.saveUserStats(stats);
+    }
 
 }
 

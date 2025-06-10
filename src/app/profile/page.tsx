@@ -75,30 +75,30 @@ export default function ProfilePage() {
     const handleDownload = () => {
         const statsRaw = localStorage.getItem("modshop_nudge_stats");
         const savingsRaw = localStorage.getItem("modshop_nudge_savings"); // optional savings per type
-    
+
         if (!statsRaw || !user) {
             alert("No stats found or user not logged in.");
             return;
         }
-    
+
         const stats = JSON.parse(statsRaw);
         const savings = savingsRaw ? JSON.parse(savingsRaw) : {
             gentle: 0,
             alternative: 0,
             block: 0
         };
-    
+
         const rows = [
             ["User", "NudgeType", "Shown", "Accepted", "Savings"],
             [user.email, "gentle", stats.gentle.shown || 0, stats.gentle.accepted || 0, savings.gentle || 0],
             [user.email, "alternative", stats.alternative.shown || 0, stats.alternative.accepted || 0, savings.alternative || 0],
             [user.email, "block", stats.block.shown || 0, stats.block.accepted || 0, savings.block || 0]
         ];
-    
+
         const csvContent = rows.map(row => row.join(",")).join("\n");
-        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8;"});
         const url = URL.createObjectURL(blob);
-    
+
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("download", `nudge_stats_${user.email}.csv`);
