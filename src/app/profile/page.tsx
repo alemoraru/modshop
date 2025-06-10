@@ -1,7 +1,7 @@
 "use client";
 
 import {useAuth} from "@/context/AuthContext";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
 import NotificationPopUp from "@/components/NotificationPopUp";
@@ -36,6 +36,7 @@ export default function ProfilePage() {
     const [notificationMessage, setNotificationMessage] = useState("");
     const [developerMode, setDeveloperMode] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         if (user) {
@@ -130,6 +131,24 @@ export default function ProfilePage() {
 
     const handleToggleSettings = () => setSettingsOpen((prev) => !prev);
 
+    // Close the settings menu when clicking outside it
+    useEffect(() => {
+        if (!settingsOpen) return;
+
+        function handleClickOutside(event: MouseEvent | TouchEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setSettingsOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, [settingsOpen]);
+
     if (!user) {
         return (
             <main className="bg-white text-gray-900">
@@ -162,7 +181,9 @@ export default function ProfilePage() {
                             </button>
                             {settingsOpen && (
                                 <div
-                                    className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded shadow-lg z-10 p-4 flex flex-col gap-2">
+                                    ref={menuRef}
+                                    className="absolute left-0 mt-2 w-56 bg-white border border-gray-200 rounded shadow-lg z-10 p-4 flex flex-col gap-2"
+                                >
                                     <button
                                         onClick={handleDownload}
                                         className="flex items-center gap-2 px-2 py-2 rounded border border-blue-600 text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
