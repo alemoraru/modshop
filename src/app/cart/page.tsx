@@ -27,6 +27,12 @@ export default function CartPage() {
     const [currentNudge, setCurrentNudge] = useState<NudgeResponse | null>(null);
     const [canProceedWithCheckout, setCanProceedWithCheckout] = useState(false);
 
+    // Read developer mode from localStorage
+    const [developerMode, setDeveloperMode] = useState(false);
+    useEffect(() => {
+        setDeveloperMode(localStorage.getItem('modshop_developer_mode') === 'true');
+    }, []);
+
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     /**
@@ -178,13 +184,12 @@ export default function CartPage() {
         }
     };
 
+    /**
+     * Forcefully triggers the block nudge based on the total price of the cart.
+     */
     const triggerBlockNudge = () => {
-        setCurrentNudge({
-            type: 'block',
-            data: {
-                duration: 15
-            }
-        });
+        const nudge = nudgeService.getBlockNudge(total);
+        setCurrentNudge(nudge);
     };
 
     return (
@@ -251,46 +256,48 @@ export default function CartPage() {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                                <button
-                                    onClick={user ? triggerGentleNudge : () => {
-                                        setNotificationType('warning');
-                                        setNotificationMessage('Please log in to use nudges or continue with purchases.');
-                                        setShowNotification(true);
-                                    }}
-                                    disabled={items.length === 0}
-                                    className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:opacity-50 transition-all cursor-pointer"
-                                >
-                                    <Lightbulb className="w-4 h-4"/>
-                                    Gentle Nudge
-                                </button>
+                                {developerMode && <>
+                                    <button
+                                        onClick={user ? triggerGentleNudge : () => {
+                                            setNotificationType('warning');
+                                            setNotificationMessage('Please log in to use nudges or continue with purchases.');
+                                            setShowNotification(true);
+                                        }}
+                                        disabled={items.length === 0}
+                                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600 disabled:opacity-50 transition-all cursor-pointer"
+                                    >
+                                        <Lightbulb className="w-4 h-4"/>
+                                        Gentle Nudge
+                                    </button>
 
-                                <button
-                                    onClick={user ? triggerAlternativeNudge : () => {
-                                        setNotificationType('warning');
-                                        setNotificationMessage('Please log in to use nudges or continue with purchases.');
-                                        setShowNotification(true);
-                                    }}
-                                    disabled={items.length === 0}
-                                    className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-green-500
+                                    <button
+                                        onClick={user ? triggerAlternativeNudge : () => {
+                                            setNotificationType('warning');
+                                            setNotificationMessage('Please log in to use nudges or continue with purchases.');
+                                            setShowNotification(true);
+                                        }}
+                                        disabled={items.length === 0}
+                                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-green-500
                                     text-white rounded hover:bg-green-600 disabled:opacity-50 transition-all cursor-pointer"
-                                >
-                                    <Handshake className="w-4 h-4"/>
-                                    Alternative Nudge
-                                </button>
+                                    >
+                                        <Handshake className="w-4 h-4"/>
+                                        Alternative Nudge
+                                    </button>
 
-                                <button
-                                    onClick={user ? triggerBlockNudge : () => {
-                                        setNotificationType('warning');
-                                        setNotificationMessage('Please log in to use nudges or continue with purchases.');
-                                        setShowNotification(true);
-                                    }}
-                                    disabled={items.length === 0}
-                                    className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-red-500
+                                    <button
+                                        onClick={user ? triggerBlockNudge : () => {
+                                            setNotificationType('warning');
+                                            setNotificationMessage('Please log in to use nudges or continue with purchases.');
+                                            setShowNotification(true);
+                                        }}
+                                        disabled={items.length === 0}
+                                        className="flex items-center justify-center gap-2 px-4 py-2 text-sm bg-red-500
                                     text-white rounded hover:bg-red-600 disabled:opacity-50 transition-all cursor-pointer"
-                                >
-                                    <ShieldAlert className="w-4 h-4"/>
-                                    Block Nudge
-                                </button>
+                                    >
+                                        <ShieldAlert className="w-4 h-4"/>
+                                        Block Nudge
+                                    </button>
+                                </>}
 
                                 <button
                                     onClick={handleCheckout}

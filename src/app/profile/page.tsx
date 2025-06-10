@@ -1,10 +1,11 @@
 "use client";
 
 import {useAuth} from "@/context/AuthContext";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
-import {ChevronDown, DownloadIcon, LogOut} from "lucide-react";
+import NotificationPopUp from "@/components/NotificationPopUp";
+import {ChevronDown, DownloadIcon, LogOut, Code2, Settings as SettingsIcon, X as CloseIcon} from "lucide-react";
 
 interface Order {
     id: string;
@@ -30,6 +31,12 @@ export default function ProfilePage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sortDescending, setSortDescending] = useState(true);
     const [shopperType, setShopperType] = useState<ShopperType>(null);
+    const [showNotification, setShowNotification] = useState(false);
+    const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
+    const [notificationMessage, setNotificationMessage] = useState("");
+    const [developerMode, setDeveloperMode] = useState(false);
+    const [settingsOpen, setSettingsOpen] = useState(false);
+    const menuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         if (user) {
@@ -49,6 +56,10 @@ export default function ProfilePage() {
             if (storedShopperType) {
                 setShopperType(storedShopperType as ShopperType);
             }
+
+            // Load developer mode from localStorage
+            const devMode = localStorage.getItem('modshop_developer_mode');
+            setDeveloperMode(devMode === 'true');
         }
     }, [user, sortDescending]);
 
@@ -74,20 +85,31 @@ export default function ProfilePage() {
 
     const handleDownload = () => {
         const statsRaw = localStorage.getItem("modshop_nudge_stats");
-        if (!statsRaw) {
-            alert("No stats found in localStorage.");
+        const savingsRaw = localStorage.getItem("modshop_nudge_savings"); // optional savings per type
+
+        // Check if stats and user are available
+        // If not, show a warning notification
+        if (!statsRaw || !user) {
+            setNotificationType('warning');
+            setNotificationMessage("No stats found or user not logged in.");
+            setShowNotification(true);
+            console.warn("No stats found or user not logged in.");
             return;
         }
 
         const stats = JSON.parse(statsRaw);
+        const savings = savingsRaw ? JSON.parse(savingsRaw) : {
+            gentle: 0,
+            alternative: 0,
+            block: 0
+        };
 
         const rows = [
-            ["Nudge Type", "Shown", "Accepted/Completed"]
+            ["User", "NudgeType", "Shown", "Accepted", "Savings"],
+            [user.email, "gentle", stats.gentle.shown || 0, stats.gentle.accepted || 0, savings.gentle || 0],
+            [user.email, "alternative", stats.alternative.shown || 0, stats.alternative.accepted || 0, savings.alternative || 0],
+            [user.email, "block", stats.block.shown || 0, stats.block.accepted || 0, savings.block || 0]
         ];
-
-        rows.push(["gentle", stats.gentle.shown, stats.gentle.accepted]);
-        rows.push(["alternative", stats.alternative.shown, stats.alternative.accepted]);
-        rows.push(["block", stats.block.shown, stats.block.completed]);
 
         const csvContent = rows.map(row => row.join(",")).join("\n");
         const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8;"});
@@ -95,11 +117,37 @@ export default function ProfilePage() {
 
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "nudge_stats.csv");
+        link.setAttribute("download", `nudge_stats_${user.email}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
+
+    const handleToggleDeveloperMode = () => {
+        const newValue = !developerMode;
+        setDeveloperMode(newValue);
+        localStorage.setItem('modshop_developer_mode', newValue.toString());
+    };
+
+    const handleToggleSettings = () => setSettingsOpen((prev) => !prev);
+
+    // Close the settings menu when clicking outside it
+    useEffect(() => {
+        if (!settingsOpen) return;
+
+        function handleClickOutside(event: MouseEvent | TouchEvent) {
+            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+                setSettingsOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        document.addEventListener('touchstart', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener('touchstart', handleClickOutside);
+        };
+    }, [settingsOpen]);
 
     if (!user) {
         return (
@@ -121,17 +169,47 @@ export default function ProfilePage() {
                         <p className="text-gray-600">{user.email}</p>
                     </div>
 
-                    <div className="flex flex-wrap gap-3">
-                        <button
-                            onClick={handleDownload}
-                            className="flex items-center gap-2 px-4 py-2 rounded-md border border-blue-600
-                            text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-base
-                            shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
-                        >
-                            <DownloadIcon className="w-5 h-5"/>
-                            <span>Download Stats</span>
-                        </button>
-
+                    <div className="flex flex-wrap gap-3 items-center">
+                        <div className="relative">
+                            <button
+                                onClick={handleToggleSettings}
+                                className="flex items-center gap-2 px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-colors font-medium text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
+                                title="Settings"
+                            >
+                                <SettingsIcon className="w-5 h-5"/>
+                                <span>Settings</span>
+                            </button>
+                            {settingsOpen && (
+                                <div
+                                    ref={menuRef}
+                                    className="absolute left-0 mt-2 w-56 bg-white border border-gray-200 rounded shadow-lg z-10 p-4 flex flex-col gap-2"
+                                >
+                                    <button
+                                        onClick={handleDownload}
+                                        className="flex items-center gap-2 px-2 py-2 rounded border border-blue-600 text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                                    >
+                                        <DownloadIcon className="w-4 h-4"/>
+                                        <span>Download Stats</span>
+                                    </button>
+                                    <button
+                                        onClick={handleToggleDeveloperMode}
+                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${developerMode ? 'border-green-600 text-green-700 bg-green-50' : 'border-gray-300 text-gray-600 bg-white'} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
+                                        title="Toggle Developer Mode"
+                                    >
+                                        <Code2 className="w-4 h-4"/>
+                                        {developerMode ? 'Dev ON' : 'Dev OFF'}
+                                    </button>
+                                    <button
+                                        onClick={handleToggleSettings}
+                                        className="flex items-center gap-2 px-2 py-1 rounded text-gray-500 hover:text-gray-700 text-xs mt-2 self-end cursor-pointer transition-transform duration-200 hover:scale-110"
+                                        title="Close Settings"
+                                    >
+                                        <CloseIcon className="w-3 h-3"/>
+                                        Close
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                         <button
                             onClick={logout}
                             className="flex items-center gap-2 px-4 py-2 rounded-md border border-red-600
@@ -230,6 +308,13 @@ export default function ProfilePage() {
                     </div>
                 )}
             </section>
+
+            <NotificationPopUp
+                open={showNotification}
+                message={notificationMessage}
+                type={notificationType}
+                onCloseAction={() => setShowNotification(false)}
+            />
         </main>
     );
 }
