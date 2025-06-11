@@ -18,34 +18,34 @@ export default function HomePage() {
         {name: "Household Items", slug: "household"},
     ];
 
-    // Example featured products (these can be replaced with dynamic data)
+    // Example featured products (static for now for demonstration purposes)
     const featuredProducts = [
         {
-            slug: "classic-white-tshirt",
-            title: "Classic White T-Shirt",
-            price: 19.99,
-            image: "/images/products/classic-white-tshirt.jpg",
+            slug: "classic-white-sneakers",
+            title: "Classic White Sneakers",
+            price: 44.99,
+            image: "/images/products/classic-white-sneakers.png",
             category: "Clothing"
         },
         {
-            slug: "the-creative-mind",
-            title: "The Creative Mind",
-            price: 14.99,
-            image: "/images/products/creative-mind.jpg",
+            slug: "atomic-habits",
+            title: "Atomic Habits",
+            price: 21.50,
+            image: "/images/products/atomic-habits.jpg",
             category: "Books"
         },
         {
-            slug: "stainless-steel-water-bottle",
-            title: "Stainless Steel Water Bottle",
-            price: 24.99,
-            image: "/images/products/stainless-steel-water-bottle.jpg",
+            slug: "modern-kitchen-chair",
+            title: "Modern Kitchen Chair",
+            price: 54.99,
+            image: "/images/products/modern-kitchen-chair.jpg",
             category: "Household"
         },
         {
-            slug: "elden-ring",
-            title: "Elden Ring",
+            slug: "super-mario-odyssey",
+            title: "Super Mario Odyssey",
             price: 59.99,
-            image: "/images/products/elden-ring.jpg",
+            image: "/images/products/super-mario-odyssey.jpg",
             category: "Video Games"
         },
     ];
