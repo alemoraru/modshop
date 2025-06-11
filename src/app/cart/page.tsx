@@ -78,7 +78,7 @@ export default function CartPage() {
 
         const order = {
             id: Date.now().toString(),
-            items,
+            items: items.map(({slug, title, price, quantity, image}) => ({slug, title, price, quantity, image})),
             total,
             date: new Date().toISOString(),
             userEmail: user?.email || '',
