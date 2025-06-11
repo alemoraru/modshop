@@ -1,4 +1,4 @@
-import {readFileSync, readdirSync} from "fs";
+import {readdirSync, readFileSync} from "fs";
 import path from "path";
 import matter from "gray-matter";
 import {MDXRemote} from "next-mdx-remote/rsc";
@@ -14,16 +14,21 @@ interface ProductFrontmatter {
     description: string;
 }
 
+/**
+ * This function generates static parameters for all product slugs.
+ * It reads the product categories and their respective files to create a list of slugs.
+ * @returns An array of objects containing the product slugs.
+ */
 export async function generateStaticParams() {
     const categories = readdirSync(path.join(process.cwd(), "products"));
-    const slugs = categories.flatMap((category) => {
+
+    return categories.flatMap((category) => {
         const dirPath = path.join(process.cwd(), "products", category);
         return readdirSync(dirPath).map((file) => {
             const slug = file.replace(/\.mdx$/, "");
             return {slug};
         });
     });
-    return slugs;
 }
 
 /**

@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 
 interface OrderCardProps {
     order: {
         id: string;
-        items: { title: string; price: number; quantity: number; image: string }[];
+        items: { title: string; price: number; quantity: number; image: string; slug?: string }[];
         total: number;
         date: string;
     };
@@ -24,17 +25,24 @@ export default function OrderCard({order}: OrderCardProps) {
             <div className="space-y-2">
                 {order.items.map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                        <Image
-                            src={item.image}
-                            alt={item.title}
-                            width={48}
-                            height={48}
-                            className="w-12 h-12 object-cover rounded"
-                        />
-                        <div className="flex-1">
-                            <div className="font-medium">{item.title}</div>
-                            <div className="text-sm text-gray-600">${item.price} x {item.quantity}</div>
-                        </div>
+                        <Link href={`/product/${item.slug}`} className="group flex items-center gap-3">
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                width={48}
+                                height={48}
+                                className="w-12 h-12 object-cover rounded group-hover:scale-105 transition-transform"
+                            />
+                            <div className="flex-1">
+                                <div
+                                    className="font-medium group-hover:underline
+                                    group-hover:text-blue-700 transition-colors"
+                                >
+                                    {item.title}
+                                </div>
+                                <div className="text-sm text-gray-600">${item.price} x {item.quantity}</div>
+                            </div>
+                        </Link>
                     </div>
                 ))}
             </div>
@@ -42,4 +50,3 @@ export default function OrderCard({order}: OrderCardProps) {
         </div>
     );
 }
-
