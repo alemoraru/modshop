@@ -218,17 +218,29 @@ export default function CartPage() {
                         {items.map((item) => (
                             <div
                                 key={item.slug}
-                                className="flex items-center gap-4 border-b pb-4"
+                                className="flex items-center gap-4 border-b pb-4 rounded group"
                             >
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    width={96}
-                                    height={96}
-                                    className="w-24 h-24 object-cover rounded"
-                                />
+                                <Link
+                                    href={`/product/${item.slug}`}
+                                    className="shrink-0 group/image rounded transition-colors hover:bg-blue-50 cursor-pointer flex flex-col items-center justify-center"
+                                    prefetch={false}
+                                >
+                                    <Image
+                                        src={item.image}
+                                        alt={item.title}
+                                        width={96}
+                                        height={96}
+                                        className="w-24 h-24 object-cover rounded group-hover/image:scale-105 transition-transform"
+                                    />
+                                </Link>
                                 <div className="flex-1">
-                                    <h2 className="font-semibold text-lg">{item.title}</h2>
+                                    <Link
+                                        href={`/product/${item.slug}`}
+                                        className="font-semibold text-lg group-hover/image:text-blue-700 transition-colors hover:underline cursor-pointer"
+                                        prefetch={false}
+                                    >
+                                        {item.title}
+                                    </Link>
                                     <p className="text-gray-600">€{item.price}</p>
                                     <div className="flex items-center gap-2 mt-2">
                                         <label htmlFor="qty">Qty:</label>
@@ -236,12 +248,17 @@ export default function CartPage() {
                                             type="number"
                                             min="1"
                                             value={item.quantity}
+                                            onClick={e => e.stopPropagation()}
                                             onChange={(e) => updateQuantity(item.slug, parseInt(e.target.value))}
                                             className="w-16 border rounded px-2 py-1"
                                         />
                                         <button
                                             className="text-sm text-red-500 hover:underline ml-4 cursor-pointer"
-                                            onClick={() => removeItem(item.slug)}
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                removeItem(item.slug);
+                                            }}
                                         >
                                             Remove
                                         </button>
