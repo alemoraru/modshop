@@ -55,14 +55,17 @@ export default function HomePage() {
 
             {/* Hero Banner */}
             <section
-                className="relative bg-gradient-to-br from-blue-100 to-blue-300 py-16 px-6 text-center mb-12 overflow-hidden">
+                className="relative bg-gradient-to-br from-blue-100 to-blue-300 py-10 px-6 text-center mb-12 overflow-hidden">
                 <div className="relative z-10">
                     <h1 className="text-5xl font-extrabold mb-4 text-blue-900 drop-shadow">Welcome to ModShop</h1>
                     <p className="text-xl mb-8 text-blue-800">Your behavior-aware shopping experience. Discover products
                         tailored for you!</p>
-                    <Link href="/category/clothing"
-                          className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full text-lg font-semibold shadow hover:bg-blue-700 transition">Shop
-                        Now</Link>
+                    <Link href="/about"
+                          className="inline-block bg-blue-600 text-white px-8 py-3 rounded-full text-lg
+                          font-semibold shadow hover:bg-blue-700 transition"
+                    >
+                        Learn More
+                    </Link>
                 </div>
             </section>
 
@@ -87,7 +90,7 @@ export default function HomePage() {
             </section>
 
             {/* Featured Products */}
-            <section className="py-12 px-6 bg-gray-50">
+            <section className="py-12 px-6 bg-gray-100">
                 <h2 className="text-3xl font-bold text-center mb-8">Featured Products</h2>
                 <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 max-w-6xl mx-auto">
                     {featuredProducts.map((product) => (
