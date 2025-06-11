@@ -5,7 +5,7 @@ import Link from "next/link";
 interface OrderCardProps {
     order: {
         id: string;
-        items: { title: string; price: number; quantity: number; image: string; slug: string }[];
+        items: { title: string; price: number; quantity: number; image: string; slug?: string }[];
         total: number;
         date: string;
     };
