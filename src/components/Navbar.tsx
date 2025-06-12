@@ -39,9 +39,9 @@ export default function Navbar() {
     return (
         <>
             <nav
-                className="w-full bg-blue-600 shadow-md px-4 py-3 flex items-center justify-between flex-wrap gap-2 z-0">
+                className="w-full bg-blue-600 shadow-md px-4 py-3 flex items-center justify-between flex-nowrap gap-2 z-0">
                 {/* Left: Hamburger + Logo */}
-                <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap min-w-0">
+                <div className="flex items-center gap-2 min-w-0 flex-1 basis-0">
                     {/* Hamburger/X menu (mobile only) */}
                     <button
                         className={`mr-2 p-2 rounded-md focus:outline-none transition-colors duration-200 sm:hidden border-none shadow-none`}
@@ -78,7 +78,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Center: Search bar (hidden on mobile) */}
-                <div className="flex-1 justify-center px-2 hidden sm:flex">
+                <div className="flex justify-center flex-1 basis-0 px-2 hidden sm:flex">
                     <div className="relative w-full max-w-md">
                         <input
                             type="text"
@@ -96,7 +96,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Right: Profile and Cart */}
-                <div className="flex items-center space-x-4 shrink-0">
+                <div className="flex items-center space-x-4 min-w-0 flex-1 basis-0 justify-end">
                     <Link href="/profile" className="cursor-pointer group text-white">
                         <span className="relative flex items-center">
                           <User
