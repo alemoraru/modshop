@@ -95,8 +95,16 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Right: Cart and Profile */}
+                {/* Right: Profile and Cart */}
                 <div className="flex items-center space-x-4 shrink-0">
+                    <Link href="/profile" className="cursor-pointer group text-white">
+                        <span className="relative flex items-center">
+                          <User
+                              className="w-6 h-6 transition-all duration-200 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]"/>
+                          <span
+                              className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-80 group-hover:bg-white/20 transition-all duration-200 z-[-1]"/>
+                        </span>
+                    </Link>
                     <Link href="/cart" className="relative cursor-pointer group text-white">
                         <span className="relative flex items-center">
                           <ShoppingCart
@@ -110,14 +118,6 @@ export default function Navbar() {
                                 {cartCount}
                             </span>
                         )}
-                    </Link>
-                    <Link href="/profile" className="cursor-pointer group text-white">
-                        <span className="relative flex items-center">
-                          <User
-                              className="w-6 h-6 transition-all duration-200 group-hover:text-white group-hover:scale-110 group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.7)]"/>
-                          <span
-                              className="absolute -inset-1 rounded-full opacity-0 group-hover:opacity-80 group-hover:bg-white/20 transition-all duration-200 z-[-1]"/>
-                        </span>
                     </Link>
                 </div>
             </nav>
