@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @plugin "@tailwindcss/typography";
 
 :root {
@@ -16,6 +17,19 @@
             opacity: 1;
             transform: translateY(0);
         }
+    }
+    @keyframes navbar-slide-down {
+        0% {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-navbar-slide-down {
+        animation: navbar-slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 }
 
@@ -36,3 +50,4 @@ body {
     color: var(--foreground);
     font-family: Arial, Helvetica, sans-serif;
 }
+
