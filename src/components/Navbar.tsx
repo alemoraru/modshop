@@ -29,22 +29,31 @@ export default function Navbar() {
                 className="w-full bg-blue-600 shadow-md px-4 py-3 flex items-center justify-between flex-wrap gap-2 z-0">
                 {/* Left: Hamburger + Logo */}
                 <div className="flex items-center gap-2 overflow-x-auto whitespace-nowrap min-w-0">
-                    {/* Hamburger menu (mobile only) */}
+                    {/* Hamburger/X menu (mobile only) */}
                     <button
                         className={`mr-2 p-2 rounded-md focus:outline-none transition-colors duration-200 sm:hidden border-none shadow-none`}
                         onClick={() => setMenuOpen(v => !v)}
-                        aria-label="Open categories menu"
+                        aria-label={menuOpen ? 'Close menu' : 'Open categories menu'}
                         tabIndex={0}
                         type="button"
                     >
-                        <span className="relative w-7 h-7 flex flex-col items-center justify-center">
-                          <span
-                              className={`block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out ${menuOpen ? 'rotate-45 top-3.5' : 'top-2'}`}></span>
-                          <span
-                              className={`block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out ${menuOpen ? 'opacity-0' : 'top-3.5'}`}></span>
-                          <span
-                              className={`block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out ${menuOpen ? '-rotate-45 top-3.5' : 'top-5'}`}></span>
-                        </span>
+                        {menuOpen ? (
+                            <span className="relative w-7 h-7 flex items-center justify-center">
+                                <span className="block absolute h-0.5 w-6 bg-white rounded rotate-45"
+                                      style={{top: '1.1rem'}}></span>
+                                <span className="block absolute h-0.5 w-6 bg-white rounded -rotate-45"
+                                      style={{top: '1.1rem'}}></span>
+                            </span>
+                        ) : (
+                            <span className="relative w-7 h-7 flex flex-col items-center justify-center">
+                                <span
+                                    className="block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out top-2"></span>
+                                <span
+                                    className="block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out top-3.5"></span>
+                                <span
+                                    className="block absolute h-0.5 w-6 bg-white rounded transition-all duration-300 ease-in-out top-5"></span>
+                            </span>
+                        )}
                     </button>
                     <Link
                         href="/"
@@ -100,31 +109,35 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            {/* Hamburger dropdown menu */}
+            {/* Hamburger dropdown menu (mobile drop-down from top, navbar stays visible, with slide-in effect) */}
             {menuOpen && (
-                <div
-                    className="absolute left-2 right-2 top-16 mx-auto max-w-xs bg-white/90 backdrop-blur border border-blue-200 rounded-2xl shadow-2xl z-50 min-w-[180px] animate-slide-fade-in flex flex-col py-4 px-2 gap-1 transition-all duration-300"
-                >
-                    <Link href="/category/books"
-                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
-                          onClick={() => setMenuOpen(false)}>
-                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Books
-                    </Link>
-                    <Link href="/category/clothing"
-                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
-                          onClick={() => setMenuOpen(false)}>
-                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Clothing
-                    </Link>
-                    <Link href="/category/household"
-                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
-                          onClick={() => setMenuOpen(false)}>
-                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Household
-                    </Link>
-                    <Link href="/category/video-games"
-                          className="px-4 py-2 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2"
-                          onClick={() => setMenuOpen(false)}>
-                        <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Video Games
-                    </Link>
+                <div className="fixed left-0 top-0 w-full z-50 sm:hidden">
+                    {/* Keep navbar visible, overlay menu below it */}
+                    <div
+                        className="absolute left-0 top-[60px] w-full bg-white shadow-2xl flex flex-col py-8 px-6 gap-2 transition-transform duration-300 transform translate-y-0 animate-navbar-slide-down"
+                        style={{zIndex: 51}}
+                    >
+                        <Link href="/category/books"
+                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
+                              onClick={() => setMenuOpen(false)}>
+                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Books
+                        </Link>
+                        <Link href="/category/clothing"
+                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
+                              onClick={() => setMenuOpen(false)}>
+                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Clothing
+                        </Link>
+                        <Link href="/category/household"
+                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
+                              onClick={() => setMenuOpen(false)}>
+                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Household
+                        </Link>
+                        <Link href="/category/video-games"
+                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
+                              onClick={() => setMenuOpen(false)}>
+                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Video Games
+                        </Link>
+                    </div>
                 </div>
             )}
 
