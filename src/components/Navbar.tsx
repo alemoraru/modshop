@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {ShoppingCart, User, Home, Search} from "lucide-react";
+import {ShoppingCart, User, Home, Search, BookOpen, Shirt, HomeIcon, Gamepad2} from "lucide-react";
 import {useCart} from "@/context/CartContext";
 import {useRouter} from "next/navigation";
 import React, {useState, useEffect} from "react";
@@ -130,25 +130,51 @@ export default function Navbar() {
                         className="absolute left-0 top-0 w-full h-[calc(100vh-60px)] bg-white shadow-2xl flex flex-col py-8 px-6 gap-4 transition-transform duration-300 animate-navbar-slide-down overflow-y-auto"
                         style={{zIndex: 51}}
                     >
-                        <Link href="/category/books"
-                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
-                              onClick={() => setMenuOpen(false)}>
-                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Books
+                        <Link
+                            href="/category/books"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-4 px-4 py-3 rounded-xl bg-white border border-blue-100 shadow-sm hover:bg-blue-50 transition duration-200 active:scale-[0.98]"
+                        >
+                            <span
+                                className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
+                                <BookOpen className="w-5 h-5"/>
+                            </span>
+                            <span className="text-lg font-medium text-blue-800">Books</span>
                         </Link>
-                        <Link href="/category/clothing"
-                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
-                              onClick={() => setMenuOpen(false)}>
-                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Clothing
+                        <Link
+                            href="/category/clothing"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-4 px-4 py-3 rounded-xl bg-white border border-blue-100 shadow-sm hover:bg-blue-50 transition duration-200 active:scale-[0.98]"
+                        >
+                            <span
+                                className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
+                                <Shirt className="w-5 h-5"/>
+                            </span>
+                            <span className="text-lg font-medium text-blue-800">Clothing</span>
                         </Link>
-                        <Link href="/category/household"
-                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
-                              onClick={() => setMenuOpen(false)}>
-                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Household
+
+                        <Link
+                            href="/category/household"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-4 px-4 py-3 rounded-xl bg-white border border-blue-100 shadow-sm hover:bg-blue-50 transition duration-200 active:scale-[0.98]"
+                        >
+                            <span
+                                className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
+                                <HomeIcon className="w-5 h-5"/>
+                            </span>
+                            <span className="text-lg font-medium text-blue-800">Household</span>
                         </Link>
-                        <Link href="/category/video-games"
-                              className="px-4 py-3 text-blue-700 font-semibold hover:bg-blue-100 hover:text-blue-900 rounded-lg transition-colors flex items-center gap-2 text-lg"
-                              onClick={() => setMenuOpen(false)}>
-                            <span className="inline-block w-2 h-2 rounded-full bg-blue-400 mr-2"/>Video Games
+
+                        <Link
+                            href="/category/video-games"
+                            onClick={() => setMenuOpen(false)}
+                            className="flex items-center gap-4 px-4 py-3 rounded-xl bg-white border border-blue-100 shadow-sm hover:bg-blue-50 transition duration-200 active:scale-[0.98]"
+                        >
+                            <span
+                                className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
+                                <Gamepad2 className="w-5 h-5"/>
+                            </span>
+                            <span className="text-lg font-medium text-blue-800">Video Games</span>
                         </Link>
                     </div>
                 </div>
