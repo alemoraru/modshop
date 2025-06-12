@@ -4,7 +4,7 @@ import Link from "next/link";
 import {ShoppingCart, User, Home, Search} from "lucide-react";
 import {useCart} from "@/context/CartContext";
 import {useRouter} from "next/navigation";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 /**
  * Navbar component that displays the site logo, a shopping cart icon with item count,
@@ -17,11 +17,24 @@ export default function Navbar() {
     const router = useRouter();
     const [search, setSearch] = useState("");
     const [menuOpen, setMenuOpen] = useState(false);
+
     const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && search.trim()) {
             router.push(`/search?query=${encodeURIComponent(search.trim())}`);
         }
     };
+
+    useEffect(() => {
+        if (menuOpen) {
+            document.body.classList.add("overflow-hidden");
+        } else {
+            document.body.classList.remove("overflow-hidden");
+        }
+
+        return () => {
+            document.body.classList.remove("overflow-hidden"); // Clean up on unmount
+        };
+    }, [menuOpen]);
 
     return (
         <>
@@ -111,10 +124,10 @@ export default function Navbar() {
 
             {/* Hamburger dropdown menu (mobile drop-down from top, navbar stays visible, with slide-in effect) */}
             {menuOpen && (
-                <div className="fixed left-0 top-0 w-full z-50 sm:hidden">
+                <div className="fixed left-0 top-[60px] w-full z-50 sm:hidden">
                     {/* Keep navbar visible, overlay menu below it */}
                     <div
-                        className="absolute left-0 top-[60px] w-full bg-white shadow-2xl flex flex-col py-8 px-6 gap-2 transition-transform duration-300 transform translate-y-0 animate-navbar-slide-down"
+                        className="absolute left-0 top-0 w-full h-[calc(100vh-60px)] bg-white shadow-2xl flex flex-col py-8 px-6 gap-4 transition-transform duration-300 animate-navbar-slide-down overflow-y-auto"
                         style={{zIndex: 51}}
                     >
                         <Link href="/category/books"
