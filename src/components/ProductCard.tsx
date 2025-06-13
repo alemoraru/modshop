@@ -22,20 +22,22 @@ export default function ProductCard({slug, title, price, image, category}: Produ
     return (
         <Link
             href={`/product/${slug}`}
-            className="group border rounded-2xl p-0 bg-white shadow-sm hover:shadow-xl transition-all duration-200 hover:scale-[1.03] hover:border-blue-500 cursor-pointer flex flex-col overflow-hidden"
+            className="group border rounded-2xl p-0 bg-white shadow-sm hover:shadow-xl transition-all
+            duration-200 hover:scale-[1.03] hover:border-blue-500 cursor-pointer flex flex-col overflow-hidden"
         >
             <div className="relative w-full h-48 bg-gray-100 flex items-center justify-center">
                 <Image
                     src={image}
                     alt={title}
                     fill
-                    className="object-contain group-hover:scale-105 transition-transform duration-200"
+                    className="object-contain transition-transform duration-200"
                     sizes="(max-width: 768px) 100vw, 400px"
                     priority={false}
                 />
                 {category && (
                     <span
-                        className="absolute top-3 left-3 bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full shadow">
+                        className="absolute top-3 left-3 bg-blue-100 text-blue-700 text-xs
+                        font-semibold px-2 py-1 rounded-full shadow">
                         {category}
                     </span>
                 )}
