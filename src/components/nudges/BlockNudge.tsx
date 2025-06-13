@@ -18,19 +18,24 @@ export default function PurchaseBlockNudge({duration, onCompleteAction}: Purchas
     const [timeLeft, setTimeLeft] = useState(duration);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    onCompleteAction();
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
+        if (timeLeft === 0) {
+            onCompleteAction();
+        }
+    }, [timeLeft, onCompleteAction]);
 
+    // Initialize, and reset the timer when duration changes
+    useEffect(() => {
+        setTimeLeft(duration);
+    }, [duration]);
+
+    // Countdown timer logic
+    useEffect(() => {
+        if (timeLeft === 0) return;
+        const timer = setInterval(() => {
+            setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+        }, 1000);
         return () => clearInterval(timer);
-    }, [onCompleteAction]);
+    }, [timeLeft]);
 
     return (
         <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">

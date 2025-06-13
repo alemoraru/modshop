@@ -21,6 +21,7 @@ export default function CartPage() {
     const {items, removeItem, updateQuantity, clearCart, addItem} = useCart();
     const {user} = useAuth();
     const [checkoutAnimating, setCheckoutAnimating] = useState(false);
+    const [checkoutLoading, setCheckoutLoading] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
     const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
     const [notificationMessage, setNotificationMessage] = useState("");
@@ -58,12 +59,16 @@ export default function CartPage() {
             return;
         }
 
+        setCheckoutLoading(true);
         if (!canProceedWithCheckout) {
             const nudgeResponse = await nudgeService.triggerNudge(items, total);
+            setCheckoutLoading(false);
             if (nudgeResponse.type !== 'none') {
                 setCurrentNudge(nudgeResponse);
                 return;
             }
+        } else {
+            setCheckoutLoading(false);
         }
         processCheckout();
     };
@@ -75,6 +80,7 @@ export default function CartPage() {
      */
     const processCheckout = () => {
         setCheckoutAnimating(true);
+        setCheckoutLoading(true);
 
         const order = {
             id: Date.now().toString(),
@@ -89,13 +95,16 @@ export default function CartPage() {
         orders.push(order);
         localStorage.setItem("modshop_orders", JSON.stringify(orders));
 
-        clearCart();
-        setNotificationType('success');
-        setNotificationMessage("🎉 Thank you! Your order has been placed.");
-        setShowNotification(true);
-        setCheckoutAnimating(false);
-        setCanProceedWithCheckout(false);
-        setCurrentNudge(null);
+        setTimeout(() => {
+            clearCart();
+            setNotificationType('success');
+            setNotificationMessage("🎉 Thank you! Your order has been placed.");
+            setShowNotification(true);
+            setCheckoutAnimating(false);
+            setCheckoutLoading(false);
+            setCanProceedWithCheckout(false);
+            setCurrentNudge(null);
+        }, 900);
     };
 
     const handleNudgeAccept = (nudgeType: string) => {
@@ -318,16 +327,26 @@ export default function CartPage() {
 
                                 <button
                                     onClick={handleCheckout}
-                                    disabled={checkoutAnimating}
+                                    disabled={checkoutAnimating || checkoutLoading}
                                     className={`flex items-center justify-center gap-2 px-4 py-2 text-sm rounded 
                                     transition-all duration-300 cursor-pointer ${
-                                        checkoutAnimating
+                                        checkoutAnimating || checkoutLoading
                                             ? "bg-green-500 text-white scale-105"
                                             : "bg-blue-600 text-white hover:bg-blue-700"
                                     }`}
                                 >
-                                    <ShoppingBag className="w-4 h-4"/>
-                                    {checkoutAnimating ? "Processing..." : "Buy Now"}
+                                    {checkoutLoading ? (
+                                        <svg className="animate-spin h-5 w-5 mr-2 text-white"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                                    strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor"
+                                                  d="M4 12a8 8 0 018-8v8z"></path>
+                                        </svg>
+                                    ) : (
+                                        <ShoppingBag className="w-4 h-4"/>
+                                    )}
+                                    {checkoutLoading ? "Processing..." : checkoutAnimating ? "Processing..." : "Buy Now"}
                                 </button>
                             </div>
                         </div>
