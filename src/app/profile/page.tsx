@@ -5,7 +5,16 @@ import {useEffect, useState, useRef} from "react";
 import LoginForm from "@/components/LoginForm";
 import OrderCard from "@/components/OrderCard";
 import NotificationPopUp from "@/components/NotificationPopUp";
-import {ChevronDown, DownloadIcon, LogOut, Code2, Settings as SettingsIcon, X as CloseIcon} from "lucide-react";
+import {
+    ChevronDown,
+    DownloadIcon,
+    LogOut,
+    Code2,
+    Settings as SettingsIcon,
+    X as CloseIcon,
+    Lock,
+    LockOpen
+} from "lucide-react";
 
 interface Order {
     id: string;
@@ -36,6 +45,7 @@ export default function ProfilePage() {
     const [notificationMessage, setNotificationMessage] = useState("");
     const [developerMode, setDeveloperMode] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [moderationEnabled, setModerationEnabled] = useState(true);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -60,6 +70,9 @@ export default function ProfilePage() {
             // Load developer mode from localStorage
             const devMode = localStorage.getItem('modshop_developer_mode');
             setDeveloperMode(devMode === 'true');
+
+            const storedModeration = localStorage.getItem('modshop_moderation_enabled');
+            setModerationEnabled(storedModeration !== 'false'); // default ON
         }
     }, [user, sortDescending]);
 
@@ -129,6 +142,12 @@ export default function ProfilePage() {
         localStorage.setItem('modshop_developer_mode', newValue.toString());
     };
 
+    const handleToggleModeration = () => {
+        const newValue = !moderationEnabled;
+        setModerationEnabled(newValue);
+        localStorage.setItem('modshop_moderation_enabled', newValue.toString());
+    };
+
     const handleToggleSettings = () => setSettingsOpen((prev) => !prev);
 
     // Close the settings menu when clicking outside it
@@ -178,6 +197,7 @@ export default function ProfilePage() {
                                 <SettingsIcon className="w-5 h-5"/>
                                 <span>Settings</span>
                             </button>
+
                             {settingsOpen && (
                                 <div
                                     ref={menuRef}
@@ -196,7 +216,22 @@ export default function ProfilePage() {
                                         title="Toggle Developer Mode"
                                     >
                                         <Code2 className="w-4 h-4"/>
-                                        {developerMode ? 'Dev ON' : 'Dev OFF'}
+                                        {developerMode ? 'Dev Mode ON' : 'Dev Mode OFF'}
+                                    </button>
+                                    <button
+                                        onClick={handleToggleModeration}
+                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${moderationEnabled ? 'border-green-600 text-green-700 bg-green-50' : 'border-gray-300 text-gray-600 bg-white'} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
+                                        title="Moderation"
+                                    >
+                                        {moderationEnabled ? (
+                                            <Lock className="w-4 h-4 text-green-600"/>
+                                        ) : (
+                                            <LockOpen className="w-4 h-4 text-gray-400"/>
+                                        )}
+                                        <span
+                                            className={`text-sm select-none ${moderationEnabled ? 'text-green-700' : 'text-gray-600'}`}>
+                                            Moderation {moderationEnabled ? 'ON' : 'OFF'}
+                                        </span>
                                     </button>
                                     <button
                                         onClick={handleToggleSettings}
