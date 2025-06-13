@@ -10,7 +10,7 @@ import GentleNudge from "@/components/nudges/GentleNudge";
 import CheaperAlternativeNudge from "@/components/nudges/CheaperNudge";
 import PurchaseBlockNudge from "@/components/nudges/BlockNudge";
 import {nudgeService, NudgeResponse, NudgeType} from "@/services/NudgeService";
-import {Handshake, Lightbulb, ShieldAlert, History, ShoppingBasket, ShoppingBag} from "lucide-react";
+import {Handshake, Lightbulb, ShieldAlert, History, ShoppingBasket, ShoppingBag, ShoppingCart} from "lucide-react";
 
 /**
  * This renders the Cart page of the ModShop application.
@@ -218,20 +218,29 @@ export default function CartPage() {
                 <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
 
                 {items.length === 0 ? (
-                    <div className="flex flex-col items-center gap-6 py-12">
-                        <p className="text-lg">Your cart is currently empty.</p>
+                    <div
+                        className="flex flex-col items-center gap-8 py-20 bg-gradient-to-br from-blue-50 to-gray-100 rounded-2xl shadow-inner">
+                        <div className="flex flex-col items-center">
+                            <ShoppingCart className="w-20 h-20 text-blue-200 mb-4"/>
+                            <h2 className="text-2xl font-bold text-blue-900 mb-2">Your cart is empty</h2>
+                            <p className="text-gray-500 mb-4 max-w-xs text-center">
+                                Looks like you haven&#39;t added
+                                anything yet. Start shopping and discover great products tailored for you! Be mindful of
+                                your purchases!
+                            </p>
+                        </div>
                         <div className="flex gap-4">
                             <Link
                                 href="/"
-                                className="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition"
+                                className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-blue-700 transition flex items-center gap-2"
                             >
-                                <ShoppingBasket className="inline-block mr-2"/> Start Shopping
+                                <ShoppingBasket className="w-5 h-5"/> Start Shopping
                             </Link>
                             <Link
                                 href="/profile"
-                                className="bg-gray-200 text-gray-800 px-5 py-2 rounded hover:bg-gray-300 transition"
+                                className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-100 transition flex items-center gap-2"
                             >
-                                <History className="inline-block mr-2"/> View Previous Orders
+                                <History className="w-5 h-5"/> Previous Orders
                             </Link>
                         </div>
                     </div>) : (<div className="space-y-6">
