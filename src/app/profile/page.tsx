@@ -36,6 +36,7 @@ export default function ProfilePage() {
     const [notificationMessage, setNotificationMessage] = useState("");
     const [developerMode, setDeveloperMode] = useState(false);
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const [disableNudges, setDisableNudges] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -60,6 +61,9 @@ export default function ProfilePage() {
             // Load developer mode from localStorage
             const devMode = localStorage.getItem('modshop_developer_mode');
             setDeveloperMode(devMode === 'true');
+
+            const storedDisableNudges = localStorage.getItem('modshop_disable_nudges');
+            setDisableNudges(storedDisableNudges === 'true');
         }
     }, [user, sortDescending]);
 
@@ -127,6 +131,12 @@ export default function ProfilePage() {
         const newValue = !developerMode;
         setDeveloperMode(newValue);
         localStorage.setItem('modshop_developer_mode', newValue.toString());
+    };
+
+    const handleToggleDisableNudges = () => {
+        const newValue = !disableNudges;
+        setDisableNudges(newValue);
+        localStorage.setItem('modshop_disable_nudges', newValue.toString());
     };
 
     const handleToggleSettings = () => setSettingsOpen((prev) => !prev);
@@ -198,6 +208,19 @@ export default function ProfilePage() {
                                         <Code2 className="w-4 h-4"/>
                                         {developerMode ? 'Dev ON' : 'Dev OFF'}
                                     </button>
+                                    <div className="flex items-center gap-2 px-2 py-2">
+                                        <input
+                                            id="disable-nudges-toggle"
+                                            type="checkbox"
+                                            checked={disableNudges}
+                                            onChange={handleToggleDisableNudges}
+                                            className="accent-blue-600 w-4 h-4 cursor-pointer"
+                                        />
+                                        <label htmlFor="disable-nudges-toggle"
+                                               className="text-sm cursor-pointer select-none">
+                                            Disable Nudges
+                                        </label>
+                                    </div>
                                     <button
                                         onClick={handleToggleSettings}
                                         className="flex items-center gap-2 px-2 py-1 rounded text-gray-500 hover:text-gray-700 text-xs mt-2 self-end cursor-pointer transition-transform duration-200 hover:scale-110"

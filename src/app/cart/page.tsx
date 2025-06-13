@@ -34,6 +34,12 @@ export default function CartPage() {
         setDeveloperMode(localStorage.getItem('modshop_developer_mode') === 'true');
     }, []);
 
+    // Check if nudges are disabled
+    const [disableNudges, setDisableNudges] = useState(false);
+    useEffect(() => {
+        setDisableNudges(localStorage.getItem('modshop_disable_nudges') === 'true');
+    }, []);
+
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     /**
@@ -56,6 +62,11 @@ export default function CartPage() {
             setNotificationType('warning');
             setNotificationMessage("Please log in to complete your purchase.");
             setShowNotification(true);
+            return;
+        }
+
+        if (disableNudges) {
+            processCheckout();
             return;
         }
 
