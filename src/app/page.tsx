@@ -1,6 +1,8 @@
 import Link from "next/link";
 import {Metadata} from "next";
 import ProductCard from "@/components/ProductCard";
+import {Shirt, BookOpen, Gamepad2, Home} from "lucide-react";
+import {JSX} from "react";
 
 export const metadata: Metadata = {
     title: "ModShop | Home",
@@ -50,6 +52,16 @@ export default function HomePage() {
         },
     ];
 
+    /**
+     * Mapping of category slugs to icons.
+     */
+    const categoryIcons: Record<string, JSX.Element> = {
+        "clothing": <Shirt className="w-8 h-8 text-blue-500"/>,
+        "books": <BookOpen className="w-8 h-8 text-blue-500"/>,
+        "video-games": <Gamepad2 className="w-8 h-8 text-blue-500"/>,
+        "household": <Home className="w-8 h-8 text-blue-500"/>,
+    };
+
     return (
         <main className="bg-white text-gray-900">
 
@@ -77,12 +89,16 @@ export default function HomePage() {
                         <Link
                             key={category.slug}
                             href={`/category/${category.slug}`}
-                            className="border border-gray-500 rounded-2xl shadow p-6 transition-all duration-200
-                            hover:scale-105 hover:border-blue-500 hover:shadow-lg focus:outline-none focus:ring-2
-                            focus:ring-blue-400 cursor-pointer hover:bg-gradient-to-br hover:from-blue-50 hover:to-blue-100"
+                            className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col items-center transition-all duration-200 hover:scale-[1.04] hover:border-blue-500 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer hover:from-blue-50 hover:to-blue-100"
                         >
-                            <h2 className="text-xl font-semibold">{category.name}</h2>
-                            <p className="text-sm mt-2 text-gray-600">Explore
+                            <div
+                                className="w-16 h-16 mb-3 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                                {categoryIcons[category.slug] || (
+                                    <span className="text-3xl text-blue-500">{category.name.charAt(0)}</span>
+                                )}
+                            </div>
+                            <h2 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-blue-700 transition-colors">{category.name}</h2>
+                            <p className="text-sm text-gray-500 group-hover:text-blue-500 transition-colors">Explore
                                 our {category.name.toLowerCase()} collection</p>
                         </Link>
                     ))}
