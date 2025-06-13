@@ -153,7 +153,6 @@ export default function ProfilePage() {
         return (
             <main className="bg-white text-gray-900">
                 <section className="py-12 px-6 max-w-md mx-auto">
-                    <h1 className="text-3xl font-bold mb-6">Login</h1>
                     <LoginForm onLoginAction={login}/>
                 </section>
             </main>
