@@ -34,10 +34,10 @@ export default function CartPage() {
         setDeveloperMode(localStorage.getItem('modshop_developer_mode') === 'true');
     }, []);
 
-    // Check if nudges are disabled
-    const [disableNudges, setDisableNudges] = useState(false);
+    // Check moderation enabled state
+    const [moderationEnabled, setModerationEnabled] = useState(true);
     useEffect(() => {
-        setDisableNudges(localStorage.getItem('modshop_disable_nudges') === 'true');
+        setModerationEnabled(localStorage.getItem('modshop_moderation_enabled') !== 'false');
     }, []);
 
     const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -65,7 +65,7 @@ export default function CartPage() {
             return;
         }
 
-        if (disableNudges) {
+        if (!moderationEnabled) {
             processCheckout();
             return;
         }
