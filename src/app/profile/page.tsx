@@ -19,6 +19,9 @@ import {
     Check
 } from "lucide-react";
 
+/**
+ * Order interface represents a user's order in the system.
+ */
 interface Order {
     id: string;
     userEmail: string;
@@ -54,6 +57,7 @@ export default function ProfilePage() {
     const [moderationEnabled, setModerationEnabled] = useState(true);
     const menuRef = useRef<HTMLDivElement | null>(null);
 
+    // Load user orders and shopper type from localStorage when the component mounts
     useEffect(() => {
         if (user) {
             const stored = localStorage.getItem("modshop_orders");
@@ -100,8 +104,12 @@ export default function ProfilePage() {
         localStorage.setItem(`modshop_shopper_type_${user.email}`, pendingShopperType);
         setIsSavingShopperType(false);
         setShopperTypeSaved(true);
+        setNotificationType('success');
+        setNotificationMessage('Profile saved successfully!');
+        setShowNotification(true);
     };
 
+    // Get description based on shopper type
     const getShopperTypeDescription = (type: ShopperType) => {
         switch (type) {
             case 'frugal':
@@ -115,6 +123,7 @@ export default function ProfilePage() {
         }
     };
 
+    // Handle downloading stats as CSV
     const handleDownload = () => {
         const statsRaw = localStorage.getItem("modshop_nudge_stats");
         const savingsRaw = localStorage.getItem("modshop_nudge_savings"); // optional savings per type
@@ -155,12 +164,14 @@ export default function ProfilePage() {
         document.body.removeChild(link);
     };
 
+    // Toggle developer mode and save to localStorage
     const handleToggleDeveloperMode = () => {
         const newValue = !developerMode;
         setDeveloperMode(newValue);
         localStorage.setItem('modshop_developer_mode', newValue.toString());
     };
 
+    // Toggle moderation mode and save to localStorage
     const handleToggleModeration = () => {
         const newValue = !moderationEnabled;
         setModerationEnabled(newValue);
