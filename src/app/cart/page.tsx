@@ -229,16 +229,20 @@ export default function CartPage() {
                                 your purchases!
                             </p>
                         </div>
-                        <div className="flex gap-4">
+                        <div
+                            className="flex flex-col w-full max-w-xs gap-3 sm:flex-row sm:justify-center sm:max-w-none">
                             <Link
                                 href="/"
-                                className="bg-blue-600 text-white px-6 py-3 rounded-full font-semibold shadow hover:bg-blue-700 transition flex items-center gap-2"
+                                className="bg-blue-600 text-white px-4 py-3 rounded-full font-semibold shadow
+                                hover:bg-blue-700 transition flex items-center gap-2 text-base sm:text-sm w-full sm:w-auto justify-center"
                             >
                                 <ShoppingBasket className="w-5 h-5"/> Start Shopping
                             </Link>
                             <Link
                                 href="/profile"
-                                className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-full font-semibold shadow hover:bg-gray-100 transition flex items-center gap-2"
+                                className="bg-white border border-gray-300 text-gray-700 px-4 py-3 rounded-full
+                                font-semibold shadow hover:bg-gray-100 transition flex items-center gap-2 text-base
+                                sm:text-sm w-full sm:w-auto justify-center"
                             >
                                 <History className="w-5 h-5"/> Previous Orders
                             </Link>
