@@ -46,7 +46,7 @@ export default function NotificationPopUp(
     }
 
     return (
-        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 opacity-0 animate-[appear_0.4s_ease-out_forwards]">
+        <div className="fixed top-16 left-1/2 -translate-x-1/2 z-50 opacity-0 animate-[appear_0.4s_ease-out_forwards]">
             <div className={`${bgColor} px-4 py-3 rounded shadow-lg flex items-center gap-3`}>
                 {icon}
                 <p>{message}</p>
