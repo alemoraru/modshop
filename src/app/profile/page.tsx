@@ -13,7 +13,10 @@ import {
     Settings as SettingsIcon,
     X as CloseIcon,
     Lock,
-    LockOpen
+    LockOpen,
+    Save as SaveIcon,
+    Loader2,
+    Check
 } from "lucide-react";
 
 interface Order {
@@ -40,6 +43,9 @@ export default function ProfilePage() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [sortDescending, setSortDescending] = useState(true);
     const [shopperType, setShopperType] = useState<ShopperType>(null);
+    const [pendingShopperType, setPendingShopperType] = useState<ShopperType>(null);
+    const [isSavingShopperType, setIsSavingShopperType] = useState(false);
+    const [shopperTypeSaved, setShopperTypeSaved] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
     const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
     const [notificationMessage, setNotificationMessage] = useState("");
@@ -65,6 +71,7 @@ export default function ProfilePage() {
             const storedShopperType = localStorage.getItem(`modshop_shopper_type_${user.email}`);
             if (storedShopperType) {
                 setShopperType(storedShopperType as ShopperType);
+                setPendingShopperType(storedShopperType as ShopperType);
             }
 
             // Load developer mode from localStorage
@@ -76,11 +83,23 @@ export default function ProfilePage() {
         }
     }, [user, sortDescending]);
 
+    // Handle shopper type selection and saving
     const handleShopperTypeSelection = (type: ShopperType) => {
-        if (user && type) {
-            setShopperType(type);
-            localStorage.setItem(`modshop_shopper_type_${user.email}`, type);
-        }
+        setPendingShopperType(type);
+        setShopperTypeSaved(false);
+    };
+
+    // Save shopper type to localStorage and update state
+    const handleSaveShopperType = async () => {
+        if (!user || !pendingShopperType) return;
+        setIsSavingShopperType(true);
+
+        // Simulate async save (e.g., API call)
+        await new Promise((res) => setTimeout(res, 800));
+        setShopperType(pendingShopperType);
+        localStorage.setItem(`modshop_shopper_type_${user.email}`, pendingShopperType);
+        setIsSavingShopperType(false);
+        setShopperTypeSaved(true);
     };
 
     const getShopperTypeDescription = (type: ShopperType) => {
@@ -266,7 +285,7 @@ export default function ProfilePage() {
                         <button
                             onClick={() => handleShopperTypeSelection('frugal')}
                             className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
-                                shopperType === 'frugal'
+                                pendingShopperType === 'frugal'
                                     ? 'border-green-500 bg-green-50 text-green-700'
                                     : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
                             }`}
@@ -277,11 +296,10 @@ export default function ProfilePage() {
                                 Budget-conscious and careful with purchases
                             </p>
                         </button>
-
                         <button
                             onClick={() => handleShopperTypeSelection('adaptive')}
                             className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
-                                shopperType === 'adaptive'
+                                pendingShopperType === 'adaptive'
                                     ? 'border-blue-500 bg-blue-50 text-blue-700'
                                     : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
                             }`}
@@ -292,11 +310,10 @@ export default function ProfilePage() {
                                 Flexible spending based on needs and situation
                             </p>
                         </button>
-
                         <button
                             onClick={() => handleShopperTypeSelection('impulsive')}
                             className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
-                                shopperType === 'impulsive'
+                                pendingShopperType === 'impulsive'
                                     ? 'border-red-500 bg-red-50 text-red-700'
                                     : 'border-gray-200 bg-white hover:border-red-300 hover:bg-red-50'
                             }`}
@@ -309,11 +326,35 @@ export default function ProfilePage() {
                         </button>
                     </div>
 
-                    {shopperType && (
-                        <div className="mt-4 p-3 bg-white rounded border border-gray-200">
-                            <p className="text-sm text-gray-700">
-                                <strong>Your Profile:</strong> {getShopperTypeDescription(shopperType)}
-                            </p>
+                    {pendingShopperType && (
+                        <div className="mt-4 flex flex-col md:flex-row md:items-center gap-3">
+                            <div className="p-3 bg-white rounded border border-gray-200 flex-1">
+                                <p className="text-sm text-gray-700">
+                                    <strong>Your Profile:</strong> {getShopperTypeDescription(pendingShopperType)}
+                                </p>
+                            </div>
+                            {(pendingShopperType !== shopperType) && (
+                                <button
+                                    onClick={handleSaveShopperType}
+                                    className="w-full md:w-auto mt-3 md:mt-0 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 flex items-center justify-center gap-2 text-base cursor-pointer"
+                                    style={{minWidth: 110}}
+                                    disabled={isSavingShopperType}
+                                >
+                                    {isSavingShopperType ? (
+                                        <Loader2 className="animate-spin w-5 h-5 mr-2 text-white"/>
+                                    ) : shopperTypeSaved ? (
+                                        <span className="inline-flex items-center">
+                                            <Check className="h-5 w-5 text-green-400 mr-1"/>
+                                            Saved
+                                        </span>
+                                    ) : (
+                                        <>
+                                            <SaveIcon className="w-5 h-5 mr-1"/>
+                                            Save
+                                        </>
+                                    )}
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>
