@@ -1,7 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import {ShoppingCart, User, Home, Search, BookOpen, Shirt, HomeIcon, Gamepad2} from "lucide-react";
+import {
+    ShoppingCart,
+    User,
+    Home,
+    Search,
+    BookOpen,
+    Shirt,
+    HomeIcon,
+    Gamepad2,
+    ShieldCheck,
+    Undo2,
+    Lock,
+    Sparkles
+} from "lucide-react";
 import {useCart} from "@/context/CartContext";
 import {useRouter} from "next/navigation";
 import React, {useState, useEffect} from "react";
@@ -38,10 +51,38 @@ export default function Navbar() {
 
     return (
         <>
+            {/* Security guarantees bar (desktop only) */}
+            <div
+                className="w-full bg-white border-b border-gray-200 py-1 px-6 flex items-center
+                justify-between text-xs text-gray-700 font-medium select-none hidden md:flex">
+                {/* Left: Security Guarantees */}
+                <div className="flex items-center gap-4 pl-2">
+                    <span className="flex items-center gap-1">
+                        <ShieldCheck className="w-4 h-4 text-green-600"/>
+                        Secure Payments
+                    </span>
+                    <span className="flex items-center gap-1">
+                        <Undo2 className="w-4 h-4 text-blue-600"/>
+                        Money-Back Guarantee
+                    </span>
+                    <span className="flex items-center gap-1">
+                        <Lock className="w-4 h-4 text-purple-600"/>
+                        Privacy Protected
+                    </span>
+                </div>
+                {/* Center: Empty for spacing */}
+                <div></div>
+                {/* Right: Shopping-aware highlight */}
+                <div className="flex items-center gap-1 text-blue-700 font-semibold pr-2">
+                    <Sparkles className="w-4 h-4 text-blue-500"/>
+                    Behavior-Aware Shopping Experience
+                </div>
+            </div>
+
             <nav
-                className="w-full bg-blue-600 shadow-md px-4 py-3 flex items-center justify-between flex-nowrap gap-2 z-0">
+                className="w-full bg-blue-600 shadow-md px-4 sm:px-6 py-3 flex items-center justify-between flex-nowrap gap-2 z-0">
                 {/* Left: Hamburger + Logo */}
-                <div className="flex items-center gap-2 min-w-0 flex-1 basis-0">
+                <div className="flex items-center gap-2 min-w-0 flex-1 basis-0 pl-0 sm:pl-2">
                     {/* Hamburger/X menu (mobile only) */}
                     <button
                         className={`mr-2 p-2 rounded-md focus:outline-none transition-colors duration-200 sm:hidden border-none shadow-none`}
@@ -96,7 +137,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Right: Profile and Cart */}
-                <div className="flex items-center space-x-4 min-w-0 flex-1 basis-0 justify-end">
+                <div className="flex items-center space-x-4 min-w-0 flex-1 basis-0 justify-end pr-0 sm:pr-2">
                     <Link href="/profile" className="cursor-pointer group text-white">
                         <span className="relative flex items-center">
                           <User

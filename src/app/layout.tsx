@@ -21,6 +21,28 @@ export const metadata: Metadata = {
         shortcut: '/modshop-icon.png',
         apple: '/modshop-icon.png'
     },
+    metadataBase: new URL("https://modshop.vercel.app"),
+    openGraph: {
+        title: "ModShop",
+        description: "An educational e-commerce web app designed to minimize impulsive buying behavior through algorithmic behavioral nudges.",
+        url: "https://modshop.vercel.app",
+        siteName: "ModShop",
+        images: [
+            {
+                url: "/modshop-og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "ModShop - Your personalized behavior-aware e-commerce experience.",
+            }
+        ],
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "ModShop",
+        description: "An educational e-commerce web app designed to minimize impulsive buying behavior through algorithmic behavioral nudges.",
+        images: ["/modshop-og-image.png"],
+    }
 };
 
 export default function RootLayout(

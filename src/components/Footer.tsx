@@ -13,9 +13,9 @@ export default function Footer() {
     return (
         <footer className="w-full border-t bg-gray-50 text-gray-700 py-6 px-6">
             <div
-                className="mx-auto flex flex-col gap-4 sm:grid sm:grid-cols-3 sm:items-center sm:justify-between text-sm">
+                className="mx-auto flex flex-col gap-4 sm:grid sm:grid-cols-3 sm:items-center sm:justify-between text-sm px-0">
                 {/* Left: Links */}
-                <div className="flex gap-4 justify-center sm:justify-start order-1">
+                <div className="flex gap-4 justify-center sm:justify-start order-1 pl-0 sm:pl-2">
                     <Link href="/privacy-policy" className="hover:underline">Privacy Policy</Link>
                     <Link href="/about" className="hover:underline">About</Link>
                 </div>
@@ -46,7 +46,7 @@ export default function Footer() {
                     href={`https://github.com/alemoraru/modshop${githubReleaseUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group font-mono flex items-center gap-1 hover:underline order-3 justify-center sm:justify-end"
+                    className="group font-mono flex items-center gap-1 hover:underline order-3 justify-center sm:justify-end pr-0 sm:pr-2"
                 >
                     <span className="group-hover:text-blue-700 transition-colors duration-150">
                         v{appVersion}

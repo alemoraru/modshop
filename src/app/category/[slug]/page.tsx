@@ -54,7 +54,16 @@ export default async function CategoryPage(props: { params: pageParams }) {
     return (
         <main className="bg-white text-gray-900">
             <section className="py-12 px-6">
-                <h1 className="text-3xl font-bold mb-8 capitalize">{slug.replace("-", " ")} Collection</h1>
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold capitalize mb-1 flex items-end gap-2">
+                        {slug.replace("-", " ")} Collection
+                        <span
+                            className="hidden sm:inline text-base font-normal text-gray-500 pb-1 align-middle">({products.length} items available)</span>
+                    </h1>
+                    <span className="block sm:hidden text-base font-normal text-gray-500 align-middle mt-1">
+                        {products.length} items available
+                    </span>
+                </div>
                 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
                     {products.map((product) => (
                         <ProductCard
