@@ -27,7 +27,7 @@ export default function OrderCard({order}: OrderCardProps) {
                 <div className="text-xl font-bold text-blue-700">€{order.total.toFixed(2)}</div>
                 <button
                     onClick={() => router.push(`/orders/${order.id}`)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 hover:scale-105 transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm font-semibold cursor-pointer"
+                    className="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700z transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm font-semibold cursor-pointer"
                 >
                     View Order
                 </button>

@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import Image from "next/image";
 import {notFound, useParams} from "next/navigation";
 import Link from "next/link";
+import {ArrowLeft} from "lucide-react";
 
 interface OrderItem {
     title: string;
@@ -89,10 +90,9 @@ export default function OrderDetailPage() {
                 </div>
                 <div className="flex justify-center">
                     <Link href="/profile"
-                          className="inline-block bg-blue-600 text-white px-6 py-3 rounded-full
-                          font-semibold shadow hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-400"
-                          aria-label="Back to Orders"
-                    >
+                          className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full
+                          font-semibold shadow hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <ArrowLeft className="w-5 h-5"/>
                         Back to Orders
                     </Link>
                 </div>
