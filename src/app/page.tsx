@@ -71,7 +71,7 @@ export default function HomePage() {
 
             {/* Hero Banner */}
             <section
-                className="relative bg-gradient-to-br from-blue-100 to-blue-300 py-10 px-6 text-center mb-12 overflow-hidden"
+                className="relative bg-gradient-to-br from-blue-100 to-blue-300 py-6 px-6 text-center mb-12 overflow-hidden"
                 aria-label="Hero Banner"
             >
                 <div className="relative z-10">
@@ -96,11 +96,11 @@ export default function HomePage() {
                         <Link
                             key={category.slug}
                             href={`/category/${category.slug}`}
-                            className="group bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col items-center transition-all duration-200 hover:scale-[1.04] hover:border-blue-500 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer hover:from-blue-50 hover:to-blue-100"
+                            className="group bg-white border border-gray-200 rounded-2xl shadow-md p-6 flex flex-col items-center transition-all duration-200 hover:scale-[1.04] hover:border-blue-500 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer hover:bg-blue-50 relative"
                             aria-label={`Shop ${category.name}`}
                         >
                             <div
-                                className="w-16 h-16 mb-3 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors"
+                                className="w-16 h-16 mb-3 rounded-full bg-blue-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors shadow-sm"
                                 role="img"
                                 aria-label={`${category.name} icon`}
                             >
@@ -109,10 +109,16 @@ export default function HomePage() {
                                           aria-hidden="true">{category.name.charAt(0)}</span>
                                 )}
                             </div>
-                            <h2 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-blue-700 transition-colors">{category.name}</h2>
+                            <h2 className="text-lg font-semibold text-gray-800 mb-1 group-hover:text-blue-700 transition-colors tracking-tight">
+                                {category.name}
+                            </h2>
                             <p className="text-sm text-gray-500 group-hover:text-blue-500 transition-colors">
                                 Explore our {category.name.toLowerCase()} collection
                             </p>
+                            <span
+                                className="absolute top-3 right-3 bg-blue-100 text-blue-600 text-xs font-semibold rounded-full px-2 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-sm pointer-events-none">
+                                Browse
+                            </span>
                         </Link>
                     ))}
                 </div>
