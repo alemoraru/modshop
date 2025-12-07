@@ -6,6 +6,7 @@ import {CartProvider} from "@/context/CartContext";
 import {AuthProvider} from "@/context/AuthContext";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { Analytics } from "@vercel/analytics/next";
 
 const gabarito = Gabarito({
     variable: "--font-gabarito",
@@ -61,6 +62,7 @@ export default function RootLayout(
                     <Navbar/>
                     <main className="flex-1 flex flex-col">
                         {children}
+                        <Analytics/>
                     </main>
                     <Footer/>
                 </div>
