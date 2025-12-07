@@ -1,13 +1,13 @@
-import Link from "next/link";
-import Image from "next/image";
+import Link from "next/link"
+import Image from "next/image"
 
 export interface ProductCardProps {
-    slug: string;
-    title: string;
-    price: number;
-    image: string;
-    description?: string;
-    category?: string;
+    slug: string
+    title: string
+    price: number
+    image: string
+    description?: string
+    category?: string
 }
 
 /**
@@ -18,7 +18,7 @@ export interface ProductCardProps {
  * @param image the URL of the product image
  * @param category the category of the product (optional)
  */
-export default function ProductCard({slug, title, price, image, category}: ProductCardProps) {
+export default function ProductCard({ slug, title, price, image, category }: ProductCardProps) {
     return (
         <Link
             href={`/product/${slug}`}
@@ -37,21 +37,23 @@ export default function ProductCard({slug, title, price, image, category}: Produ
                 {category && (
                     <span
                         className="absolute top-3 left-3 bg-blue-100 text-blue-700 text-xs
-                        font-semibold px-2 py-1 rounded-full shadow">
+                        font-semibold px-2 py-1 rounded-full shadow"
+                    >
                         {category}
                     </span>
                 )}
             </div>
             <div className="flex-1 flex flex-col justify-between p-4 gap-2">
-                <h2 className="font-semibold text-lg text-gray-800 truncate" title={title}>{title}</h2>
+                <h2 className="font-semibold text-lg text-gray-800 truncate" title={title}>
+                    {title}
+                </h2>
                 <div className="flex items-center justify-between mt-1">
                     <span className="text-blue-600 font-bold text-base">€{price}</span>
-                    <span
-                        className="text-xs text-gray-400 group-hover:text-blue-500 transition-colors">
+                    <span className="text-xs text-gray-400 group-hover:text-blue-500 transition-colors">
                         View details →
                     </span>
                 </div>
             </div>
         </Link>
-    );
+    )
 }

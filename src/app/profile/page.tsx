@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import {useAuth} from "@/context/AuthContext";
-import {useEffect, useState, useRef} from "react";
-import LoginForm from "@/components/LoginForm";
-import OrderCard from "@/components/OrderCard";
-import NotificationPopUp from "@/components/NotificationPopUp";
+import { useAuth } from "@/context/AuthContext"
+import { useEffect, useState, useRef } from "react"
+import LoginForm from "@/components/LoginForm"
+import OrderCard from "@/components/OrderCard"
+import NotificationPopUp from "@/components/NotificationPopUp"
 import {
     ChevronDown,
     DownloadIcon,
@@ -16,196 +16,216 @@ import {
     LockOpen,
     Save as SaveIcon,
     Loader2,
-    Check
-} from "lucide-react";
+    Check,
+} from "lucide-react"
 
 /**
  * Order interface represents a user's order in the system.
  */
 interface Order {
-    id: string;
-    userEmail: string;
+    id: string
+    userEmail: string
     items: {
-        title: string;
-        price: number;
-        quantity: number;
+        title: string
+        price: number
+        quantity: number
         image: string
-    }[];
-    total: number;
-    date: string;
+    }[]
+    total: number
+    date: string
 }
 
-type ShopperType = 'frugal' | 'adaptive' | 'impulsive' | null;
+type ShopperType = "frugal" | "adaptive" | "impulsive" | null
 
 /**
  * This component renders the user profile page, allowing users to view their past orders,
  * select their shopping behavior profile, and manage their account (i.e., logging out).
  */
 export default function ProfilePage() {
-    const {user, login, logout} = useAuth();
-    const [orders, setOrders] = useState<Order[]>([]);
-    const [sortDescending, setSortDescending] = useState(true);
-    const [shopperType, setShopperType] = useState<ShopperType>(null);
-    const [pendingShopperType, setPendingShopperType] = useState<ShopperType>(null);
-    const [isSavingShopperType, setIsSavingShopperType] = useState(false);
-    const [shopperTypeSaved, setShopperTypeSaved] = useState(false);
-    const [showNotification, setShowNotification] = useState(false);
-    const [notificationType, setNotificationType] = useState<'success' | 'warning'>("success");
-    const [notificationMessage, setNotificationMessage] = useState("");
-    const [developerMode, setDeveloperMode] = useState(false);
-    const [settingsOpen, setSettingsOpen] = useState(false);
-    const [moderationEnabled, setModerationEnabled] = useState(true);
-    const menuRef = useRef<HTMLDivElement | null>(null);
+    const { user, login, logout } = useAuth()
+    const [orders, setOrders] = useState<Order[]>([])
+    const [sortDescending, setSortDescending] = useState(true)
+    const [shopperType, setShopperType] = useState<ShopperType>(null)
+    const [pendingShopperType, setPendingShopperType] = useState<ShopperType>(null)
+    const [isSavingShopperType, setIsSavingShopperType] = useState(false)
+    const [shopperTypeSaved, setShopperTypeSaved] = useState(false)
+    const [showNotification, setShowNotification] = useState(false)
+    const [notificationType, setNotificationType] = useState<"success" | "warning">("success")
+    const [notificationMessage, setNotificationMessage] = useState("")
+    const [developerMode, setDeveloperMode] = useState(false)
+    const [settingsOpen, setSettingsOpen] = useState(false)
+    const [moderationEnabled, setModerationEnabled] = useState(true)
+    const menuRef = useRef<HTMLDivElement | null>(null)
 
     // Load user orders and shopper type from localStorage when the component mounts
     useEffect(() => {
         if (user) {
-            const stored = localStorage.getItem("modshop_orders");
+            const stored = localStorage.getItem("modshop_orders")
             if (stored) {
-                const allOrders = JSON.parse(stored) as Order[];
-                const filteredOrders = allOrders.filter((o) => o.userEmail === user.email);
+                const allOrders = JSON.parse(stored) as Order[]
+                const filteredOrders = allOrders.filter(o => o.userEmail === user.email)
                 const sortedOrders = filteredOrders.sort((a, b) =>
                     sortDescending
                         ? new Date(b.date).getTime() - new Date(a.date).getTime()
                         : new Date(a.date).getTime() - new Date(b.date).getTime()
-                );
-                setOrders(sortedOrders);
+                )
+                setOrders(sortedOrders)
             }
 
-            const storedShopperType = localStorage.getItem(`modshop_shopper_type_${user.email}`);
+            const storedShopperType = localStorage.getItem(`modshop_shopper_type_${user.email}`)
             if (storedShopperType) {
-                setShopperType(storedShopperType as ShopperType);
-                setPendingShopperType(storedShopperType as ShopperType);
+                setShopperType(storedShopperType as ShopperType)
+                setPendingShopperType(storedShopperType as ShopperType)
             }
 
             // Load developer mode from localStorage
-            const devMode = localStorage.getItem('modshop_developer_mode');
-            setDeveloperMode(devMode === 'true');
+            const devMode = localStorage.getItem("modshop_developer_mode")
+            setDeveloperMode(devMode === "true")
 
-            const storedModeration = localStorage.getItem('modshop_moderation_enabled');
-            setModerationEnabled(storedModeration !== 'false'); // default ON
+            const storedModeration = localStorage.getItem("modshop_moderation_enabled")
+            setModerationEnabled(storedModeration !== "false") // default ON
         }
-    }, [user, sortDescending]);
+    }, [user, sortDescending])
 
     // Handle shopper type selection and saving
     const handleShopperTypeSelection = (type: ShopperType) => {
-        setPendingShopperType(type);
-        setShopperTypeSaved(false);
-    };
+        setPendingShopperType(type)
+        setShopperTypeSaved(false)
+    }
 
     // Save shopper type to localStorage and update state
     const handleSaveShopperType = async () => {
-        if (!user || !pendingShopperType) return;
-        setIsSavingShopperType(true);
+        if (!user || !pendingShopperType) return
+        setIsSavingShopperType(true)
 
         // Simulate async save (e.g., API call)
-        await new Promise((res) => setTimeout(res, 800));
-        setShopperType(pendingShopperType);
-        localStorage.setItem(`modshop_shopper_type_${user.email}`, pendingShopperType);
-        setIsSavingShopperType(false);
-        setShopperTypeSaved(true);
-        setNotificationType('success');
-        setNotificationMessage('Profile saved successfully!');
-        setShowNotification(true);
-    };
+        await new Promise(res => setTimeout(res, 800))
+        setShopperType(pendingShopperType)
+        localStorage.setItem(`modshop_shopper_type_${user.email}`, pendingShopperType)
+        setIsSavingShopperType(false)
+        setShopperTypeSaved(true)
+        setNotificationType("success")
+        setNotificationMessage("Profile saved successfully!")
+        setShowNotification(true)
+    }
 
     // Get description based on shopper type
     const getShopperTypeDescription = (type: ShopperType) => {
         switch (type) {
-            case 'frugal':
-                return "You prefer to save money and make careful purchasing decisions.";
-            case 'adaptive':
-                return "You balance between saving and spending based on the situation.";
-            case 'impulsive':
-                return "You enjoy spontaneous purchases and trying new products.";
+            case "frugal":
+                return "You prefer to save money and make careful purchasing decisions."
+            case "adaptive":
+                return "You balance between saving and spending based on the situation."
+            case "impulsive":
+                return "You enjoy spontaneous purchases and trying new products."
             default:
-                return null;
+                return null
         }
-    };
+    }
 
     // Handle downloading stats as CSV
     const handleDownload = () => {
-        const statsRaw = localStorage.getItem("modshop_nudge_stats");
-        const savingsRaw = localStorage.getItem("modshop_nudge_savings"); // optional savings per type
+        const statsRaw = localStorage.getItem("modshop_nudge_stats")
+        const savingsRaw = localStorage.getItem("modshop_nudge_savings") // optional savings per type
 
         // Check if stats and user are available
         // If not, show a warning notification
         if (!statsRaw || !user) {
-            setNotificationType('warning');
-            setNotificationMessage("No stats found or user not logged in.");
-            setShowNotification(true);
-            console.warn("No stats found or user not logged in.");
-            return;
+            setNotificationType("warning")
+            setNotificationMessage("No stats found or user not logged in.")
+            setShowNotification(true)
+            console.warn("No stats found or user not logged in.")
+            return
         }
 
-        const stats = JSON.parse(statsRaw);
-        const savings = savingsRaw ? JSON.parse(savingsRaw) : {
-            gentle: 0,
-            alternative: 0,
-            block: 0
-        };
+        const stats = JSON.parse(statsRaw)
+        const savings = savingsRaw
+            ? JSON.parse(savingsRaw)
+            : {
+                  gentle: 0,
+                  alternative: 0,
+                  block: 0,
+              }
 
         const rows = [
             ["User", "NudgeType", "Shown", "Accepted", "Savings"],
-            [user.email, "gentle", stats.gentle.shown || 0, stats.gentle.accepted || 0, savings.gentle || 0],
-            [user.email, "alternative", stats.alternative.shown || 0, stats.alternative.accepted || 0, savings.alternative || 0],
-            [user.email, "block", stats.block.shown || 0, stats.block.accepted || 0, savings.block || 0]
-        ];
+            [
+                user.email,
+                "gentle",
+                stats.gentle.shown || 0,
+                stats.gentle.accepted || 0,
+                savings.gentle || 0,
+            ],
+            [
+                user.email,
+                "alternative",
+                stats.alternative.shown || 0,
+                stats.alternative.accepted || 0,
+                savings.alternative || 0,
+            ],
+            [
+                user.email,
+                "block",
+                stats.block.shown || 0,
+                stats.block.accepted || 0,
+                savings.block || 0,
+            ],
+        ]
 
-        const csvContent = rows.map(row => row.join(",")).join("\n");
-        const blob = new Blob([csvContent], {type: "text/csv;charset=utf-8;"});
-        const url = URL.createObjectURL(blob);
+        const csvContent = rows.map(row => row.join(",")).join("\n")
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+        const url = URL.createObjectURL(blob)
 
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `nudge_stats_${user.email}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
+        const link = document.createElement("a")
+        link.href = url
+        link.setAttribute("download", `nudge_stats_${user.email}.csv`)
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+    }
 
     // Toggle developer mode and save to localStorage
     const handleToggleDeveloperMode = () => {
-        const newValue = !developerMode;
-        setDeveloperMode(newValue);
-        localStorage.setItem('modshop_developer_mode', newValue.toString());
-    };
+        const newValue = !developerMode
+        setDeveloperMode(newValue)
+        localStorage.setItem("modshop_developer_mode", newValue.toString())
+    }
 
     // Toggle moderation mode and save to localStorage
     const handleToggleModeration = () => {
-        const newValue = !moderationEnabled;
-        setModerationEnabled(newValue);
-        localStorage.setItem('modshop_moderation_enabled', newValue.toString());
-    };
+        const newValue = !moderationEnabled
+        setModerationEnabled(newValue)
+        localStorage.setItem("modshop_moderation_enabled", newValue.toString())
+    }
 
-    const handleToggleSettings = () => setSettingsOpen((prev) => !prev);
+    const handleToggleSettings = () => setSettingsOpen(prev => !prev)
 
     // Close the settings menu when clicking outside it
     useEffect(() => {
-        if (!settingsOpen) return;
+        if (!settingsOpen) return
 
         function handleClickOutside(event: MouseEvent | TouchEvent) {
             if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setSettingsOpen(false);
+                setSettingsOpen(false)
             }
         }
 
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('touchstart', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside)
+        document.addEventListener("touchstart", handleClickOutside)
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('touchstart', handleClickOutside);
-        };
-    }, [settingsOpen]);
+            document.removeEventListener("mousedown", handleClickOutside)
+            document.removeEventListener("touchstart", handleClickOutside)
+        }
+    }, [settingsOpen])
 
     if (!user) {
         return (
             <main className="bg-white text-gray-900">
                 <section className="py-12 px-6 max-w-md mx-auto">
-                    <LoginForm onLoginAction={login}/>
+                    <LoginForm onLoginAction={login} />
                 </section>
             </main>
-        );
+        )
     }
 
     return (
@@ -224,7 +244,7 @@ export default function ProfilePage() {
                                 className="flex items-center gap-2 px-4 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-colors font-medium text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400 cursor-pointer"
                                 title="Settings"
                             >
-                                <SettingsIcon className="w-5 h-5"/>
+                                <SettingsIcon className="w-5 h-5" />
                                 <span>Settings</span>
                             </button>
 
@@ -237,30 +257,31 @@ export default function ProfilePage() {
                                         onClick={handleDownload}
                                         className="flex items-center gap-2 px-2 py-2 rounded border border-blue-600 text-blue-700 bg-white hover:bg-blue-50 transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
                                     >
-                                        <DownloadIcon className="w-4 h-4"/>
+                                        <DownloadIcon className="w-4 h-4" />
                                         <span>Download Stats</span>
                                     </button>
                                     <button
                                         onClick={handleToggleDeveloperMode}
-                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${developerMode ? 'border-green-600 text-green-700 bg-green-50' : 'border-gray-300 text-gray-600 bg-white'} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
+                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${developerMode ? "border-green-600 text-green-700 bg-green-50" : "border-gray-300 text-gray-600 bg-white"} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
                                         title="Toggle Developer Mode"
                                     >
-                                        <Code2 className="w-4 h-4"/>
-                                        {developerMode ? 'Dev Mode ON' : 'Dev Mode OFF'}
+                                        <Code2 className="w-4 h-4" />
+                                        {developerMode ? "Dev Mode ON" : "Dev Mode OFF"}
                                     </button>
                                     <button
                                         onClick={handleToggleModeration}
-                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${moderationEnabled ? 'border-green-600 text-green-700 bg-green-50' : 'border-gray-300 text-gray-600 bg-white'} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
+                                        className={`flex items-center gap-2 px-2 py-2 rounded border ${moderationEnabled ? "border-green-600 text-green-700 bg-green-50" : "border-gray-300 text-gray-600 bg-white"} transition-colors font-medium text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 cursor-pointer`}
                                         title="Moderation"
                                     >
                                         {moderationEnabled ? (
-                                            <Lock className="w-4 h-4 text-green-600"/>
+                                            <Lock className="w-4 h-4 text-green-600" />
                                         ) : (
-                                            <LockOpen className="w-4 h-4 text-gray-400"/>
+                                            <LockOpen className="w-4 h-4 text-gray-400" />
                                         )}
                                         <span
-                                            className={`text-sm select-none ${moderationEnabled ? 'text-green-700' : 'text-gray-600'}`}>
-                                            Moderation {moderationEnabled ? 'ON' : 'OFF'}
+                                            className={`text-sm select-none ${moderationEnabled ? "text-green-700" : "text-gray-600"}`}
+                                        >
+                                            Moderation {moderationEnabled ? "ON" : "OFF"}
                                         </span>
                                     </button>
                                     <button
@@ -268,7 +289,7 @@ export default function ProfilePage() {
                                         className="flex items-center gap-2 px-2 py-1 rounded text-gray-500 hover:text-gray-700 text-xs mt-2 self-end cursor-pointer transition-transform duration-200 hover:scale-110"
                                         title="Close Settings"
                                     >
-                                        <CloseIcon className="w-3 h-3"/>
+                                        <CloseIcon className="w-3 h-3" />
                                         Close
                                     </button>
                                 </div>
@@ -280,7 +301,7 @@ export default function ProfilePage() {
                             text-red-700 bg-white hover:bg-red-50 transition-colors font-medium
                             text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 cursor-pointer"
                         >
-                            <LogOut className="w-5 h-5"/>
+                            <LogOut className="w-5 h-5" />
                             <span>Log Out</span>
                         </button>
                     </div>
@@ -294,11 +315,11 @@ export default function ProfilePage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <button
-                            onClick={() => handleShopperTypeSelection('frugal')}
+                            onClick={() => handleShopperTypeSelection("frugal")}
                             className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
-                                pendingShopperType === 'frugal'
-                                    ? 'border-green-500 bg-green-50 text-green-700'
-                                    : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
+                                pendingShopperType === "frugal"
+                                    ? "border-green-500 bg-green-50 text-green-700"
+                                    : "border-gray-200 bg-white hover:border-green-300 hover:bg-green-50"
                             }`}
                         >
                             <div className="text-2xl mb-2">💰</div>
@@ -308,11 +329,11 @@ export default function ProfilePage() {
                             </p>
                         </button>
                         <button
-                            onClick={() => handleShopperTypeSelection('adaptive')}
+                            onClick={() => handleShopperTypeSelection("adaptive")}
                             className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
-                                pendingShopperType === 'adaptive'
-                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                                    : 'border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50'
+                                pendingShopperType === "adaptive"
+                                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                                    : "border-gray-200 bg-white hover:border-blue-300 hover:bg-blue-50"
                             }`}
                         >
                             <div className="text-2xl mb-2">⚖️</div>
@@ -322,11 +343,11 @@ export default function ProfilePage() {
                             </p>
                         </button>
                         <button
-                            onClick={() => handleShopperTypeSelection('impulsive')}
+                            onClick={() => handleShopperTypeSelection("impulsive")}
                             className={`p-4 rounded-lg border-2 transition-all cursor-pointer ${
-                                pendingShopperType === 'impulsive'
-                                    ? 'border-red-500 bg-red-50 text-red-700'
-                                    : 'border-gray-200 bg-white hover:border-red-300 hover:bg-red-50'
+                                pendingShopperType === "impulsive"
+                                    ? "border-red-500 bg-red-50 text-red-700"
+                                    : "border-gray-200 bg-white hover:border-red-300 hover:bg-red-50"
                             }`}
                         >
                             <div className="text-2xl mb-2">⚡</div>
@@ -341,26 +362,27 @@ export default function ProfilePage() {
                         <div className="mt-4 flex flex-col md:flex-row md:items-center gap-3">
                             <div className="p-3 bg-white rounded border border-gray-200 flex-1">
                                 <p className="text-sm text-gray-700">
-                                    <strong>Your Profile:</strong> {getShopperTypeDescription(pendingShopperType)}
+                                    <strong>Your Profile:</strong>{" "}
+                                    {getShopperTypeDescription(pendingShopperType)}
                                 </p>
                             </div>
-                            {(pendingShopperType !== shopperType) && (
+                            {pendingShopperType !== shopperType && (
                                 <button
                                     onClick={handleSaveShopperType}
                                     className="w-full md:w-auto mt-3 md:mt-0 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold shadow-lg hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 flex items-center justify-center gap-2 text-base cursor-pointer"
-                                    style={{minWidth: 110}}
+                                    style={{ minWidth: 110 }}
                                     disabled={isSavingShopperType}
                                 >
                                     {isSavingShopperType ? (
-                                        <Loader2 className="animate-spin w-5 h-5 mr-2 text-white"/>
+                                        <Loader2 className="animate-spin w-5 h-5 mr-2 text-white" />
                                     ) : shopperTypeSaved ? (
                                         <span className="inline-flex items-center">
-                                            <Check className="h-5 w-5 text-green-400 mr-1"/>
+                                            <Check className="h-5 w-5 text-green-400 mr-1" />
                                             Saved
                                         </span>
                                     ) : (
                                         <>
-                                            <SaveIcon className="w-5 h-5 mr-1"/>
+                                            <SaveIcon className="w-5 h-5 mr-1" />
                                             Save
                                         </>
                                     )}
@@ -373,7 +395,7 @@ export default function ProfilePage() {
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-semibold">Past Orders</h2>
                     <button
-                        onClick={() => setSortDescending((prev) => !prev)}
+                        onClick={() => setSortDescending(prev => !prev)}
                         className="flex items-center gap-2 text-sm text-blue-600 border border-blue-200 px-3 py-1
                         rounded-md w-36 justify-center transition-all hover:bg-blue-50 cursor-pointer"
                     >
@@ -388,8 +410,8 @@ export default function ProfilePage() {
                     <p className="text-gray-500">No past orders found.</p>
                 ) : (
                     <div className="space-y-6">
-                        {orders.map((order) => (
-                            <OrderCard key={order.id} order={order}/>
+                        {orders.map(order => (
+                            <OrderCard key={order.id} order={order} />
                         ))}
                     </div>
                 )}
@@ -402,5 +424,5 @@ export default function ProfilePage() {
                 onCloseAction={() => setShowNotification(false)}
             />
         </main>
-    );
+    )
 }

@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:check": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
@@ -16,7 +19,8 @@
     "next": "16.0.7",
     "next-mdx-remote": "^5.0.0",
     "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "react-dom": "19.2.1",
+    "prettier": "3.6.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

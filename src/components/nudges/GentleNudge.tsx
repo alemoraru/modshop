@@ -1,9 +1,9 @@
-"use client";
+"use client"
 
 interface GentleNudgeProps {
-    productTitle: string;
-    onAcceptAction: () => void;
-    onRejectAction: () => void;
+    productTitle: string
+    onAcceptAction: () => void
+    onRejectAction: () => void
 }
 
 /**
@@ -14,7 +14,11 @@ interface GentleNudgeProps {
  * @param onRejectAction - Action to take if the user decides to proceed with the purchase.
  * @constructor
  */
-export default function GentleNudge({productTitle, onAcceptAction, onRejectAction}: GentleNudgeProps) {
+export default function GentleNudge({
+    productTitle,
+    onAcceptAction,
+    onRejectAction,
+}: GentleNudgeProps) {
     return (
         <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-md mx-4">
@@ -22,8 +26,8 @@ export default function GentleNudge({productTitle, onAcceptAction, onRejectActio
                     💡 Reconsider This Purchase
                 </h3>
                 <p className="mb-4 text-gray-700">
-                    Are you sure you want to buy <strong>{productTitle}</strong>?
-                    This seems like it might be an impulse purchase. Take a moment to think about it.
+                    Are you sure you want to buy <strong>{productTitle}</strong>? This seems like it
+                    might be an impulse purchase. Take a moment to think about it.
                 </p>
                 <div className="flex gap-3">
                     <button
@@ -41,5 +45,5 @@ export default function GentleNudge({productTitle, onAcceptAction, onRejectActio
                 </div>
             </div>
         </div>
-    );
+    )
 }

@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
 interface CheaperAlternativeNudgeProps {
-    currentProduct: string;
-    currentPrice: number;
-    alternativeProduct: string;
-    alternativePrice: number;
-    onAcceptAction: () => void;
-    onRejectAction: () => void;
-    isAlreadyCheapest?: boolean;
+    currentProduct: string
+    currentPrice: number
+    alternativeProduct: string
+    alternativePrice: number
+    onAcceptAction: () => void
+    onRejectAction: () => void
+    isAlreadyCheapest?: boolean
 }
 
 /**
@@ -15,34 +15,32 @@ interface CheaperAlternativeNudgeProps {
  * less expensive alternative product. It shows the current product, its price,
  * and a suggested alternative with its price.
  */
-export default function CheaperAlternativeNudge(
-    {
-        currentProduct,
-        currentPrice,
-        alternativeProduct,
-        alternativePrice,
-        onAcceptAction,
-        onRejectAction,
-        isAlreadyCheapest = false
-    }: CheaperAlternativeNudgeProps) {
-    const savings = currentPrice - alternativePrice;
+export default function CheaperAlternativeNudge({
+    currentProduct,
+    currentPrice,
+    alternativeProduct,
+    alternativePrice,
+    onAcceptAction,
+    onRejectAction,
+    isAlreadyCheapest = false,
+}: CheaperAlternativeNudgeProps) {
+    const savings = currentPrice - alternativePrice
 
     if (isAlreadyCheapest) {
         return (
             <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50">
                 <div className="bg-white p-6 rounded-lg max-w-md mx-4">
-                    <h3 className="text-lg font-semibold mb-4 text-orange-600">
-                        💡 Think It Over
-                    </h3>
+                    <h3 className="text-lg font-semibold mb-4 text-orange-600">💡 Think It Over</h3>
                     <p className="mb-4 text-gray-700">
-                        <strong>{currentProduct}</strong> is already the cheapest option in its category.
+                        <strong>{currentProduct}</strong> is already the cheapest option in its
+                        category.
                     </p>
                     <p className="mb-4 text-orange-600 font-semibold">
                         You could save €{currentPrice.toFixed(2)} by not buying this at all!
                     </p>
                     <p className="mb-4 text-gray-600">
-                        Sometimes the best purchase is no purchase. Take a moment to really think about whether you need
-                        this item right now.
+                        Sometimes the best purchase is no purchase. Take a moment to really think
+                        about whether you need this item right now.
                     </p>
                     <div className="flex gap-3">
                         <button
@@ -61,7 +59,8 @@ export default function CheaperAlternativeNudge(
                         </button>
                     </div>
                 </div>
-            </div>);
+            </div>
+        )
     }
 
     return (
@@ -71,8 +70,8 @@ export default function CheaperAlternativeNudge(
                     💰 Save Money with This Alternative
                 </h3>
                 <p className="mb-4 text-gray-700">
-                    Instead of <strong>{currentProduct}</strong> (€{currentPrice}),
-                    consider <strong>{alternativeProduct}</strong> (€{alternativePrice}).
+                    Instead of <strong>{currentProduct}</strong> (€{currentPrice}), consider{" "}
+                    <strong>{alternativeProduct}</strong> (€{alternativePrice}).
                 </p>
                 <p className="mb-4 text-green-600 font-semibold">
                     You could save €{savings.toFixed(2)}!
@@ -95,5 +94,5 @@ export default function CheaperAlternativeNudge(
                 </div>
             </div>
         </div>
-    );
+    )
 }
