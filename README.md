@@ -57,6 +57,7 @@ master's course at Delft University of Technology.
 - **MDX:** Product descriptions via MDX files
 - **Icons:** [Lucide React](https://lucide.dev)
 - **Fonts:** [Gabarito](https://fonts.google.com/specimen/Gabarito) via next/font
+- **Code Quality:** ESLint, Prettier
 
 ---
 

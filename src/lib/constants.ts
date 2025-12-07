@@ -1,4 +1,4 @@
-import packageJson from '../../package.json';
+import packageJson from "../../package.json"
 
 /**
  * Version of the application from package.json.

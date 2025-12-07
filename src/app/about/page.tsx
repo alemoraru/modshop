@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 /**
  * This renders the About page of the ModShop application.
@@ -10,15 +10,17 @@ export default function AboutPage() {
                 <h1 className="text-4xl font-bold mb-6">About ModShop</h1>
 
                 <p className="mb-4 text-lg">
-                    <strong>ModShop</strong> is a simple e-commerce mock web application built for an educational
-                    scenario in a Master&#39;s level course on <em>Designing Human-Centered AI Systems</em>.
-                    It is designed not just to allow simulating online purchases, but to study how
-                    <strong> algorithmic nudges</strong> can influence user behavior in a shopping context.
+                    <strong>ModShop</strong> is a simple e-commerce mock web application built for
+                    an educational scenario in a Master&#39;s level course on{" "}
+                    <em>Designing Human-Centered AI Systems</em>. It is designed not just to allow
+                    simulating online purchases, but to study how
+                    <strong> algorithmic nudges</strong> can influence user behavior in a shopping
+                    context.
                 </p>
 
                 <p className="mb-4">
-                    The core objective is to <strong>minimize impulsive purchases</strong> by implementing nudges
-                    such as:
+                    The core objective is to <strong>minimize impulsive purchases</strong> by
+                    implementing nudges such as:
                 </p>
 
                 <ul className="list-disc list-inside mb-4">
@@ -28,15 +30,13 @@ export default function AboutPage() {
                 </ul>
 
                 <p className="mb-4">
-                    The frontend is developed using <strong>React</strong>, <strong>TypeScript</strong>, and <strong>Tailwind
-                    CSS</strong> with
-                    <strong> Next.js App Router</strong>. Products are organized into categories such as clothing,
-                    video games, books, and household items.
+                    The frontend is developed using <strong>React</strong>,{" "}
+                    <strong>TypeScript</strong>, and <strong>Tailwind CSS</strong> with
+                    <strong> Next.js App Router</strong>. Products are organized into categories
+                    such as clothing, video games, books, and household items.
                 </p>
 
-                <p className="mb-4">
-                    The frontend includes:
-                </p>
+                <p className="mb-4">The frontend includes:</p>
                 <ul className="list-disc list-inside mb-4">
                     <li>Category browsing and product detail pages (via .mdx files)</li>
                     <li>User profile with sign-up/login and shopping behavior settings</li>
@@ -45,9 +45,7 @@ export default function AboutPage() {
                     <li>Intelligent nudging system with multi-armed bandit learning</li>
                 </ul>
 
-                <p className="mb-4">
-                    Users can identify as one of the following shopper types:
-                </p>
+                <p className="mb-4">Users can identify as one of the following shopper types:</p>
 
                 <ul className="list-disc list-inside">
                     <li>Impulsive Shopper</li>
@@ -56,5 +54,5 @@ export default function AboutPage() {
                 </ul>
             </section>
         </main>
-    );
+    )
 }

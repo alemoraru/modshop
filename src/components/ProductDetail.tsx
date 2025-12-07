@@ -1,34 +1,37 @@
-"use client";
+"use client"
 
-import {useCart} from "@/context/CartContext";
-import React, {useState} from "react";
-import Image from "next/image";
-import {Check, ShoppingCart, Star} from "lucide-react";
+import { useCart } from "@/context/CartContext"
+import React, { useState } from "react"
+import Image from "next/image"
+import { Check, ShoppingCart, Star } from "lucide-react"
 
 /**
  * ProductFrontmatter interface defines the structure of the product metadata.
  * It includes the frontmatter fields from the MDX file.
  */
 interface ProductFrontmatter {
-    title: string;
-    slug: string;
-    category: string;
-    price: number;
-    image: string;
-    description: string;
-    manufacturer?: string;
-    releaseDate?: string;
-    material?: string;
-    dimensions?: string;
-    reviews?: { user: string; rating: number; comment: string }[];
+    title: string
+    slug: string
+    category: string
+    price: number
+    image: string
+    description: string
+    manufacturer?: string
+    releaseDate?: string
+    material?: string
+    dimensions?: string
+    reviews?: { user: string; rating: number; comment: string }[]
 }
 
-export default function ProductDetail({frontmatter, mdxContent}: {
-    frontmatter: ProductFrontmatter,
+export default function ProductDetail({
+    frontmatter,
+    mdxContent,
+}: {
+    frontmatter: ProductFrontmatter
     mdxContent: React.ReactNode
 }) {
-    const {addItem} = useCart();
-    const [added, setAdded] = useState(false);
+    const { addItem } = useCart()
+    const [added, setAdded] = useState(false)
 
     const handleAddToCart = () => {
         addItem({
@@ -38,10 +41,10 @@ export default function ProductDetail({frontmatter, mdxContent}: {
             quantity: 1,
             image: frontmatter.image,
             category: frontmatter.category,
-        });
-        setAdded(true);
-        setTimeout(() => setAdded(false), 1200);
-    };
+        })
+        setAdded(true)
+        setTimeout(() => setAdded(false), 1200)
+    }
 
     return (
         <main className="bg-white text-gray-900">
@@ -62,19 +65,21 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                         <div className="block md:hidden mt-6">
                             <h1 className="text-2xl font-bold mb-2">{frontmatter.title}</h1>
                             <p className="text-gray-600 mb-2">{frontmatter.description}</p>
-                            <p className="text-xl font-semibold text-blue-700 mb-4">€{frontmatter.price}</p>
+                            <p className="text-xl font-semibold text-blue-700 mb-4">
+                                €{frontmatter.price}
+                            </p>
                             <button
-                                className={`bg-blue-600 text-white px-5 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? 'scale-105 bg-green-500' : ''} cursor-pointer`}
+                                className={`bg-blue-600 text-white px-5 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? "scale-105 bg-green-500" : ""} cursor-pointer`}
                                 onClick={handleAddToCart}
                                 disabled={added}
                             >
                                 {added ? (
                                     <span className="flex items-center gap-1">
-                                        <Check/> Added
+                                        <Check /> Added
                                     </span>
                                 ) : (
                                     <span className="flex items-center gap-1">
-                                        <ShoppingCart className="p-1"/> Add to Cart
+                                        <ShoppingCart className="p-1" /> Add to Cart
                                     </span>
                                 )}
                             </button>
@@ -82,11 +87,26 @@ export default function ProductDetail({frontmatter, mdxContent}: {
 
                         {/* Product specs */}
                         <div className="mt-6 space-y-2 text-sm text-gray-700">
-                            {frontmatter.manufacturer &&
-                                <p><strong>Manufacturer:</strong> {frontmatter.manufacturer}</p>}
-                            {frontmatter.releaseDate && <p><strong>Release Date:</strong> {frontmatter.releaseDate}</p>}
-                            {frontmatter.material && <p><strong>Material:</strong> {frontmatter.material}</p>}
-                            {frontmatter.dimensions && <p><strong>Dimensions:</strong> {frontmatter.dimensions}</p>}
+                            {frontmatter.manufacturer && (
+                                <p>
+                                    <strong>Manufacturer:</strong> {frontmatter.manufacturer}
+                                </p>
+                            )}
+                            {frontmatter.releaseDate && (
+                                <p>
+                                    <strong>Release Date:</strong> {frontmatter.releaseDate}
+                                </p>
+                            )}
+                            {frontmatter.material && (
+                                <p>
+                                    <strong>Material:</strong> {frontmatter.material}
+                                </p>
+                            )}
+                            {frontmatter.dimensions && (
+                                <p>
+                                    <strong>Dimensions:</strong> {frontmatter.dimensions}
+                                </p>
+                            )}
                         </div>
 
                         {/* Reviews */}
@@ -95,9 +115,14 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                                 <h3 className="text-lg font-semibold mb-2">Customer Reviews</h3>
                                 <div className="space-y-4">
                                     {frontmatter.reviews.map((review, i) => (
-                                        <div key={i} className="border rounded-md p-3 shadow-sm bg-gray-50">
+                                        <div
+                                            key={i}
+                                            className="border rounded-md p-3 shadow-sm bg-gray-50"
+                                        >
                                             <div className="flex items-center justify-between mb-1">
-                                                <span className="font-medium text-sm text-gray-800">{review.user}</span>
+                                                <span className="font-medium text-sm text-gray-800">
+                                                    {review.user}
+                                                </span>
                                                 <div className="flex items-center space-x-1">
                                                     {[...Array(5)].map((_, idx) => (
                                                         <Star
@@ -107,7 +132,9 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                                                     ))}
                                                 </div>
                                             </div>
-                                            <p className="text-sm text-gray-600">{review.comment}</p>
+                                            <p className="text-sm text-gray-600">
+                                                {review.comment}
+                                            </p>
                                         </div>
                                     ))}
                                 </div>
@@ -119,37 +146,35 @@ export default function ProductDetail({frontmatter, mdxContent}: {
                     <div className="hidden md:block">
                         <h1 className="text-3xl font-bold mb-2">{frontmatter.title}</h1>
                         <p className="text-lg text-gray-600 mb-4">{frontmatter.description}</p>
-                        <p className="text-xl font-semibold text-blue-700 mb-6">€{frontmatter.price}</p>
+                        <p className="text-xl font-semibold text-blue-700 mb-6">
+                            €{frontmatter.price}
+                        </p>
                         <button
-                            className={`bg-blue-600 text-white px-5 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? 'scale-105 bg-green-500' : ''} cursor-pointer`}
+                            className={`bg-blue-600 text-white px-5 py-2 rounded transition-all duration-300 hover:bg-blue-700 flex items-center gap-2 ${added ? "scale-105 bg-green-500" : ""} cursor-pointer`}
                             onClick={handleAddToCart}
                             disabled={added}
                         >
                             {added ? (
                                 <span className="flex items-center gap-1">
-                                    <Check/> Added
+                                    <Check /> Added
                                 </span>
                             ) : (
                                 <span className="flex items-center gap-1">
-                                    <ShoppingCart className="p-1"/> Add to Cart
+                                    <ShoppingCart className="p-1" /> Add to Cart
                                 </span>
                             )}
                         </button>
                         <h3 className="text-lg font-semibold mt-6">Product Description</h3>
-                        <article className="prose prose-blue max-w-none mt-8">
-                            {mdxContent}
-                        </article>
+                        <article className="prose prose-blue max-w-none mt-8">{mdxContent}</article>
                     </div>
                 </div>
 
                 {/* Mobile-only MDX content */}
                 <div className="block md:hidden mt-8">
                     <h3 className="text-lg font-semibold mb-0">Product Description</h3>
-                    <article className="prose prose-blue max-w-none">
-                        {mdxContent}
-                    </article>
+                    <article className="prose prose-blue max-w-none">{mdxContent}</article>
                 </div>
             </section>
         </main>
-    );
+    )
 }

@@ -1,5 +1,5 @@
-import {getAllProducts} from "@/lib/getAllProducts";
-import ProductCard from "@/components/ProductCard";
+import { getAllProducts } from "@/lib/getAllProducts"
+import ProductCard from "@/components/ProductCard"
 
 /**
  * Calculates the similarity score between two strings.
@@ -7,15 +7,15 @@ import ProductCard from "@/components/ProductCard";
  * @param b the second string to compare
  */
 function stringSimilarity(a: string, b: string): number {
-    a = a.toLowerCase();
-    b = b.toLowerCase();
-    if (a === b) return 1;
-    if (a.includes(b) || b.includes(a)) return 0.8;
-    let matches = 0;
+    a = a.toLowerCase()
+    b = b.toLowerCase()
+    if (a === b) return 1
+    if (a.includes(b) || b.includes(a)) return 0.8
+    let matches = 0
     for (let i = 0; i < Math.min(a.length, b.length); i++) {
-        if (a[i] === b[i]) matches++;
+        if (a[i] === b[i]) matches++
     }
-    return matches / Math.max(a.length, b.length);
+    return matches / Math.max(a.length, b.length)
 }
 
 /**
@@ -23,24 +23,24 @@ function stringSimilarity(a: string, b: string): number {
  * @param props - Contains search parameters with an optional query string.
  */
 export default async function SearchPage(props: { searchParams: Promise<{ query?: string }> }) {
-    const searchParameters = await props.searchParams;
-    const query = searchParameters.query || "";
-    const allProducts = getAllProducts();
-    const filtered = query ?
-        allProducts
-            .map(product => {
-                const titleScore = stringSimilarity(product.title, query);
-                const categoryScore = stringSimilarity(product.category, query);
-                const descriptionScore = stringSimilarity(product.description || '', query);
-                return {
-                    product,
-                    score: Math.max(titleScore, categoryScore, descriptionScore)
-                };
-            })
-            .filter(({score}) => score > 0.2)
-            .sort((a, b) => b.score - a.score)
-            .map(({product}) => product)
-        : [];
+    const searchParameters = await props.searchParams
+    const query = searchParameters.query || ""
+    const allProducts = getAllProducts()
+    const filtered = query
+        ? allProducts
+              .map(product => {
+                  const titleScore = stringSimilarity(product.title, query)
+                  const categoryScore = stringSimilarity(product.category, query)
+                  const descriptionScore = stringSimilarity(product.description || "", query)
+                  return {
+                      product,
+                      score: Math.max(titleScore, categoryScore, descriptionScore),
+                  }
+              })
+              .filter(({ score }) => score > 0.2)
+              .sort((a, b) => b.score - a.score)
+              .map(({ product }) => product)
+        : []
 
     return (
         <main className="bg-white text-gray-900">
@@ -67,5 +67,5 @@ export default async function SearchPage(props: { searchParams: Promise<{ query?
                 )}
             </section>
         </main>
-    );
+    )
 }
